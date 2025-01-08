@@ -49,8 +49,17 @@ SwerveModule::SwerveModule(int driveMotorChannel,
   // m_turningEncoder.SetDistancePerPulse(
   //     ModuleConstants::kTurningEncoderDistancePerPulse);
   
-  m_driveMotor.SetInverted(driveMotorInvert);
-  m_turningMotor.SetInverted(turnMotorInvert);
+  rev::spark::SparkBaseConfig DriveSparkConfig;
+  rev::spark::SparkBase::ResetMode SparkReset;
+  rev::spark::SparkBase::PersistMode SparkPersist;
+
+  DriveSparkConfig.Inverted(driveMotorInvert);
+  m_driveMotor.Configure(DriveSparkConfig,SparkReset,SparkPersist);
+
+  rev::spark::SparkBaseConfig TurnSparkConfig;
+  TurnSparkConfig.Inverted(turnMotorInvert);
+  m_turningMotor.Configure(TurnSparkConfig,SparkReset,SparkPersist);
+
 
 
   // Limit the PID Controller's input range between -pi and pi and set the input
