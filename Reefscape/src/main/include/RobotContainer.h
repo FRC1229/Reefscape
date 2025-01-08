@@ -4,32 +4,67 @@
 
 #pragma once
 
-#include <frc2/command/CommandPtr.h>
-#include <frc2/command/button/CommandXboxController.h>
-
+#include <frc/XboxController.h>
+#include <frc/controller/PIDController.h>
+#include <frc/controller/ProfiledPIDController.h>
+#include <frc/smartdashboard/SendableChooser.h>
+#include <frc2/command/Command.h>
+#include <frc2/command/InstantCommand.h>
+#include <frc2/command/PIDCommand.h>
+#include <frc2/command/ParallelRaceGroup.h>
+#include <frc2/command/RunCommand.h>
+#include <frc/filter/SlewRateLimiter.h>
+#include <frc/Joystick.h>
 #include "Constants.h"
-#include "subsystems/ExampleSubsystem.h"
+#include "frc/DigitalInput.h"
+#include "subsystems/DriveSubsystem.h"
+#include <pathplanner/lib/auto/NamedCommands.h>
+#include <pathplanner/lib/commands/PathPlannerAuto.h>
+
+
+
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
  * actually be handled in the {@link Robot} periodic methods (other than the
  * scheduler calls).  Instead, the structure of the robot (including subsystems,
- * commands, and trigger mappings) should be declared here.
+ * commands, and button mappings) should be declared here.
  */
 class RobotContainer {
  public:
   RobotContainer();
+  //frc2::Command* GetAutonomousCommand();
+  frc2::CommandPtr getAutonomousCommand();
 
-  frc2::CommandPtr GetAutonomousCommand();
+  // frc2::CommandPtr AutonomousCommand();
+  DriveSubsystem m_drive;
+
+  frc::DigitalInput sensor{0};
+  frc::DigitalInput m_limitSwitch{9};
+
+  frc::Timer intake_timer;
+  
+  double increment;
+  frc::Joystick m_driverController{OIConstants::kDriverControllerPort};
+  frc::Joystick m_copilotController{OIConstants::kCoPilotControllerPort};
+  //frc::SendableChooser<frc2::Command*> m_chooser;
+  frc::SendableChooser<std::string> m_chooser;
+
 
  private:
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  frc2::CommandXboxController m_driverController{
-      OperatorConstants::kDriverControllerPort};
+  // The driver's controller
 
-  // The robot's subsystems are defined here...
-  ExampleSubsystem m_subsystem;
+  // The robot's subsystems and commands are defined here...
 
-  void ConfigureBindings();
+  // The robot's subsystems
+
+  // The chooser for the autonomous routines
+
+  // frc2::CommandPtr m_Auto1 = PathPlannerAuto("90").ToPtr();  
+
+
+  // m_chooser.SetDefaultCommand("90 degree", m_auto)
+
+  void ConfigureButtonBindings();
 };

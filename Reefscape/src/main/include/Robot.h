@@ -4,16 +4,14 @@
 
 #pragma once
 
-#include <optional>
-
 #include <frc/TimedRobot.h>
-#include <frc2/command/CommandPtr.h>
-
+#include <frc2/command/Command.h>
+#include <frc/DigitalInput.h>
 #include "RobotContainer.h"
 
 class Robot : public frc::TimedRobot {
  public:
-  Robot();
+  void RobotInit() override;
   void RobotPeriodic() override;
   void DisabledInit() override;
   void DisabledPeriodic() override;
@@ -22,13 +20,13 @@ class Robot : public frc::TimedRobot {
   void TeleopInit() override;
   void TeleopPeriodic() override;
   void TestPeriodic() override;
-  void SimulationInit() override;
-  void SimulationPeriodic() override;
 
  private:
-  // Have it empty by default so that if testing teleop it
+  // Have it null by default so that if testing teleop it
   // doesn't have undefined behavior and potentially crash.
   std::optional<frc2::CommandPtr> m_autonomousCommand;
 
   RobotContainer m_container;
+
+  //frc::DigitalInput input{0};
 };

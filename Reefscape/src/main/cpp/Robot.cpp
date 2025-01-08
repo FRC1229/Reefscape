@@ -1,12 +1,17 @@
-// Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
 #include "Robot.h"
-
+#include <cameraserver/CameraServer.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
 
-Robot::Robot() {}
+
+void Robot::RobotInit() {
+    //m_container.m_arm.CalibrateEncoderValue();
+    frc::CameraServer::StartAutomaticCapture();
+
+}
 
 /**
  * This function is called every 20 ms, no matter the mode. Use
@@ -17,7 +22,21 @@ Robot::Robot() {}
  * LiveWindow and SmartDashboard integrated updating.
  */
 void Robot::RobotPeriodic() {
+
+  
+
+
   frc2::CommandScheduler::GetInstance().Run();
+  frc::SmartDashboard::PutNumber("Gyroo", m_container.m_drive.m_gyro.GetRotation2d().Degrees().value());
+
+  frc::SmartDashboard::PutNumber("FLTurn Encoder", m_container.m_drive.m_frontLeft.m_turningEncoder.GetAbsolutePosition().GetValue().value());
+  frc::SmartDashboard::PutNumber("FRTurn Encoder", m_container.m_drive.m_frontRight.m_turningEncoder.GetAbsolutePosition().GetValue().value());
+  frc::SmartDashboard::PutNumber("BLTurn Encoder", m_container.m_drive.m_rearLeft.m_turningEncoder.GetAbsolutePosition().GetValue().value());
+  frc::SmartDashboard::PutNumber("BRTurn Encoder", m_container.m_drive.m_rearRight.m_turningEncoder.GetAbsolutePosition().GetValue().value());
+  frc::SmartDashboard::PutNumber("FLDrive Encoder", m_container.m_drive.m_frontLeft.GetPosition().distance.value());
+  frc::SmartDashboard::PutNumber("FRDrive Encoder", m_container.m_drive.m_frontRight.GetPosition().distance.value());
+  frc::SmartDashboard::PutNumber("BLDrive Encoder", m_container.m_drive.m_rearLeft.GetPosition().distance.value());
+  frc::SmartDashboard::PutNumber("BRDrive Encoder", m_container.m_drive.m_rearRight.GetPosition().distance.value());
 }
 
 /**
@@ -25,7 +44,9 @@ void Robot::RobotPeriodic() {
  * can use it to reset any subsystem information you want to clear when the
  * robot is disabled.
  */
-void Robot::DisabledInit() {}
+void Robot::DisabledInit() {
+
+}
 
 void Robot::DisabledPeriodic() {}
 
@@ -34,7 +55,12 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
-  m_autonomousCommand = m_container.GetAutonomousCommand();
+  //m_container.m_arm.CalibrateEncoderValue();
+  m_container.m_drive.ZeroHeading();
+  m_container.m_drive.ResetEncoders();
+  m_container.m_drive.ResetOdometry(frc::Pose2d{2_m,7_m,frc::Rotation2d{0_deg}});
+  
+  m_autonomousCommand = m_container.getAutonomousCommand();
 
   if (m_autonomousCommand) {
     m_autonomousCommand->Schedule();
@@ -44,34 +70,47 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
+  m_container.m_drive.ZeroHeading();
+  m_container.m_drive.ResetEncoders();
+  m_container.m_drive.ResetOdometry(frc::Pose2d{0_m,0_m,frc::Rotation2d{0_deg}});
+
   // This makes sure that the autonomous stops running when
   // teleop starts running. If you want the autonomous to
   // continue until interrupted by another command, remove
   // this line or comment it out.
+  //m_container.m_arm.CalibrateEncoderValue();
+
+  
   if (m_autonomousCommand) {
     m_autonomousCommand->Cancel();
   }
+  m_container.m_drive.ZeroHeading();
 }
 
 /**
  * This function is called periodically during operator control.
  */
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+
+  // frc::SmartDashboard::PutNumber("FL Desired Angle", m_container.m_drive.FrontLeft.angle.Radians().value());
+  // frc::SmartDashboard::PutNumber("FL Desired Speed", m_container.m_drive.FrontLeft.speed.value());
+  // frc::SmartDashboard::PutNumber("BL calc", m_container.m_drive.RearLeft.angle.Radians().value());
+  // frc::SmartDashboard::PutNumber("BR calc", m_container.m_drive.RearRight.angle.Radians().value());
+  // frc::SmartDashboard::PutNumber("FR calc", m_container.m_drive.FrontRight.angle.Radians().value());
+ 
+  // frc::SmartDashboard::PutNumber("Desired Speed", m_container.m_drive.FrontLeft.speed.value());
+  // frc::SmartDashboard::PutNumber("FLVel Encoder", m_container.m_drive.m_frontLeft.GetState().speed.value());
+  // frc::SmartDashboard::PutNumber("FRVel Encoder", m_container.m_drive.m_frontRight.GetState().speed.value());
+  // frc::SmartDashboard::PutNumber("BLVel Encoder", m_container.m_drive.m_rearLeft.GetState().speed.value());
+  // frc::SmartDashboard::PutNumber("BRVel Encoder", m_container.m_drive.m_rearRight.GetState().speed.value());
+  // frc::SmartDashboard::PutNumber("ppp", m_container.m_drive.ppp);
+  // frc::SmartDashboard::PutNumber("increment", m_container.m_drive.increment);
+}
 
 /**
  * This function is called periodically during test mode.
  */
 void Robot::TestPeriodic() {}
-
-/**
- * This function is called once when the robot is first started up.
- */
-void Robot::SimulationInit() {}
-
-/**
- * This function is called periodically whilst in simulation.
- */
-void Robot::SimulationPeriodic() {}
 
 #ifndef RUNNING_FRC_TESTS
 int main() {
