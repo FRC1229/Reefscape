@@ -126,7 +126,7 @@ class DriveSubsystem : public frc2::SubsystemBase {
   units::meter_t kTrackWidth =
       0.5207_m;  // Distance between centers of right and left wheels on robot
   units::meter_t kWheelBase =
-      0.5207_m;  // Distance between centers of front and back wheels on robot
+      0.5207_m;  // Distance between centers of front and back wheels on robo
 
    frc::SwerveDriveKinematics<4> kDriveKinematics{
       frc::Translation2d{kWheelBase / 2, kTrackWidth / 2},
@@ -137,7 +137,7 @@ class DriveSubsystem : public frc2::SubsystemBase {
   frc::Rotation2d zero = frc::Rotation2d(0_deg);
 
   // AHRS m_gyro {frc::SPI::kMXP};
-  ctre::phoenix6::hardware::Pigeon2 m_gyro {kGyroConstant};
+  ctre::phoenix6::hardware::Pigeon2 m_gyro {DriveConstants::kGyroConstant};
   
   frc::Rotation2d getRotation2D();
   frc::SwerveDrivePoseEstimator<4> m_odometry;

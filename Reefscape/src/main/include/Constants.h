@@ -72,7 +72,7 @@ inline constexpr double kPXController = 0.5;
 inline constexpr double kPYController = 0.5;
 inline constexpr double kPThetaController = 0.5;
 
-pathplanner::RobotConfig config = pathplanner::RobotConfig::fromGUISettings();
+// pathplanner::RobotConfig config = pathplanner::RobotConfig::fromGUISettings();
 //
 
 extern const frc::TrapezoidProfile<units::radians>::Constraints

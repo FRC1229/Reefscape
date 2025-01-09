@@ -50,13 +50,13 @@ SwerveModule::SwerveModule(int driveMotorChannel,
   //     ModuleConstants::kTurningEncoderDistancePerPulse);
   
   rev::spark::SparkBaseConfig DriveSparkConfig;
-  rev::spark::SparkBase::ResetMode SparkReset;
-  rev::spark::SparkBase::PersistMode SparkPersist;
+  rev::spark::SparkBase::ResetMode SparkReset {rev::spark::SparkBase::ResetMode::kNoResetSafeParameters};
+  rev::spark::SparkBase::PersistMode SparkPersist {rev::spark::SparkBase::PersistMode::kNoPersistParameters};
+  rev::spark::SparkBaseConfig TurnSparkConfig;
 
   DriveSparkConfig.Inverted(driveMotorInvert);
   m_driveMotor.Configure(DriveSparkConfig,SparkReset,SparkPersist);
 
-  rev::spark::SparkBaseConfig TurnSparkConfig;
   TurnSparkConfig.Inverted(turnMotorInvert);
   m_turningMotor.Configure(TurnSparkConfig,SparkReset,SparkPersist);
 
@@ -78,6 +78,17 @@ frc::SwerveModulePosition SwerveModule::GetPosition()  {
           units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValue()}};
 }
 
+//Make own optimize hate library and it hates me
+frc::SwerveModuleState Optimize(const frc::Rotation2d& currentAngle, frc::SwerveModuleState state) {
+  auto delta = state.angle - currentAngle;
+  if (units::math::abs(delta.Degrees()) > 90_deg) {
+    state.speed *= -1;
+    state.angle = state.angle + frc::Rotation2d{180_deg};
+  }
+  return state;
+}
+
+
 void SwerveModule::SetDesiredState(
     const frc::SwerveModuleState& referenceState) {
 
@@ -85,17 +96,16 @@ void SwerveModule::SetDesiredState(
       units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValue()}};
   // Optimize the reference state to avoid spinning further than 90 degrees
   
-
+  
   //REMOVE INTERIM ON MONDAY
 
   // auto interim = referenceState;
   // interim.angle = -interim.angle;
-  auto state = frc::SwerveModuleState::Optimize(
-       referenceState, encoderRotation);
+  auto state = Optimize(encoderRotation,referenceState);
   // Calculate the drive output from the drive PID controller.
   // const auto driveOutput = m_drivePIDController.Calculate(
   //       m_driveEncoder.GetRate(), state.speed.value());
-    state.speed *= (state.angle - encoderRotation).Cos();
+  state.speed *= (state.angle - encoderRotation).Cos();
 
   
   const auto driveOutput = m_drivePIDController.Calculate(m_driveEncoder.GetVelocity()*2*std::numbers::pi*0.0508/(6.75*60),state.speed.value());

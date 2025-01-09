@@ -51,6 +51,8 @@ DriveSubsystem::DriveSubsystem()
                   frc::Pose2d{2_m,7_m,frc::Rotation2d{0_deg}}}
 
       {
+        pathplanner::RobotConfig config = pathplanner::RobotConfig::fromGUISettings();
+
         AutoBuilder::configure(
         [this](){ return GetEstimatedPose(); }, // Robot pose supplier
         [this](frc::Pose2d pose){ ResetOdometry(pose); }, // Method to reset odometry (will be called if your auto has a starting pose)
@@ -60,7 +62,7 @@ DriveSubsystem::DriveSubsystem()
             PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
             PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
         ),
-        AutoConstants::config,
+        config,
         [this]()->bool{return this ->Fieldflip();},
         this // Reference to this subsystem to set requirements
     );
@@ -269,7 +271,7 @@ void DriveSubsystem::ZeroHeading() {
 }
 
 double DriveSubsystem::GetTurnRate() {
-  return m_gyro.GetRate();
+  return m_gyro.GetAngularVelocityZWorld().GetValue().value();
 }
 
 frc::Pose2d DriveSubsystem::GetEstimatedPose() {
