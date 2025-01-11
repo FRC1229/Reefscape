@@ -97,13 +97,14 @@ namespace IntakeConstants {
 
 //climb is 14
 
-namespace ArmConstants {
-    constexpr int kArmMotorID = 17;
-    constexpr int kWristMotorID = 15;
-    constexpr int kArmEncoderPort = 0;
-    constexpr int kWristEncoderPort = 0;
-    constexpr double kHomePhysicalAngle = 35.0;
-    constexpr double ktickToAngleRatio = 482.64;
+namespace ElevatorConstants {
+    constexpr int kElevatorMotorBottomID = 17;
+    constexpr int kElevatorMotorTopID = 20;
+    // constexpr int kWristMotorID = 15;
+    // constexpr int kArmEncoderPort = 0;
+    // constexpr int kWristEncoderPort = 0;
+    // constexpr double kHomePhysicalAngle = 35.0;
+    // constexpr double ktickToAngleRatio = 482.64;
 }
 
 
