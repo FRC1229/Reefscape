@@ -9,17 +9,6 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "Constants.h"
 
-// SwerveModule::SwerveModule(int driveMotorChannel, int turningMotorChannel,
-//                            const int driveEncoderPorts[],
-//                            const int turningEncoderPorts[],
-//                            bool driveEncoderReversed,
-//                            bool turningEncoderReversed)
-//     : m_driveMotor(driveMotorChannel),
-//       m_turningMotor(turningMotorChannel),
-//       m_driveEncoder(driveEncoderPorts[0], driveEncoderPorts[1]),
-//       m_turningEncoder(turningEncoderPorts[0], turningEncoderPorts[1]),
-//       m_reverseDriveEncoder(driveEncoderReversed),
-//       m_reverseTurningEncoder(turningEncoderReversed) {
 
 //Very simlar code to the swerve templete the m_drivemotor and m_turningmotor had to be changed to rev libs
 //SPARK MAX AND FLEX can use the same codes
@@ -37,17 +26,6 @@ SwerveModule::SwerveModule(int driveMotorChannel,
       driveMotorInvert(driveMotorInvert),
       turnMotorInvert(turnMotorInvert)
       {
-  // Set the distance per pulse for the drive encoder. We can simply use the
-  // distance traveled for one rotation of the wheel divided by the encoder
-  // resolution.
-  // m_driveEncoder.SetDistancePerPulse(
-  //     ModuleConstants::kDriveEncoderDistancePerPulse);
-
-  // Set the distance (in this case, angle) per pulse for the turning encoder.
-  // This is the the angle through an entire rotation (2 * std::numbers::pi)
-  // divided by the encoder resolution.
-  // m_turningEncoder.SetDistancePerPulse(
-  //     ModuleConstants::kTurningEncoderDistancePerPulse);
   
   rev::spark::SparkBaseConfig DriveSparkConfig;
   rev::spark::SparkBase::ResetMode SparkReset {rev::spark::SparkBase::ResetMode::kNoResetSafeParameters};

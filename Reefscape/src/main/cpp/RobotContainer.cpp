@@ -71,7 +71,7 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_driverController, 4).OnTrue(frc2::cmd::RunOnce([this]{m_drive.ZeroHeading();}));
   frc2::JoystickButton(&m_driverController, 6).OnTrue(frc2::cmd::RunOnce([this]{m_drive.GetCurrentCommand()->Cancel();}));
   //frc2::Trigger([this]{return m_copilotController.GetRawAxis(2)>0.1;}).WhileTrue(frc2::cmd::Run([this]{m_conveyer.RunConveyer();},{&m_conveyer}));
-  //frc2::Trigger([this]{return m_copilotController.GetRawAxis(3)>0.1;}).WhileTrue(frc2::cmd::Run([this]{m_conveyer.RunConveyer(true);},{&m_conveyer}));
+   //frc2::Trigger([this]{return m_copilotController.GetRawAxis(3)>0.1;}).WhileTrue(frc2::cmd::Run([this]{m_conveyer.RunConveyer(true);},{&m_conveyer}));
   //   frc2::cmd::Sequence(
   //   RunConveyer(&m_conveyer).ToPtr().Until([this]{return sensor.Get();}),
   //   frc2::InstantCommand([this]{m_shooter.GetCurrentCommand()->Cancel();}).ToPtr()
@@ -93,6 +93,7 @@ void RobotContainer::ConfigureButtonBindings() {
   //frc2::JoystickButton(&m_driverController, 8).OnTrue(ShootPosition(&m_arm).ToPtr());
 
 
+
   //frc2::JoystickButton(&m_driverController, 8).WhileTrue(RunConveyer(&m_conveyer).ToPtr());
   //frc2::JoystickButton(&m_driverController, 6).OnTrue(frc2::InstantCommand([this]{},{&m_drive,&m_vision}).ToPtr());
 
@@ -108,102 +109,6 @@ void RobotContainer::ConfigureButtonBindings() {
 
 
 frc2::CommandPtr RobotContainer::getAutonomousCommand(){
-  // frc::TrajectoryConfig config(AutoConstants::kMaxSpeed,
-  //                              AutoConstants::kMaxAcceleration);
-  // // Add kinematics to ensure max speed is actually obeyed
-  // config.SetKinematics(m_drive.kDriveKinematics);
-
-  // // An example trajectory to follow.  All units in meters.
-  //   auto exampleTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
-  //     // Start at the origin facing the +X direction
-  //     frc::Pose2d{0_m, 0_m, 0_deg},
-  //     // Pass through these two interior waypoints, making an 's' curve path
-  //     {frc::Translation2d{1_m, 1_m}, frc::Translation2d{2_m, -1_m}},
-  //     // End 3 meters straight ahead of where we started, facing forward
-  //     frc::Pose2d{3_m, 0_m, 0_deg},
-  //     // Pass the config
-  //     config);
-
-  // frc::ProfiledPIDController<units::radians> thetaController{
-  //     AutoConstants::kPThetaController, 0, 0,
-  //     AutoConstants::kThetaControllerConstraints};
-
-  // thetaController.EnableContinuousInput(units::radian_t{-std::numbers::pi},
-  //                                       units::radian_t{std::numbers::pi});
-
-  // frc2::CommandPtr swerveControllerCommand =
-  //     frc2::SwerveControllerCommand<4>(
-  //         exampleTrajectory, [this]() { return m_drive.GetEstimatedPose(); },
-
-  //         m_drive.kDriveKinematics,
-
-  //         frc::PIDController{0.5, 0, 0},
-  //         frc::PIDController{0.5, 0, 0},
-  //         thetaController,
-
-  //         [this](auto moduleStates) { m_drive.SetModuleStates(moduleStates); },
-
-  //         {&m_drive})
-  //         .ToPtr();
-
-  // // Reset odometry to the initial pose of the trajectory, run path following
-  // // command, then stop at the end.
-  // return frc2::cmd::Sequence(
-  //     frc2::InstantCommand(
-  //         [this, &exampleTrajectory]() {
-  //           m_drive.ResetOdometry(exampleTrajectory.InitialPose());
-  //         },
-  //         {})
-  //         .ToPtr(),
-  //     std::move(swerveControllerCommand),
-  //     frc2::InstantCommand(
-  //         [this] { m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false); }, {})
-  //         .ToPtr());
-
-  // std::vector<frc::Pose2d> poses{
-  //     frc::Pose2d(1.0_m, 0.0_m, frc::Rotation2d(0_deg)),
-  //     frc::Pose2d(1.0_m, 0.0_m, frc::Rotation2d(0_deg))
-  // };
-  // std::vector<frc::Translation2d> bezierPoints = PathPlannerPath::bezierFromPoses(poses);
-
-  // // Create the path using the bezier points created above
-  // // We make a shared pointer here since the path following commands require a shared pointer
-  // auto path = std::make_shared<PathPlannerPath>(
-  //     bezierPoints,
-  //     PathConstraints(1.0_mps, 3.0_mps_sq, 360_deg_per_s, 720_deg_per_s_sq), // The constraints for this path. If using a differential drivetrain, the angular constraints have no effect.
-  //     GoalEndState(0.0_mps, frc::Rotation2d(0_deg)) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
-  // );
-
-  // // Prevent the path from being flipped if the coordinates are already correct
-  // path->preventFlipping = true;
-
-
-
-// std::vector<frc::Pose2d> poses{
-//     frc::Pose2d(0_m, 0.0_m, frc::Rotation2d(0_deg)),
-//     frc::Pose2d(1_m, 0.0_m, frc::Rotation2d(0_deg)),
-//     frc::Pose2d(1_m, 1.0_m, frc::Rotation2d(0_deg)),
-
-
-// };
-// std::vector<frc::Translation2d> bezierPoints = PathPlannerPath::bezierFromPoses(poses);
-
-// // Create the path using the bezier points created above
-// // We make a shared pointer here since the path following commands require a shared pointer
-// auto path = std::make_shared<PathPlannerPath>(
-//     bezierPoints,
-//     PathConstraints(3.0_mps, 3.0_mps_sq, 360_deg_per_s, 720_deg_per_s_sq), // The constraints for this path. If using a differential drivetrain, the angular constraints have no effect.
-//     GoalEndState(0.0_mps, frc::Rotation2d(0_deg)) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
-// );
-
-// // Prevent the path from being flipped if the coordinates are already correct
-// path->preventFlipping = true;
-
-// return AutoBuilder::followPath(path);
-
-  
-    // return m_chooser.GetSelected();
-    // std::string autonomous = m_chooser.GetSelected();
 
     return PathPlannerAuto("One meter").ToPtr();
     // return PathPlannerAuto(autonomous).ToPtr();
