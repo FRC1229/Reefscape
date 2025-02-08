@@ -20,7 +20,7 @@
 #include "subsystems/DriveSubsystem.h"
 #include <pathplanner/lib/auto/NamedCommands.h>
 #include <pathplanner/lib/commands/PathPlannerAuto.h>
-
+#include <subsystems/VisionSubsystem.h>
 
 
 
@@ -39,6 +39,7 @@ class RobotContainer {
 
   // frc2::CommandPtr AutonomousCommand();
   DriveSubsystem m_drive;
+  VisionSubsystem m_vision;
 
   frc::DigitalInput sensor{0};
   frc::DigitalInput m_limitSwitch{9};

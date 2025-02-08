@@ -20,6 +20,8 @@
 #include <vector>
 #include "Constants.h"
 #include "SwerveModule.h"
+#include <studica/AHRS.h>
+
 
 class DriveSubsystem : public frc2::SubsystemBase {
  public:
@@ -137,8 +139,10 @@ class DriveSubsystem : public frc2::SubsystemBase {
   frc::Rotation2d zero = frc::Rotation2d(0_deg);
 
   // AHRS m_gyro {frc::SPI::kMXP};
-  ctre::phoenix6::hardware::Pigeon2 m_gyro {DriveConstants::kGyroConstant};
-  
+ ctre::phoenix6::hardware::Pigeon2 m_gyro {14};
+
+
+
   frc::Rotation2d getRotation2D();
   frc::SwerveDrivePoseEstimator<4> m_odometry;
   frc::SendableChooser<bool> m_fieldflip;

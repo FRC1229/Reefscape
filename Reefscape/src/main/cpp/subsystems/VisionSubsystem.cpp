@@ -10,7 +10,7 @@
 VisionSubsystem::VisionSubsystem() {}
 void VisionSubsystem::Periodic(){
     frc::SmartDashboard::PutNumber("TX", VisionSubsystem::getTX());
-}
+}   
 void VisionSubsystem::putShuffleboard() {
     //frc::SmartDashboard::PutNumber("TX", VisionSubsystem::getTX());
 }
@@ -29,9 +29,9 @@ std::vector<double> VisionSubsystem::getPose() {
 
 double VisionSubsystem::getDistance(double targetHeight){
     double ty = VisionSubsystem::getTY();
-    double mountAngle = 20;
+    double mountAngle = 37;
     double goalHeight = targetHeight;
-    double cameraHeight = 16.35;
+    double cameraHeight = 8;
 
     double angleSum = ty+mountAngle;
 

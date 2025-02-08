@@ -30,11 +30,11 @@ DriveSubsystem::DriveSubsystem()
   //Defining each Swereve Module
     : m_frontLeft{kFrontLeftDriveMotorID,
                   kFrontLeftTurningMotorID,
-                  kFrontLeftTurningEncoderID, true , true, true},
+                  kFrontLeftTurningEncoderID, true , false, true},
 
       m_rearLeft{
           kRearLeftDriveMotorID,       kRearLeftTurningMotorID,
-          kRearLeftTurningEncoderID, true , false, true},
+          kRearLeftTurningEncoderID, true , true, true},
 
       m_frontRight{
           kFrontRightDriveMotorID,       kFrontRightTurningMotorID,
@@ -42,7 +42,7 @@ DriveSubsystem::DriveSubsystem()
 
       m_rearRight{
           kRearRightDriveMotorID,       kRearRightTurningMotorID,
-          kRearRightTurningEncoderID, true, true, true},
+          kRearRightTurningEncoderID, true, false, true},
 
       m_odometry{kDriveKinematics,
                  m_gyro.GetRotation2d(),
@@ -51,21 +51,21 @@ DriveSubsystem::DriveSubsystem()
                   frc::Pose2d{2_m,7_m,frc::Rotation2d{0_deg}}}
 
       {
-        pathplanner::RobotConfig config = pathplanner::RobotConfig::fromGUISettings();
+    //     pathplanner::RobotConfig config = pathplanner::RobotConfig::fromGUISettings();
 
-        AutoBuilder::configure(
-        [this](){ return GetEstimatedPose(); }, // Robot pose supplier
-        [this](frc::Pose2d pose){ ResetOdometry(pose); }, // Method to reset odometry (will be called if your auto has a starting pose)
-        [this](){ return getRobotRelativeSpeeds(); }, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        [this](frc::ChassisSpeeds speeds){ Drive(speeds.vx,speeds.vy,speeds.omega,false); }, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-        std::make_shared<PPHolonomicDriveController>( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-            PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-        ),
-        config,
-        [this]()->bool{return this ->Fieldflip();},
-        this // Reference to this subsystem to set requirements
-    );
+    //     AutoBuilder::configure(
+    //     [this](){ return GetEstimatedPose(); }, // Robot pose supplier
+    //     [this](frc::Pose2d pose){ ResetOdometry(pose); }, // Method to reset odometry (will be called if your auto has a starting pose)
+    //     [this](){ return getRobotRelativeSpeeds(); }, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+    //     [this](frc::ChassisSpeeds speeds){ Drive(speeds.vx,speeds.vy,speeds.omega,false); }, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+    //     std::make_shared<PPHolonomicDriveController>( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+    //         PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+    //         PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+    //     ),
+    //     config,
+    //     [this]()->bool{return this ->Fieldflip();},
+    //     this // Reference to this subsystem to set requirements
+    // );
     
     rotatePID.EnableContinuousInput(-180,180);
 
@@ -102,7 +102,23 @@ void DriveSubsystem::Periodic() {
   frc::SmartDashboard::PutNumber("POSEY", m_odometry.GetEstimatedPosition().Y().value());
 
   frc::Pose2d visionPose = LimelightHelpers::toPose2D(LimelightHelpers::getBotpose());
+  //m_odometry.AddVisionMeasurement(visionPose, frc::Timer::GetFPGATimestamp());
 
+
+  //   inline std::vector<double> getBotpose(const std::string &limelightName = "")
+  //   {
+  //       return getLimelightNTDoubleArray(limelightName, "botpose");
+  //   }
+  // inline frc::Pose2d toPose2D(const std::vector<double>& inData)
+  //   {
+  //       if(inData.size() < 6)
+  //       {
+  //           return frc::Pose2d();
+  //       }
+  //       return frc::Pose2d(
+  //           frc::Translation2d(units::length::meter_t(inData[0]), units::length::meter_t(inData[1])), 
+  //           frc::Rotation2d(units::angle::radian_t(inData[5]*(M_PI/180.0))));
+  //   }
 
 }
 
@@ -112,7 +128,38 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
                            units::radians_per_second_t rot,
                            bool fieldRelative) {
   
- 
+  // ****************************
+  
+  // double gyroAngle = m_gyro.GetAngle();
+
+  // gyroAngle = (double)((int)(gyroAngle * 100) % 36000) / 100.0;
+
+  // double rotCalc = rotatePID.Calculate(gyroAngle,gyroSetpoint);
+
+  // rot = units::radians_per_second_t{frc::ApplyDeadband(-rotCalc,0.01)};
+
+  //***********************************
+
+  // double gyroAngle = m_gyro.GetAngle();
+
+  // gyroAngle = (double)((int)(gyroAngle * 100) % 36000) / 100.0;
+
+  // //frc::SmartDashboard::PutNumber("GyroAnglePID",-gyroAngle);
+  // double rotCalc = rotatePID.Calculate(gyroAngle,gyroSetpoint);
+
+  // rot = units::radians_per_second_t{frc::ApplyDeadband(-rotCalc,0.07)};
+  // double goal = 180.0;
+  // double clamp_var = 1.1;
+  // double inv_p = -70.0;
+  // double rotclamped = std::clamp(frc::ApplyDeadband((-gyroAngle - goal),1.0) / inv_p,-clamp_var,clamp_var);
+  // rot = units::radians_per_second_t{rotclamped};
+
+  // if (gyroAngle < 180){
+  //   rot = units::radians_per_second_t{-0.1};
+  // }
+  // else{
+  //   rot = units::radians_per_second_t{0.1};
+  // }
 
   auto states = kDriveKinematics.ToSwerveModuleStates(
       fieldRelative ? frc::ChassisSpeeds::FromFieldRelativeSpeeds(
@@ -151,7 +198,10 @@ void DriveSubsystem::DriveWithJoysticks(double xJoy, double yJoy, double rotJoy,
     yJoy = y_speedLimiter.Calculate(frc::ApplyDeadband(yJoy,0.05)*AutoConstants::kMaxSpeed.value());
     rotJoy = rot_speedLimiter.Calculate(frc::ApplyDeadband(rotJoy,0.05)*AutoConstants::kMaxAngularSpeed.value());
   }
-  
+  // xJoy = frc::ApplyDeadband(xJoy,0.05)*AutoConstants::kMaxSpeed.value();
+  // yJoy = frc::ApplyDeadband(yJoy,0.05)*AutoConstants::kMaxSpeed.value();
+  // rotJoy = frc::ApplyDeadband(rotJoy,0.05)*AutoConstants::kMaxAngularSpeed.value();
+
   const auto xSpeed = units::meters_per_second_t{xJoy};
   const auto ySpeed = units::meters_per_second_t{yJoy};
   const auto rot = units::radians_per_second_t{rotJoy};

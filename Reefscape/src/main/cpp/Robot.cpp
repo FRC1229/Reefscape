@@ -29,6 +29,7 @@ void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
   frc::SmartDashboard::PutNumber("Gyroo", m_container.m_drive.m_gyro.GetRotation2d().Degrees().value());
 
+  frc::SmartDashboard::PutNumber("distanceYesCool", m_container.m_vision.getDistance(44.5));
   frc::SmartDashboard::PutNumber("FLTurn Encoder", m_container.m_drive.m_frontLeft.m_turningEncoder.GetAbsolutePosition().GetValue().value());
   frc::SmartDashboard::PutNumber("FRTurn Encoder", m_container.m_drive.m_frontRight.m_turningEncoder.GetAbsolutePosition().GetValue().value());
   frc::SmartDashboard::PutNumber("BLTurn Encoder", m_container.m_drive.m_rearLeft.m_turningEncoder.GetAbsolutePosition().GetValue().value());
