@@ -51,21 +51,21 @@ DriveSubsystem::DriveSubsystem()
                   frc::Pose2d{2_m,7_m,frc::Rotation2d{0_deg}}}
 
       {
-    //     pathplanner::RobotConfig config = pathplanner::RobotConfig::fromGUISettings();
+        pathplanner::RobotConfig config = pathplanner::RobotConfig::fromGUISettings();
 
-    //     AutoBuilder::configure(
-    //     [this](){ return GetEstimatedPose(); }, // Robot pose supplier
-    //     [this](frc::Pose2d pose){ ResetOdometry(pose); }, // Method to reset odometry (will be called if your auto has a starting pose)
-    //     [this](){ return getRobotRelativeSpeeds(); }, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-    //     [this](frc::ChassisSpeeds speeds){ Drive(speeds.vx,speeds.vy,speeds.omega,false); }, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-    //     std::make_shared<PPHolonomicDriveController>( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-    //         PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-    //         PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-    //     ),
-    //     config,
-    //     [this]()->bool{return this ->Fieldflip();},
-    //     this // Reference to this subsystem to set requirements
-    // );
+        AutoBuilder::configure(
+        [this](){ return GetEstimatedPose(); }, // Robot pose supplier
+        [this](frc::Pose2d pose){ ResetOdometry(pose); }, // Method to reset odometry (will be called if your auto has a starting pose)
+        [this](){ return getRobotRelativeSpeeds(); }, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+        [this](frc::ChassisSpeeds speeds){ Drive(speeds.vx,speeds.vy,speeds.omega,false); }, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+        std::make_shared<PPHolonomicDriveController>( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+            PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+            PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+        ),
+        config,
+        [this]()->bool{return this ->Fieldflip();},
+        this // Reference to this subsystem to set requirements
+    );
     
     rotatePID.EnableContinuousInput(-180,180);
 
@@ -82,13 +82,15 @@ bool DriveSubsystem::Fieldflip(){
 }
 
 frc::Rotation2d DriveSubsystem::getRotation2D(){
-  double yaw = m_gyro.GetYaw().GetValue().value() * (PI / 180);
-  double pitch = m_gyro.GetPitch().GetValue().value() * (PI / 180);
-  int xOffset = 0;
-  int yOffset = 270;
-  double newAngle = std::atan2(xOffset * std::sin(yaw) - yOffset * std::cos(yaw), std::cos(pitch) * std::cos(yaw) * xOffset + std::cos(pitch) * std::sin(yaw) * yOffset);
-  newAngle *= (180/PI);
-  return frc::Rotation2d(units::degree_t(-newAngle));
+  double yaw = m_gyro.GetYaw().GetValue().value();
+
+  yaw =  fmod(yaw,360.0);
+
+  if (yaw < 0){
+    yaw+=360;
+  }
+
+  return frc::Rotation2d(units::degree_t(yaw));
 }
 
 void DriveSubsystem::Periodic() {
@@ -189,14 +191,14 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
 
 void DriveSubsystem::DriveWithJoysticks(double xJoy, double yJoy, double rotJoy, bool fieldRelative, bool halfSpeed){
   if(halfSpeed){
-    xJoy = x_speedLimiter.Calculate(frc::ApplyDeadband(xJoy,0.05)*AutoConstants::kMaxSpeed.value()/4);
-    yJoy = y_speedLimiter.Calculate(frc::ApplyDeadband(yJoy,0.05)*AutoConstants::kMaxSpeed.value()/4);
-    rotJoy = rot_speedLimiter.Calculate(frc::ApplyDeadband(rotJoy,0.05)*AutoConstants::kMaxAngularSpeed.value()/4);
+    xJoy = x_speedLimiter.Calculate(frc::ApplyDeadband(xJoy,0.08)*AutoConstants::kMaxSpeed.value()/4);
+    yJoy = y_speedLimiter.Calculate(frc::ApplyDeadband(yJoy,0.08)*AutoConstants::kMaxSpeed.value()/4);
+    rotJoy = rot_speedLimiter.Calculate(frc::ApplyDeadband(rotJoy,0.08)*AutoConstants::kMaxAngularSpeed.value()/4);
   }
   else{
-    xJoy = x_speedLimiter.Calculate(frc::ApplyDeadband(xJoy,0.05)*AutoConstants::kMaxSpeed.value());
-    yJoy = y_speedLimiter.Calculate(frc::ApplyDeadband(yJoy,0.05)*AutoConstants::kMaxSpeed.value());
-    rotJoy = rot_speedLimiter.Calculate(frc::ApplyDeadband(rotJoy,0.05)*AutoConstants::kMaxAngularSpeed.value());
+    xJoy = x_speedLimiter.Calculate(frc::ApplyDeadband(xJoy,0.08)*AutoConstants::kMaxSpeed.value());
+    yJoy = y_speedLimiter.Calculate(frc::ApplyDeadband(yJoy,0.08)*AutoConstants::kMaxSpeed.value());
+    rotJoy = rot_speedLimiter.Calculate(frc::ApplyDeadband(rotJoy,0.08)*AutoConstants::kMaxAngularSpeed.value());
   }
   // xJoy = frc::ApplyDeadband(xJoy,0.05)*AutoConstants::kMaxSpeed.value();
   // yJoy = frc::ApplyDeadband(yJoy,0.05)*AutoConstants::kMaxSpeed.value();

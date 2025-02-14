@@ -63,9 +63,9 @@ constexpr double positionScaleFactor = 2*std::numbers::pi*0.0508/(6.75);
 }  // namespace ModuleConstants
 
 namespace AutoConstants {
-constexpr auto kMaxSpeed = 1_mps; //4
+constexpr auto kMaxSpeed = 2_mps; //4
 constexpr auto kMaxAcceleration = 3_mps_sq;
-constexpr auto kMaxAngularSpeed = 2.142_rad_per_s; //2.142
+constexpr auto kMaxAngularSpeed = 3.142_rad_per_s; //2.142
 constexpr auto kMaxAngularAcceleration = 3.142_rad_per_s_sq;
 
 inline constexpr double kPXController = 0.5;
@@ -97,13 +97,10 @@ namespace IntakeConstants {
 
 //climb is 14
 
-namespace ArmConstants {
-    constexpr int kArmMotorID = 17;
-    constexpr int kWristMotorID = 15;
-    constexpr int kArmEncoderPort = 0;
-    constexpr int kWristEncoderPort = 0;
-    constexpr double kHomePhysicalAngle = 35.0;
-    constexpr double ktickToAngleRatio = 482.64;
+namespace ElevatorConstants {
+    constexpr int kElevatorMotorID = 20;
+    constexpr int kElevatorUpperMotorID = 21;
+
 }
 
 

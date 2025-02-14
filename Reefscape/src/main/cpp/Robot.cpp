@@ -27,17 +27,17 @@ void Robot::RobotPeriodic() {
 
 
   frc2::CommandScheduler::GetInstance().Run();
-  frc::SmartDashboard::PutNumber("Gyroo", m_container.m_drive.m_gyro.GetRotation2d().Degrees().value());
+  frc::SmartDashboard::PutNumber("Gyroo", m_container.m_drive.getRotation2D().Degrees().value());
 
   frc::SmartDashboard::PutNumber("distanceYesCool", m_container.m_vision.getDistance(44.5));
-  frc::SmartDashboard::PutNumber("FLTurn Encoder", m_container.m_drive.m_frontLeft.m_turningEncoder.GetAbsolutePosition().GetValue().value());
-  frc::SmartDashboard::PutNumber("FRTurn Encoder", m_container.m_drive.m_frontRight.m_turningEncoder.GetAbsolutePosition().GetValue().value());
-  frc::SmartDashboard::PutNumber("BLTurn Encoder", m_container.m_drive.m_rearLeft.m_turningEncoder.GetAbsolutePosition().GetValue().value());
-  frc::SmartDashboard::PutNumber("BRTurn Encoder", m_container.m_drive.m_rearRight.m_turningEncoder.GetAbsolutePosition().GetValue().value());
-  frc::SmartDashboard::PutNumber("FLDrive Encoder", m_container.m_drive.m_frontLeft.GetPosition().distance.value());
-  frc::SmartDashboard::PutNumber("FRDrive Encoder", m_container.m_drive.m_frontRight.GetPosition().distance.value());
-  frc::SmartDashboard::PutNumber("BLDrive Encoder", m_container.m_drive.m_rearLeft.GetPosition().distance.value());
-  frc::SmartDashboard::PutNumber("BRDrive Encoder", m_container.m_drive.m_rearRight.GetPosition().distance.value());
+  // frc::SmartDashboard::PutNumber("FLTurn Encoder", m_container.m_drive.m_frontLeft.m_turningEncoder.GetAbsolutePosition().GetValue().value());
+  // frc::SmartDashboard::PutNumber("FRTurn Encoder", m_container.m_drive.m_frontRight.m_turningEncoder.GetAbsolutePosition().GetValue().value());
+  // frc::SmartDashboard::PutNumber("BLTurn Encoder", m_container.m_drive.m_rearLeft.m_turningEncoder.GetAbsolutePosition().GetValue().value());
+  // frc::SmartDashboard::PutNumber("BRTurn Encoder", m_container.m_drive.m_rearRight.m_turningEncoder.GetAbsolutePosition().GetValue().value());
+  // frc::SmartDashboard::PutNumber("FLDrive Encoder", m_container.m_drive.m_frontLeft.GetPosition().distance.value());
+  // frc::SmartDashboard::PutNumber("FRDrive Encoder", m_container.m_drive.m_frontRight.GetPosition().distance.value());
+  // frc::SmartDashboard::PutNumber("BLDrive Encoder", m_container.m_drive.m_rearLeft.GetPosition().distance.value());
+  // frc::SmartDashboard::PutNumber("BRDrive Encoder", m_container.m_drive.m_rearRight.GetPosition().distance.value());
 }
 
 /**

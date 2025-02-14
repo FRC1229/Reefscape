@@ -6,7 +6,8 @@
 
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandHelper.h>
-#include "subsystems/ElevatorSubsystem.h"
+#include <subsystems/ElevatorSubsystem.h>
+
 /**
  * An example command.
  *
@@ -14,13 +15,13 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class L4CoralPosition
-    : public frc2::CommandHelper<frc2::Command, L4CoralPosition> {
+class SetElevatorPos
+    : public frc2::CommandHelper<frc2::Command, SetElevatorPos> {
  public:
   /* You should consider using the more terse Command factories API instead
    * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
    */
-  L4CoralPosition(ElevatorSubsystem* subsystem);
+  SetElevatorPos(ElevatorSubsystem* Elevator,double distance);
 
   void Initialize() override;
 
@@ -32,4 +33,5 @@ class L4CoralPosition
 
   private:
   ElevatorSubsystem* m_elevator;
+  double distance;
 };

@@ -2,25 +2,22 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-#include "Commands/L2CoralPosition.h"
+#include "commands/ManualElevator.h"
 
-L2CoralPosition::L2CoralPosition(ElevatorSubsystem* subsystem) : m_elevator(subsystem) {
+ManualElevator::ManualElevator() {
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements({subsystem});
 }
 
 // Called when the command is initially scheduled.
-void L2CoralPosition::Initialize() {}
+void ManualElevator::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void L2CoralPosition::Execute() {
-  m_elevator->L2CoralPosition();
-}
+void ManualElevator::Execute() {}
 
 // Called once the command ends or is interrupted.
-void L2CoralPosition::End(bool interrupted) {}
+void ManualElevator::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool L2CoralPosition::IsFinished() {
+bool ManualElevator::IsFinished() {
   return false;
 }

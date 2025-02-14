@@ -27,6 +27,8 @@
 #include <frc2/command/SwerveControllerCommand.h>
 #include <pathplanner/lib/auto/AutoBuilder.h>
 #include "commands/AutoAlign.h"
+#include "commands/RotateTo.h"
+#include "commands/SetElevatorPos.h"
 
 using namespace DriveConstants;
 using namespace pathplanner;
@@ -52,26 +54,28 @@ RobotContainer::RobotContainer() {
   // Turning is controlled by the X axis of the right stick.
   
 
-  m_drive.SetDefaultCommand(frc2::RunCommand(
-      [this] {
-        // m_drive.Drive(
-        //     units::meters_per_second_t{frc::ApplyDeadband(-m_driverController.GetRawAxis(1),0.05)},
-        //     units::meters_per_second_t{frc::ApplyDeadband(-m_driverController.GetRawAxis(0),0.05)},
-        //     units::radians_per_second_t{frc::ApplyDeadband(-m_driverController.GetRawAxis(4),0.05)}, true);
-        m_drive.DriveWithJoysticks(
-         -m_driverController.GetRawAxis(1),-m_driverController.GetRawAxis(0),-m_driverController.GetRawAxis(4),true, m_driverController.GetRawButton(5));
+  // m_drive.SetDefaultCommand(frc2::RunCommand(
+  //     [this] {
+  //       // m_drive.Drive(
+  //       //     units::meters_per_second_t{frc::ApplyDeadband(-m_driverController.GetRawAxis(1),0.05)},
+  //       //     units::meters_per_second_t{frc::ApplyDeadband(-m_driverController.GetRawAxis(0),0.05)},
+  //       //     units::radians_per_second_t{frc::ApplyDeadband(-m_driverController.GetRawAxis(4),0.05)}, true);
+  //       m_drive.DriveWithJoysticks(
+  //        -m_driverController.GetRawAxis(1),-m_driverController.GetRawAxis(0),-m_driverController.GetRawAxis(4),true, m_driverController.GetRawButton(5));
               
-      },
-      {&m_drive}));
+  //     },
+  //     {&m_drive}));
 }
 
 void RobotContainer::ConfigureButtonBindings() {
 
   //frc2::JoystickButton(&m_driverController, 2).OnTrue(TurnToAngle(&m_drive, &m_driverController, 90.0).ToPtr());
   //frc2::JoystickButton(&m_driverController, 3).OnTrue(TurnToAngle(&m_drive, &m_driverController, -90.0).ToPtr());
-  frc2::JoystickButton(&m_driverController, 4).OnTrue(frc2::cmd::RunOnce([this]{m_drive.ZeroHeading();}));
-  frc2::JoystickButton(&m_driverController, 6).OnTrue(frc2::cmd::RunOnce([this]{m_drive.GetCurrentCommand()->Cancel();}));
-  frc2::JoystickButton(&m_driverController,1).OnTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
+  // frc2::JoystickButton(&m_driverController, 4).OnTrue(frc2::cmd::RunOnce([this]{m_drive.ZeroHeading();}));
+  // frc2::JoystickButton(&m_driverController, 6).OnTrue(frc2::cmd::RunOnce([this]{m_drive.GetCurrentCommand()->Cancel();}));
+  // frc2::JoystickButton(&m_driverController,2).OnTrue(RotateTo(&m_drive,&m_driverController,45).ToPtr());
+  // frc2::JoystickButton(&m_driverController,1).OnTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
+  frc2::JoystickButton(&m_driverController,4).OnTrue(SetElevatorPos(&m_elevator,1).ToPtr());
   //frc2::Trigger([this]{return m_copilotController.GetRawAxis(2)>0.1;}).WhileTrue(frc2::cmd::Run([this]{m_conveyer.RunConveyer();},{&m_conveyer}));
   //frc2::Trigger([this]{return m_copilotController.GetRawAxis(3)>0.1;}).WhileTrue(frc2::cmd::Run([this]{m_conveyer.RunConveyer(true);},{&m_conveyer}));
   //   frc2::cmd::Sequence(
@@ -208,6 +212,6 @@ frc2::CommandPtr RobotContainer::getAutonomousCommand(){
     // std::string autonomous = m_chooser.GetSelected();
 
     // return PathPlannerAuto("One meter").ToPtr();
-    // return PathPlannerAuto(autonomous).ToPtr();
+    return PathPlannerAuto("1meter Forward").ToPtr();
 
 }
