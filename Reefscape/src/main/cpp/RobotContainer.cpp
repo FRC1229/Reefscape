@@ -75,7 +75,8 @@ void RobotContainer::ConfigureButtonBindings() {
   // frc2::JoystickButton(&m_driverController, 6).OnTrue(frc2::cmd::RunOnce([this]{m_drive.GetCurrentCommand()->Cancel();}));
   // frc2::JoystickButton(&m_driverController,2).OnTrue(RotateTo(&m_drive,&m_driverController,45).ToPtr());
   // frc2::JoystickButton(&m_driverController,1).OnTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
-  frc2::JoystickButton(&m_driverController,4).OnTrue(SetElevatorPos(&m_elevator,1).ToPtr());
+  frc2::JoystickButton(&m_driverController,4).OnTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{1_m,0_mps}).ToPtr());
+  frc2::JoystickButton(&m_driverController,2).OnTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{0.5_m,0_mps}).ToPtr());
   //frc2::Trigger([this]{return m_copilotController.GetRawAxis(2)>0.1;}).WhileTrue(frc2::cmd::Run([this]{m_conveyer.RunConveyer();},{&m_conveyer}));
   //frc2::Trigger([this]{return m_copilotController.GetRawAxis(3)>0.1;}).WhileTrue(frc2::cmd::Run([this]{m_conveyer.RunConveyer(true);},{&m_conveyer}));
   //   frc2::cmd::Sequence(

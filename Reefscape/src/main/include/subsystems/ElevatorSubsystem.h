@@ -31,8 +31,9 @@ class ElevatorSubsystem : public frc2::SubsystemBase {
   void Periodic() override;
   double readEncoder();
   void SetElevatorSpeed(double speed);
-  void SetElevatorPos(double setPoint);
+  void SetElevatorPos(frc::TrapezoidProfile<units::meters>::State setPoint);
   units::meter_t getDistance();
+  frc::TrapezoidProfile<units::meters>::State goal {0_m,0_mps};
 
   //CHANGE THESE PLEASE
 

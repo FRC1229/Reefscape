@@ -5,7 +5,7 @@
 #include "Commands/SetElevatorPos.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
-SetElevatorPos::SetElevatorPos(ElevatorSubsystem* subsystem, double dis) : m_elevator(subsystem), distance(dis) {
+SetElevatorPos::SetElevatorPos(ElevatorSubsystem* subsystem, frc::TrapezoidProfile<units::meters>::State dis) : m_elevator(subsystem), distance(dis) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({subsystem});
 }
@@ -19,6 +19,7 @@ void SetElevatorPos::Execute() {
   //   Cancel();
   //   // m_drive->Drive(units::velocity::meters_per_second_t(0), units::velocity::meters_per_second_t(0), units::angular_velocity::radians_per_second_t(-rotationCalc), true);
   // }
+  // m_elevator->goal = {0.5_m,0_mps};
 
   m_elevator->SetElevatorPos(distance);
   
