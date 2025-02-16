@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-#include "Commands/SetElevatorPos.h"
+#include "commands/SetElevatorPos.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 SetElevatorPos::SetElevatorPos(ElevatorSubsystem* subsystem, frc::TrapezoidProfile<units::meters>::State dis) : m_elevator(subsystem), distance(dis) {
