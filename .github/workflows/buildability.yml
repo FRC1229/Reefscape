@@ -24,7 +24,9 @@ jobs:
       run: git config --global --add safe.directory $GITHUB_WORKSPACE
     # Grant execute permission for gradlew
     - name: Grant execute permission for gradlew
-      run: chmod +x ./Reefscape/gradlew
+      working-directory: Reefscape
+      run: chmod +x gradlew
     # Runs a single command using the runners shell
     - name: Compile and run tests on robot code
-      run: ./Reefscape/gradlew build
+      working-directory: Reefscape
+      run: ./gradlew build
