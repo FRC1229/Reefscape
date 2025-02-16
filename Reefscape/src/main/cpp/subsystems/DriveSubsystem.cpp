@@ -30,11 +30,11 @@ DriveSubsystem::DriveSubsystem()
   //Defining each Swereve Module
     : m_frontLeft{kFrontLeftDriveMotorID,
                   kFrontLeftTurningMotorID,
-                  kFrontLeftTurningEncoderID, true , true, true},
+                  kFrontLeftTurningEncoderID, true , false, true},
 
       m_rearLeft{
           kRearLeftDriveMotorID,       kRearLeftTurningMotorID,
-          kRearLeftTurningEncoderID, true , false, true},
+          kRearLeftTurningEncoderID, true , true, true},
 
       m_frontRight{
           kFrontRightDriveMotorID,       kFrontRightTurningMotorID,
@@ -42,7 +42,7 @@ DriveSubsystem::DriveSubsystem()
 
       m_rearRight{
           kRearRightDriveMotorID,       kRearRightTurningMotorID,
-          kRearRightTurningEncoderID, true, true, true},
+          kRearRightTurningEncoderID, true, false, true},
 
       m_odometry{kDriveKinematics,
                  m_gyro.GetRotation2d(),
@@ -82,13 +82,15 @@ bool DriveSubsystem::Fieldflip(){
 }
 
 frc::Rotation2d DriveSubsystem::getRotation2D(){
-  double yaw = m_gyro.GetYaw().GetValue().value() * (PI / 180);
-  double pitch = m_gyro.GetPitch().GetValue().value() * (PI / 180);
-  int xOffset = 0;
-  int yOffset = 270;
-  double newAngle = std::atan2(xOffset * std::sin(yaw) - yOffset * std::cos(yaw), std::cos(pitch) * std::cos(yaw) * xOffset + std::cos(pitch) * std::sin(yaw) * yOffset);
-  newAngle *= (180/PI);
-  return frc::Rotation2d(units::degree_t(-newAngle));
+  double yaw = m_gyro.GetYaw().GetValue().value();
+
+  yaw =  fmod(yaw,360.0);
+
+  if (yaw < 0){
+    yaw+=360;
+  }
+
+  return frc::Rotation2d(units::degree_t(yaw));
 }
 
 void DriveSubsystem::Periodic() {
@@ -102,7 +104,23 @@ void DriveSubsystem::Periodic() {
   frc::SmartDashboard::PutNumber("POSEY", m_odometry.GetEstimatedPosition().Y().value());
 
   frc::Pose2d visionPose = LimelightHelpers::toPose2D(LimelightHelpers::getBotpose());
+  //m_odometry.AddVisionMeasurement(visionPose, frc::Timer::GetFPGATimestamp());
 
+
+  //   inline std::vector<double> getBotpose(const std::string &limelightName = "")
+  //   {
+  //       return getLimelightNTDoubleArray(limelightName, "botpose");
+  //   }
+  // inline frc::Pose2d toPose2D(const std::vector<double>& inData)
+  //   {
+  //       if(inData.size() < 6)
+  //       {
+  //           return frc::Pose2d();
+  //       }
+  //       return frc::Pose2d(
+  //           frc::Translation2d(units::length::meter_t(inData[0]), units::length::meter_t(inData[1])), 
+  //           frc::Rotation2d(units::angle::radian_t(inData[5]*(M_PI/180.0))));
+  //   }
 
 }
 
@@ -112,7 +130,38 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
                            units::radians_per_second_t rot,
                            bool fieldRelative) {
   
- 
+  // ****************************
+  
+  // double gyroAngle = m_gyro.GetAngle();
+
+  // gyroAngle = (double)((int)(gyroAngle * 100) % 36000) / 100.0;
+
+  // double rotCalc = rotatePID.Calculate(gyroAngle,gyroSetpoint);
+
+  // rot = units::radians_per_second_t{frc::ApplyDeadband(-rotCalc,0.01)};
+
+  //***********************************
+
+  // double gyroAngle = m_gyro.GetAngle();
+
+  // gyroAngle = (double)((int)(gyroAngle * 100) % 36000) / 100.0;
+
+  // //frc::SmartDashboard::PutNumber("GyroAnglePID",-gyroAngle);
+  // double rotCalc = rotatePID.Calculate(gyroAngle,gyroSetpoint);
+
+  // rot = units::radians_per_second_t{frc::ApplyDeadband(-rotCalc,0.07)};
+  // double goal = 180.0;
+  // double clamp_var = 1.1;
+  // double inv_p = -70.0;
+  // double rotclamped = std::clamp(frc::ApplyDeadband((-gyroAngle - goal),1.0) / inv_p,-clamp_var,clamp_var);
+  // rot = units::radians_per_second_t{rotclamped};
+
+  // if (gyroAngle < 180){
+  //   rot = units::radians_per_second_t{-0.1};
+  // }
+  // else{
+  //   rot = units::radians_per_second_t{0.1};
+  // }
 
   auto states = kDriveKinematics.ToSwerveModuleStates(
       fieldRelative ? frc::ChassisSpeeds::FromFieldRelativeSpeeds(
@@ -142,16 +191,19 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
 
 void DriveSubsystem::DriveWithJoysticks(double xJoy, double yJoy, double rotJoy, bool fieldRelative, bool halfSpeed){
   if(halfSpeed){
-    xJoy = x_speedLimiter.Calculate(frc::ApplyDeadband(xJoy,0.05)*AutoConstants::kMaxSpeed.value()/4);
-    yJoy = y_speedLimiter.Calculate(frc::ApplyDeadband(yJoy,0.05)*AutoConstants::kMaxSpeed.value()/4);
-    rotJoy = rot_speedLimiter.Calculate(frc::ApplyDeadband(rotJoy,0.05)*AutoConstants::kMaxAngularSpeed.value()/4);
+    xJoy = x_speedLimiter.Calculate(frc::ApplyDeadband(xJoy,0.08)*AutoConstants::kMaxSpeed.value()/4);
+    yJoy = y_speedLimiter.Calculate(frc::ApplyDeadband(yJoy,0.08)*AutoConstants::kMaxSpeed.value()/4);
+    rotJoy = rot_speedLimiter.Calculate(frc::ApplyDeadband(rotJoy,0.08)*AutoConstants::kMaxAngularSpeed.value()/4);
   }
   else{
-    xJoy = x_speedLimiter.Calculate(frc::ApplyDeadband(xJoy,0.05)*AutoConstants::kMaxSpeed.value());
-    yJoy = y_speedLimiter.Calculate(frc::ApplyDeadband(yJoy,0.05)*AutoConstants::kMaxSpeed.value());
-    rotJoy = rot_speedLimiter.Calculate(frc::ApplyDeadband(rotJoy,0.05)*AutoConstants::kMaxAngularSpeed.value());
+    xJoy = x_speedLimiter.Calculate(frc::ApplyDeadband(xJoy,0.08)*AutoConstants::kMaxSpeed.value());
+    yJoy = y_speedLimiter.Calculate(frc::ApplyDeadband(yJoy,0.08)*AutoConstants::kMaxSpeed.value());
+    rotJoy = rot_speedLimiter.Calculate(frc::ApplyDeadband(rotJoy,0.08)*AutoConstants::kMaxAngularSpeed.value());
   }
-  
+  // xJoy = frc::ApplyDeadband(xJoy,0.05)*AutoConstants::kMaxSpeed.value();
+  // yJoy = frc::ApplyDeadband(yJoy,0.05)*AutoConstants::kMaxSpeed.value();
+  // rotJoy = frc::ApplyDeadband(rotJoy,0.05)*AutoConstants::kMaxAngularSpeed.value();
+
   const auto xSpeed = units::meters_per_second_t{xJoy};
   const auto ySpeed = units::meters_per_second_t{yJoy};
   const auto rot = units::radians_per_second_t{rotJoy};

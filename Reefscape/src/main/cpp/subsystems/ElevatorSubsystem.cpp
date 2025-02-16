@@ -7,11 +7,27 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 ElevatorSubsystem::ElevatorSubsystem():
-m_ElevatorMotorBottom(ElevatorConstants::kElevatorMotorBottomID, rev::spark::SparkMax::MotorType::kBrushless),
-m_ElevatorMotorTop(ElevatorConstants::kElevatorMotorTopID, rev::spark::SparkMax::MotorType::kBrushless),
-m_ElevatorEncoderBottom(m_ElevatorMotorBottom.GetAbsoluteEncoder()),
-m_ElevatorEncoderTop(m_ElevatorMotorTop.GetAbsoluteEncoder())
+m_ElevatorMotorBottom(ElevatorConstants::kElevatorMotorID, rev::spark::SparkMax::MotorType::kBrushless),
+m_ElevatorMotorTop(ElevatorConstants::kElevatorUpperMotorID, rev::spark::SparkMax::MotorType::kBrushless),
+m_ElevatorEncoderBottom(m_ElevatorMotorBottom.GetEncoder()),
+m_ElevatorEncoderTop(m_ElevatorMotorTop.GetEncoder()),
+m_controller(
+    1.6,0.0,0.0,
+    frc::TrapezoidProfile<units::meters>::Constraints{0.4_mps, 0.4_mps_sq}
+    ),
+m_controller2(
+    1.6,0.1,0.0,
+    frc::TrapezoidProfile<units::meters>::Constraints{0.4_mps, 0.4_mps_sq}
+)
 {
+
+    m_ElevatorMotorBottom.SetInverted(true);
+    m_ElevatorMotorTop.SetInverted(false);  
+    
+    // frc::TrapezoidProfile<units::meters>::State goal;
+
+
+
 
 }
 
@@ -19,9 +35,14 @@ m_ElevatorEncoderTop(m_ElevatorMotorTop.GetAbsoluteEncoder())
 void ElevatorSubsystem::Periodic() {
 
 }
-double ElevatorSubsystem::readEncoder(double encodervalue){
-    return m_ElevatorEncoderTop.GetPosition();
-    return m_ElevatorEncoderBottom.GetPosition();
+
+units::meter_t ElevatorSubsystem::getDistance(){
+    return units::meter_t{m_ElevatorEncoderTop.GetPosition() * 0.025};
+}
+
+
+double ElevatorSubsystem::readEncoder(){
+    return (m_ElevatorEncoderTop.GetPosition()/0.786)+2,(m_ElevatorEncoderBottom.GetPosition()/0.786)+2;
     // frc::SmartDashboard::PutNumber("shoulder", shoulder.GetDistance());
 }
 
@@ -29,81 +50,36 @@ void ElevatorSubsystem::SetElevatorSpeed(double speed){
     // m_ElevatorMotor.Set(speed);
 } 
 
-void ElevatorSubsystem::HomePosition(){
+void ElevatorSubsystem::SetElevatorPos(frc::TrapezoidProfile<units::meters>::State setPoint,frc::TrapezoidProfile<units::meters>::State setPoint2){
+
+    frc::ElevatorFeedforward m_feedforward(0_V, 0_V, 2_V/(0.5_mps), 2_V/(0.5_mps_sq));
+
     // Set the SetPoints here
-    double TopElevatorSetPoint = 1;
-    double BottomElevatorSetPoint = 1;
+    m_controller.SetGoal(setPoint);
+    m_controller2.SetGoal(setPoint2);
 
-    double degrees = readEncoder(m_ElevatorEncoderTop.GetPosition());
-    double volt = HomePositionTopElevatorPID.Calculate(degrees, TopElevatorSetPoint);
-    frc::SmartDashboard::PutNumber("volt calc", volt);
-    m_ElevatorMotorTop.SetVoltage(units::volt_t{volt});
+    units::meter_t  e1 = units::meter_t{m_ElevatorEncoderTop.GetPosition() * 0.025};
+    units::meter_t  e2 = units::meter_t{m_ElevatorEncoderBottom.GetPosition() * 0.025};
 
-     double degrees = readEncoder(m_ElevatorEncoderBottom.GetPosition());
-    double volt = HomePositionBottomElevatorPID.Calculate(degrees, BottomElevatorSetPoint);
-    frc::SmartDashboard::PutNumber("volt calc", volt);
-    m_ElevatorMotorBottom.SetVoltage(units::volt_t{volt});
-}
+    frc::SmartDashboard::PutNumber("Encoder 1", e1.value());
+    frc::SmartDashboard::PutNumber("Encoder 2", e2.value());
 
-void ElevatorSubsystem::L1CoralPosition(){
-    // Set the SetPoints here
-    double TopElevatorSetPoint = 1;
-    double BottomElevatorSetPoint = 1;
+    units::volt_t feedForwardCalc = m_feedforward.Calculate(m_controller.GetSetpoint().velocity);
 
-    double degrees = readEncoder(m_ElevatorEncoderTop.GetPosition());
-    double volt = L1CoralTopElevatorPID.Calculate(degrees, TopElevatorSetPoint);
-    frc::SmartDashboard::PutNumber("volt calc", volt);
-    m_ElevatorMotorTop.SetVoltage(units::volt_t{volt});
+    units::volt_t pidCalc1 = units::volt_t{m_controller.Calculate(e1)};
+    units::volt_t pidCalc2 = units::volt_t{m_controller.Calculate(e2)};
 
-     double degrees = readEncoder(m_ElevatorEncoderBottom.GetPosition());
-    double volt = L1CoralBottomElevatorPID.Calculate(degrees, BottomElevatorSetPoint);
-    frc::SmartDashboard::PutNumber("volt calc", volt);
-    m_ElevatorMotorBottom.SetVoltage(units::volt_t{volt});
-}
+    frc::SmartDashboard::PutNumber("Volt 1", pidCalc1.value());
+    frc::SmartDashboard::PutNumber("Volt 2", pidCalc2.value());
 
-void ElevatorSubsystem::L2CoralPosition(){
-    // Set the SetPoints here
-    double TopElevatorSetPoint = 1;
-    double BottomElevatorSetPoint = 1;
+    m_ElevatorMotorTop.SetVoltage(pidCalc1+feedForwardCalc);
+    m_ElevatorMotorBottom.SetVoltage(pidCalc2+feedForwardCalc);
 
-    double degrees = readEncoder(m_ElevatorEncoderTop.GetPosition());
-    double volt = L2CoralTopElevatorPID.Calculate(degrees, TopElevatorSetPoint);
-    frc::SmartDashboard::PutNumber("volt calc", volt);
-    m_ElevatorMotorTop.SetVoltage(units::volt_t{volt});
+    frc::SmartDashboard::PutNumber("Setpoint", setPoint.position.value());
 
-     double degrees = readEncoder(m_ElevatorEncoderBottom.GetPosition());
-    double volt = L2CoralBottomElevatorPID.Calculate(degrees, BottomElevatorSetPoint);
-    frc::SmartDashboard::PutNumber("volt calc", volt);
-    m_ElevatorMotorBottom.SetVoltage(units::volt_t{volt});
-}
-void ElevatorSubsystem::L3CoralPosition(){
-    // Set the SetPoints here
-    double TopElevatorSetPoint = 1;
-    double BottomElevatorSetPoint = 1;
 
-    double degrees = readEncoder(m_ElevatorEncoderTop.GetPosition());
-    double volt = L3CoralTopElevatorPID.Calculate(degrees, TopElevatorSetPoint);
-    frc::SmartDashboard::PutNumber("volt calc", volt);
-    m_ElevatorMotorTop.SetVoltage(units::volt_t{volt});
 
-     double degrees = readEncoder(m_ElevatorEncoderBottom.GetPosition());
-    double volt = L3CoralBottomElevatorPID.Calculate(degrees, BottomElevatorSetPoint);
-    frc::SmartDashboard::PutNumber("volt calc", volt);
-    m_ElevatorMotorBottom.SetVoltage(units::volt_t{volt});
-}
 
-void ElevatorSubsystem::L4CoralPosition(){
-    // Set the SetPoints here
-    double TopElevatorSetPoint = 1;
-    double BottomElevatorSetPoint = 1;
+    
 
-    double degrees = readEncoder(m_ElevatorEncoderTop.GetPosition());
-    double volt = L4CoralTopElevatorPID.Calculate(degrees, TopElevatorSetPoint);
-    frc::SmartDashboard::PutNumber("volt calc", volt);
-    m_ElevatorMotorTop.SetVoltage(units::volt_t{volt});
-
-     double degrees = readEncoder(m_ElevatorEncoderBottom.GetPosition());
-    double volt = L4CoralBottomElevatorPID.Calculate(degrees, BottomElevatorSetPoint);
-    frc::SmartDashboard::PutNumber("volt calc", volt);
-    m_ElevatorMotorBottom.SetVoltage(units::volt_t{volt});
 }

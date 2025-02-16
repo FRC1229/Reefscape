@@ -20,11 +20,14 @@
 #include "subsystems/DriveSubsystem.h"
 #include <pathplanner/lib/auto/NamedCommands.h>
 #include <pathplanner/lib/commands/PathPlannerAuto.h>
+#include <subsystems/VisionSubsystem.h>
+#include <subsystems/ElevatorSubsystem.h>
+#include <subsystems/AlgaeSubsystem.h>
+#include <subsystems/CoralSubsystem.h>
 
 
 
-
-/**
+/*
  * This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
  * actually be handled in the {@link Robot} periodic methods (other than the
@@ -39,6 +42,11 @@ class RobotContainer {
 
   // frc2::CommandPtr AutonomousCommand();
   DriveSubsystem m_drive;
+  VisionSubsystem m_vision;
+  ElevatorSubsystem m_elevator;
+  AlgaeSubsystem m_algae;
+  CoralSubsystem m_coral;
+
 
   frc::DigitalInput sensor{0};
   frc::DigitalInput m_limitSwitch{9};

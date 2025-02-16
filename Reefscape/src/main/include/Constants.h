@@ -30,20 +30,20 @@
  */
 
 namespace DriveConstants {
-constexpr int kFrontLeftDriveMotorID = 6;
-constexpr int kRearLeftDriveMotorID = 8;
-constexpr int kFrontRightDriveMotorID = 2;
-constexpr int kRearRightDriveMotorID = 4;
+constexpr int kFrontLeftDriveMotorID = 1;
+constexpr int kRearLeftDriveMotorID = 3;
+constexpr int kFrontRightDriveMotorID = 6;
+constexpr int kRearRightDriveMotorID = 8;
 
-constexpr int kFrontLeftTurningMotorID = 7;
-constexpr int kRearLeftTurningMotorID = 5;
-constexpr int kFrontRightTurningMotorID = 1;
-constexpr int kRearRightTurningMotorID = 3;
+constexpr int kFrontLeftTurningMotorID = 2;
+constexpr int kRearLeftTurningMotorID = 4;
+constexpr int kFrontRightTurningMotorID = 5;
+constexpr int kRearRightTurningMotorID = 7;
 
-constexpr int kFrontLeftTurningEncoderID = 11;
-constexpr int kRearLeftTurningEncoderID = 12;
-constexpr int kFrontRightTurningEncoderID = 9;
-constexpr int kRearRightTurningEncoderID = 10;
+constexpr int kFrontLeftTurningEncoderID = 12;
+constexpr int kRearLeftTurningEncoderID = 11;
+constexpr int kFrontRightTurningEncoderID = 10;
+constexpr int kRearRightTurningEncoderID = 9;
 
 //SET THIS
 constexpr int kGyroConstant = 0;
@@ -63,9 +63,9 @@ constexpr double positionScaleFactor = 2*std::numbers::pi*0.0508/(6.75);
 }  // namespace ModuleConstants
 
 namespace AutoConstants {
-constexpr auto kMaxSpeed = 1_mps; //4
+constexpr auto kMaxSpeed = 2_mps; //4
 constexpr auto kMaxAcceleration = 3_mps_sq;
-constexpr auto kMaxAngularSpeed = 1.2_rad_per_s; //2.142
+constexpr auto kMaxAngularSpeed = 3.142_rad_per_s; //2.142
 constexpr auto kMaxAngularAcceleration = 3.142_rad_per_s_sq;
 
 inline constexpr double kPXController = 0.5;
@@ -98,13 +98,9 @@ namespace IntakeConstants {
 //climb is 14
 
 namespace ElevatorConstants {
-    constexpr int kElevatorMotorBottomID = 17;
-    constexpr int kElevatorMotorTopID = 20;
-    // constexpr int kWristMotorID = 15;
-    // constexpr int kArmEncoderPort = 0;
-    // constexpr int kWristEncoderPort = 0;
-    // constexpr double kHomePhysicalAngle = 35.0;
-    // constexpr double ktickToAngleRatio = 482.64;
+    constexpr int kElevatorMotorID = 20;
+    constexpr int kElevatorUpperMotorID = 21;
+
 }
 
 
