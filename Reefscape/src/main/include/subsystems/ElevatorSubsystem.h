@@ -22,6 +22,8 @@ class ElevatorSubsystem : public frc2::SubsystemBase {
     rev::spark::SparkRelativeEncoder m_ElevatorEncoderBottom;
     rev::spark::SparkRelativeEncoder m_ElevatorEncoderTop;
     frc::ProfiledPIDController<units::meters> m_controller;
+    frc::ProfiledPIDController<units::meters> m_controller2;
+
 
 
 
@@ -31,19 +33,17 @@ class ElevatorSubsystem : public frc2::SubsystemBase {
   void Periodic() override;
   double readEncoder();
   void SetElevatorSpeed(double speed);
-  void SetElevatorPos(frc::TrapezoidProfile<units::meters>::State setPoint);
+  void SetElevatorPos(frc::TrapezoidProfile<units::meters>::State setPoint,frc::TrapezoidProfile<units::meters>::State setPoint2);
   units::meter_t getDistance();
   frc::TrapezoidProfile<units::meters>::State goal {0_m,0_mps};
 
+  frc::TrapezoidProfile<units::meters>::State currentPos {0_m,0_mps};
+  frc::TrapezoidProfile<units::meters>::State currentPos2 {0_m,0_mps};
+
+
+
   //CHANGE THESE PLEASE
 
-
-  frc::PIDController HomePositionTopElevatorPID{
-    0.1,0,0
-  };
-    frc::PIDController ElevatorPid{
-    0.1,0,0
-  };
   
 
 

@@ -20,8 +20,10 @@ void SetElevatorPos::Execute() {
   //   // m_drive->Drive(units::velocity::meters_per_second_t(0), units::velocity::meters_per_second_t(0), units::angular_velocity::radians_per_second_t(-rotationCalc), true);
   // }
   // m_elevator->goal = {0.5_m,0_mps};
-
-  m_elevator->SetElevatorPos(distance);
+  // m_elevator->currentPos = distance;
+  m_elevator->currentPos = {units::meter_t{m_elevator->m_ElevatorEncoderTop.GetPosition()*0.025},0_mps};
+  m_elevator->currentPos2 = {units::meter_t{m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025},0_mps};
+  m_elevator->SetElevatorPos(distance,distance);
   
 }
 

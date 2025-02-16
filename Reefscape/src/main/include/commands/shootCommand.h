@@ -6,8 +6,8 @@
 
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandHelper.h>
-#include "subsystems/ElevatorSubsystem.h"
-#include <frc/Joystick.h>
+#include "subsystems/AlgaeSubsystem.h"
+
 /**
  * An example command.
  *
@@ -15,16 +15,16 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class ManualElevator
-    : public frc2::CommandHelper<frc2::Command, ManualElevator> {
+class shootCommand
+    : public frc2::CommandHelper<frc2::Command, shootCommand> {
  public:
   /* You should consider using the more terse Command factories API instead
    * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
    */
-  ManualElevator(ElevatorSubsystem* elevator, frc::Joystick* m_joystick);
+  shootCommand(AlgaeSubsystem* algae,double speed);
 
-  ElevatorSubsystem* m_elevator;
-  frc::Joystick* m_CoController;
+  AlgaeSubsystem* m_algae;
+  double m_speed;
 
   void Initialize() override;
 

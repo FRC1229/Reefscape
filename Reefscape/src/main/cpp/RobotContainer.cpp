@@ -29,6 +29,10 @@
 #include "commands/AutoAlign.h"
 #include "commands/RotateTo.h"
 #include "commands/SetElevatorPos.h"
+#include "commands/ManualElevator.h"
+#include "commands/shootCommand.h"
+#include "commands/ManualAlgae.h"
+#include "commands/ManualCoral.h"
 
 using namespace DriveConstants;
 using namespace pathplanner;
@@ -65,25 +69,24 @@ RobotContainer::RobotContainer() {
               
   //     },
   //     {&m_drive}));
+  m_elevator.SetDefaultCommand(ManualElevator(&m_elevator,&m_copilotController).ToPtr());
+  m_algae.SetDefaultCommand(ManualAlgae(&m_algae,&m_copilotController).ToPtr());
+  m_coral.SetDefaultCommand(ManualCoral(&m_coral,&m_copilotController).ToPtr());
 }
 
 void RobotContainer::ConfigureButtonBindings() {
 
-  //frc2::JoystickButton(&m_driverController, 2).OnTrue(TurnToAngle(&m_drive, &m_driverController, 90.0).ToPtr());
-  //frc2::JoystickButton(&m_driverController, 3).OnTrue(TurnToAngle(&m_drive, &m_driverController, -90.0).ToPtr());
-  // frc2::JoystickButton(&m_driverController, 4).OnTrue(frc2::cmd::RunOnce([this]{m_drive.ZeroHeading();}));
-  // frc2::JoystickButton(&m_driverController, 6).OnTrue(frc2::cmd::RunOnce([this]{m_drive.GetCurrentCommand()->Cancel();}));
-  // frc2::JoystickButton(&m_driverController,2).OnTrue(RotateTo(&m_drive,&m_driverController,45).ToPtr());
-  // frc2::JoystickButton(&m_driverController,1).OnTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
-  frc2::JoystickButton(&m_driverController,4).OnTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{1_m,0_mps}).ToPtr());
-  frc2::JoystickButton(&m_driverController,2).OnTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{0.5_m,0_mps}).ToPtr());
-  //frc2::Trigger([this]{return m_copilotController.GetRawAxis(2)>0.1;}).WhileTrue(frc2::cmd::Run([this]{m_conveyer.RunConveyer();},{&m_conveyer}));
-  //frc2::Trigger([this]{return m_copilotController.GetRawAxis(3)>0.1;}).WhileTrue(frc2::cmd::Run([this]{m_conveyer.RunConveyer(true);},{&m_conveyer}));
-  //   frc2::cmd::Sequence(
-  //   RunConveyer(&m_conveyer).ToPtr().Until([this]{return sensor.Get();}),
-  //   frc2::InstantCommand([this]{m_shooter.GetCurrentCommand()->Cancel();}).ToPtr()
-  //   )
-  //   );
+  // frc2::JoystickButton(&m_driverController, 2).OnTrue(TurnToAngle(&m_drive, &m_driverController, 90.0).ToPtr());
+  // frc2::JoystickButton(&m_driverController, 3).OnTrue(TurnToAngle(&m_drive, &m_driverController, -90.0).ToPtr());
+  frc2::JoystickButton(&m_driverController, 4).OnTrue(frc2::cmd::RunOnce([this]{m_drive.ZeroHeading();}));
+  frc2::JoystickButton(&m_driverController, 6).OnTrue(frc2::cmd::RunOnce([this]{m_drive.GetCurrentCommand()->Cancel();}));
+  frc2::JoystickButton(&m_driverController,2).OnTrue(RotateTo(&m_drive,&m_driverController,45).ToPtr());
+  frc2::JoystickButton(&m_driverController,1).OnTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
+  frc2::JoystickButton(&m_copilotController, 4).WhileTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{0.5_m,0_mps}).ToPtr());
+  frc2::JoystickButton(&m_copilotController, 2).WhileTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{0.5_m,0_mps}).ToPtr());
+  frc2::JoystickButton(&m_copilotController, 3).WhileTrue(shootCommand(&m_algae,0.6).ToPtr());
+  frc2::JoystickButton(&m_copilotController, 1).WhileTrue(shootCommand(&m_algae,-0.4).ToPtr());
+
 
   
 

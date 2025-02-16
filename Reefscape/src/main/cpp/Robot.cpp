@@ -23,7 +23,8 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() {
 
-  
+  frc::SmartDashboard::PutNumber("Encoder 21",m_container.m_elevator.m_ElevatorEncoderTop.GetPosition()*0.025);
+  frc::SmartDashboard::PutNumber("Encoder 20",m_container.m_elevator.m_ElevatorEncoderBottom.GetPosition()*0.025);
 
 
   frc2::CommandScheduler::GetInstance().Run();
@@ -99,6 +100,7 @@ void Robot::TeleopPeriodic() {
   // frc::SmartDashboard::PutNumber("BR calc", m_container.m_drive.RearRight.angle.Radians().value());
   // frc::SmartDashboard::PutNumber("FR calc", m_container.m_drive.FrontRight.angle.Radians().value());
  
+
   // frc::SmartDashboard::PutNumber("Desired Speed", m_container.m_drive.FrontLeft.speed.value());
   // frc::SmartDashboard::PutNumber("FLVel Encoder", m_container.m_drive.m_frontLeft.GetState().speed.value());
   // frc::SmartDashboard::PutNumber("FRVel Encoder", m_container.m_drive.m_frontRight.GetState().speed.value());
