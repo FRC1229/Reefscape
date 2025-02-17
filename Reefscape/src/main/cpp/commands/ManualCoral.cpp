@@ -16,11 +16,11 @@ void ManualCoral::Initialize() {}
 void ManualCoral::Execute() {
 
 
-    if(m_CoController->GetRawAxis(2) > 0.05){
-      m_coral->m_CoralTilt.Set(m_CoController->GetRawAxis(2)*0.1);
+    if(m_CoController->GetRawAxis(1) > 0.05){
+      m_coral->m_CoralTilt.Set(-m_CoController->GetRawAxis(1)*0.1);
     }
-    else if(m_CoController->GetRawAxis(3) > 0.05){
-      m_coral->m_CoralTilt.Set(-m_CoController->GetRawAxis(3)*0.1);
+    else if(m_CoController->GetRawAxis(1) < -0.05){
+      m_coral->m_CoralTilt.Set(-m_CoController->GetRawAxis(1)*0.1);
     }
     else{
       m_coral->m_CoralTilt.Set(0);

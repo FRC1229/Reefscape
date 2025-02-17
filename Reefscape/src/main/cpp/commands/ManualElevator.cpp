@@ -14,12 +14,16 @@ void ManualElevator::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ManualElevator::Execute() {
-  if(m_CoController->GetRawAxis(1) > 0.05){
+  if(m_CoController->GetRawAxis(5) > 0.05){
 
     // if(m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025 < 0.95){
+
+    if(m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025 > 0){
       
-    m_elevator->m_ElevatorMotorTop.Set(-m_CoController->GetRawAxis(1)*0.2);
-    m_elevator->m_ElevatorMotorBottom.Set(-m_CoController->GetRawAxis(1)*0.2);
+      m_elevator->m_ElevatorMotorTop.Set(-m_CoController->GetRawAxis(5)*0.2);
+      m_elevator->m_ElevatorMotorBottom.Set(-m_CoController->GetRawAxis(5)*0.2);
+
+    }
     
     m_elevator->currentPos = {units::meter_t{m_elevator->m_ElevatorEncoderTop.GetPosition()*0.025},0_mps};
     m_elevator->currentPos2 = {units::meter_t{m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025},0_mps};
@@ -29,14 +33,13 @@ void ManualElevator::Execute() {
     //   m_elevator->m_ElevatorMotorBottom.Set(0);
     // }
   }
-  else if(m_CoController->GetRawAxis(1) < -0.05){
-    // if(m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025 > 0.05){
+  else if(m_CoController->GetRawAxis(5) < -0.05){
    
-    m_elevator->m_ElevatorMotorTop.Set(-m_CoController->GetRawAxis(1)*0.2);
-    m_elevator->m_ElevatorMotorBottom.Set(-m_CoController->GetRawAxis(1)*0.2);
+      m_elevator->m_ElevatorMotorTop.Set(-m_CoController->GetRawAxis(5)*0.2);
+      m_elevator->m_ElevatorMotorBottom.Set(-m_CoController->GetRawAxis(5)*0.2);
 
-    m_elevator->currentPos = {units::meter_t{m_elevator->m_ElevatorEncoderTop.GetPosition()*0.025},0_mps};
-    m_elevator->currentPos2 = {units::meter_t{m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025},0_mps};
+      m_elevator->currentPos = {units::meter_t{m_elevator->m_ElevatorEncoderTop.GetPosition()*0.025},0_mps};
+      m_elevator->currentPos2 = {units::meter_t{m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025},0_mps};
     // }
     // else{
     //   m_elevator->m_ElevatorMotorTop.Set(0);
