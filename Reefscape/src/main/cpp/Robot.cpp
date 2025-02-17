@@ -26,11 +26,18 @@ void Robot::RobotPeriodic() {
   frc::SmartDashboard::PutNumber("Encoder 21",m_container.m_elevator.m_ElevatorEncoderTop.GetPosition()*0.025);
   frc::SmartDashboard::PutNumber("Encoder 20",m_container.m_elevator.m_ElevatorEncoderBottom.GetPosition()*0.025);
 
+  frc::SmartDashboard::PutNumber("Coral Raw Angle", m_container.m_coral.m_CoralEncoder.GetPosition());
+  frc::SmartDashboard::PutNumber("Algae Raw Angle", m_container.m_algae.m_AlgaeTiltEncoder.GetPosition());
+
+
+  frc::SmartDashboard::PutNumber("Coral Angle", m_container.m_coral.GetAngle());
+  frc::SmartDashboard::PutNumber("Algae Angle", m_container.m_algae.GetAngle());
+
 
   frc2::CommandScheduler::GetInstance().Run();
   frc::SmartDashboard::PutNumber("Gyroo", m_container.m_drive.getRotation2D().Degrees().value());
 
-  frc::SmartDashboard::PutNumber("distanceYesCool", m_container.m_vision.getDistance(44.5));
+  // frc::SmartDashboard::PutNumber("distanceYesCool", m_container.m_vision.getDistance(44.5));
   // frc::SmartDashboard::PutNumber("FLTurn Encoder", m_container.m_drive.m_frontLeft.m_turningEncoder.GetAbsolutePosition().GetValue().value());
   // frc::SmartDashboard::PutNumber("FRTurn Encoder", m_container.m_drive.m_frontRight.m_turningEncoder.GetAbsolutePosition().GetValue().value());
   // frc::SmartDashboard::PutNumber("BLTurn Encoder", m_container.m_drive.m_rearLeft.m_turningEncoder.GetAbsolutePosition().GetValue().value());

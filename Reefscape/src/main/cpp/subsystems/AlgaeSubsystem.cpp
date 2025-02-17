@@ -6,7 +6,8 @@
 
 AlgaeSubsystem::AlgaeSubsystem():
 m_AlgaeMotor(22, rev::spark::SparkMax::MotorType::kBrushless),
-m_AlgaeTiltMotor(23,rev::spark::SparkMax::MotorType::kBrushless)
+m_AlgaeTiltMotor(23,rev::spark::SparkMax::MotorType::kBrushless),
+m_AlgaeTiltEncoder(m_AlgaeTiltMotor.GetEncoder())
 {
 
 }
@@ -22,3 +23,13 @@ void AlgaeSubsystem::ManualTilt(){
 
 }
 
+double AlgaeSubsystem::GetAngle(){
+    return m_AlgaeTiltEncoder.GetPosition();
+}
+
+void AlgaeSubsystem::MoveToAngle(double angle){
+    if(!(GetAngle() >= angle-1 && GetAngle() <= angle+1)){
+        double volt = m_AlgaeController.Calculate(GetAngle(), angle);
+        m_AlgaeTiltMotor.SetVoltage(units::volt_t{volt});
+    }
+}

@@ -13,6 +13,7 @@
 #include <frc2/command/PIDCommand.h>
 #include <frc2/command/ParallelRaceGroup.h>
 #include <frc2/command/RunCommand.h>
+#include <frc2/command/button/Trigger.h>
 #include <frc/filter/SlewRateLimiter.h>
 #include <frc/Joystick.h>
 #include "Constants.h"
@@ -38,6 +39,8 @@ class RobotContainer {
  public:
   RobotContainer();
   //frc2::Command* GetAutonomousCommand();
+  std::function<bool> GetTriggerPressed();
+  
   frc2::CommandPtr getAutonomousCommand();
 
   // frc2::CommandPtr AutonomousCommand();
@@ -52,6 +55,8 @@ class RobotContainer {
   frc::DigitalInput m_limitSwitch{9};
 
   frc::Timer intake_timer;
+
+  
   
   double increment;
   frc::Joystick m_driverController{OIConstants::kDriverControllerPort};
@@ -75,4 +80,11 @@ class RobotContainer {
   // m_chooser.SetDefaultCommand("90 degree", m_auto)
 
   void ConfigureButtonBindings();
+
 };
+
+// class Light : frc2::Trigger{
+//   Light();
+//   public:
+
+// };

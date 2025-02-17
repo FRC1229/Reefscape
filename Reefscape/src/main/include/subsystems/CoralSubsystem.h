@@ -18,12 +18,16 @@ class CoralSubsystem : public frc2::SubsystemBase {
  public:
   CoralSubsystem();
   rev::spark::SparkMax m_CoralTilt;
+  rev::spark::SparkRelativeEncoder m_CoralEncoder;
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
+   * 
    */
+  frc::PIDController m_coralController {0.175,0,0};
   void Periodic() override;
-
+  double GetAngle();
+  void MoveToAngle(double angle);
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
