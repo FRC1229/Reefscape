@@ -5,6 +5,15 @@
 #include "commands/SetElevatorPos.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
+/*
+Initializes the SetElevatorPos command, which sets the ElevatorSubsystem to a specific position based on the provided trapezoidal profile state, using a frc::TrapezoidProfile to smooth the transition.
+
+Parameters
+subsystem - Pointer to the ElevatorSubsystem, which manages the elevator mechanism.
+dis - The target position state represented by a trapezoidal profile (frc::TrapezoidProfile<units::meters>::State). This state defines the position and velocity the elevator should move to.
+*/
+
+
 SetElevatorPos::SetElevatorPos(ElevatorSubsystem* subsystem, frc::TrapezoidProfile<units::meters>::State dis) : m_elevator(subsystem), distance(dis) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({subsystem});

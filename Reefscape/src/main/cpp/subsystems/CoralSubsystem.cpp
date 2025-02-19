@@ -4,6 +4,15 @@
 
 #include "subsystems/CoralSubsystem.h"
 
+/*
+The constructor initializes the CoralSubsystem by setting up the tilt motor and encoder. It uses a brushless SparkMax motor (m_CoralTilt) for controlling the coral mechanism's tilt and initializes the encoder (m_CoralEncoder) to track the tilt angle.
+
+Members Initialized
+m_CoralTilt - The motor responsible for tilting the coral mechanism. It is set as a brushless motor connected to port 24.
+m_CoralEncoder - The encoder associated with the m_CoralTilt motor to monitor its position (i.e., the tilt angle).
+*/
+
+
 CoralSubsystem::CoralSubsystem(): 
 m_CoralTilt(24,rev::spark::SparkMax::MotorType::kBrushless), 
 m_CoralEncoder(m_CoralTilt.GetEncoder())
