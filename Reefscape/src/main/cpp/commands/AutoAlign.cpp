@@ -5,6 +5,13 @@
 #include "commands/AutoAlign.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
+/*This constructor initializes the AutoAlign command, which aligns the robot using vision data and the drivetrain. It sets up dependencies on the DriveSubsystem and VisionSubsystem, ensuring that no other commands interfere while AutoAlign is active.
+
+Parameters
+drive - Pointer to the DriveSubsystem, which controls the robot's movement.
+vision - Pointer to the VisionSubsystem, responsible for processing vision data.
+joystick - Pointer to the frc::Joystick, which can be used for manual override or adjustments.*/
+
 AutoAlign::AutoAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick): m_drive(drive), m_vision(vision), m_joystick(joystick){ 
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(drive);

@@ -4,6 +4,14 @@
 
 #include "commands/ManualAlgae.h"
 
+
+
+/*This constructor initializes the ManualAlgae command, allowing manual control of the AlgaeSubsystem using a joystick input.
+
+Parameters
+algae - Pointer to the AlgaeSubsystem, which manages the algae mechanism.
+joystick - Pointer to the frc::Joystick, used to manually control the algae system.*/
+
 ManualAlgae::ManualAlgae(AlgaeSubsystem* algae, frc::Joystick* joystick): m_algae(algae), m_CoController(joystick) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(m_algae);

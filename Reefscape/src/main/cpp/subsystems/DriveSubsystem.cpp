@@ -26,6 +26,14 @@
 using namespace pathplanner;
 using namespace DriveConstants;
 
+
+/*
+Initializes the four swerve modules (m_frontLeft, m_rearLeft, m_frontRight, m_rearRight) using IDs for motors and encoders.
+Configures odometry (using the m_odometry variable) to track robot position based on sensor inputs.
+Configures path planning and autonomous routines using AutoBuilder::configure.
+Adds a field flip option using a SendableChooser (m_fieldflip) to select whether the robot's field orientation should be flipped.
+*/
+
 DriveSubsystem::DriveSubsystem()
   //Defining each Swereve Module
     : m_frontLeft{kFrontLeftDriveMotorID,
@@ -77,9 +85,12 @@ DriveSubsystem::DriveSubsystem()
 
       }
 
+ /*Fieldflip: Checks the status of whether the robot's field orientation should be flipped.*/
 bool DriveSubsystem::Fieldflip(){
   return m_fieldflip.GetSelected();
 }
+
+/*getRotation2D: Retrieves the robot's current rotation from the gyro and returns it as an*/
 
 frc::Rotation2d DriveSubsystem::getRotation2D(){
   double yaw = m_gyro.GetYaw().GetValue().value();
@@ -92,6 +103,8 @@ frc::Rotation2d DriveSubsystem::getRotation2D(){
 
   return frc::Rotation2d(units::degree_t(yaw));
 }
+
+/*Periodic: Updates the robot's odometry based on current positions of the swerve modules and the gyro. It also displays the robot’s position and gyro data on the SmartDashboard.*/
 
 void DriveSubsystem::Periodic() {
   // Implementation of subsystem periodic method goes here.
@@ -124,6 +137,7 @@ void DriveSubsystem::Periodic() {
 
 }
 
+/*Drive: Takes in speed inputs for the robot and converts them into swerve module states. It also handles field-relative driving (using gyro information) and ensures the wheel speeds are capped at a maximum value.*/
 
 void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
                            units::meters_per_second_t ySpeed,
@@ -189,6 +203,8 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
 
 }
 
+/*DriveWithJoysticks: Handles joystick inputs for driving the robot and applies speed limits (e.g., half-speed mode).*/
+
 void DriveSubsystem::DriveWithJoysticks(double xJoy, double yJoy, double rotJoy, bool fieldRelative, bool halfSpeed){
   if(halfSpeed){
     xJoy = x_speedLimiter.Calculate(frc::ApplyDeadband(xJoy,0.08)*AutoConstants::kMaxSpeed.value()/4);
@@ -209,6 +225,8 @@ void DriveSubsystem::DriveWithJoysticks(double xJoy, double yJoy, double rotJoy,
   const auto rot = units::radians_per_second_t{rotJoy};
   Drive(xSpeed,ySpeed,rot,fieldRelative);
 }
+
+/*AutoAlign: Automatically adjusts the robot’s speed and rotation to align with a target, typically for vision-based auto alignment.*/
 
 void DriveSubsystem::AutoAlign(double tx, double x, double y){
   x = x_speedLimiter.Calculate(frc::ApplyDeadband(x,0.05));

@@ -4,6 +4,12 @@
 
 #include "commands/SetCoralPosition.h"
 
+/*Initializes the SetCoralPosition command, which sets the CoralSubsystem to a specified angle.
+
+Parameters
+coral - Pointer to the CoralSubsystem, which manages the coral mechanism.
+angle - The target angle (in degrees) to which the coral mechanism should be set.*/
+
 SetCoralPosition::SetCoralPosition(CoralSubsystem* coral, double angle): m_coral(coral), m_angle(angle) {
   // Use addRequirements() here to declare subsystem dependencies.
 }

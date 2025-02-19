@@ -4,6 +4,14 @@
 
 #include "commands/shootCommand.h"
 
+/*
+Initializes the shootCommand command, which controls the AlgaeSubsystem to shoot at a specified speed.
+
+Parameters
+algae - Pointer to the AlgaeSubsystem, which is responsible for managing the algae mechanism used in shooting.
+speed - The shooting speed (likely a value between 0 and 1) at which the algae mechanism should operate during the shoot command.
+*/
+
 shootCommand::shootCommand(AlgaeSubsystem* algae, double speed): m_algae(algae), m_speed(speed){
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(m_algae);

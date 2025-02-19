@@ -5,6 +5,13 @@
 #include "commands/SetAlgaePosition.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 
+
+/*Initializes the SetAlgaePosition command, which sets the AlgaeSubsystem to a specified angle.
+
+Parameters
+algae - Pointer to the AlgaeSubsystem, which manages the algae mechanism.
+angle - The target angle (in degrees) to which the algae mechanism should be set.*/
+
 SetAlgaePosition::SetAlgaePosition(AlgaeSubsystem* algae, double angle): m_algae(algae), m_angle(angle) {
   // Use addRequirements() here to declare subsystem dependencies.
 }

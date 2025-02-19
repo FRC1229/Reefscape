@@ -4,6 +4,12 @@
 
 #include "commands/ManualElevator.h"
 
+/*Initializes the ManualElevator command, allowing manual control of the ElevatorSubsystem using a joystick.
+
+Parameters
+elevator - Pointer to the ElevatorSubsystem, responsible for controlling the robot's elevator mechanism.
+m_controller - Pointer to the frc::Joystick, used to manually control the elevator movement.*/
+
 ManualElevator::ManualElevator(ElevatorSubsystem* elevator, frc::Joystick* m_controller): m_elevator(elevator),m_CoController(m_controller) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(m_elevator);

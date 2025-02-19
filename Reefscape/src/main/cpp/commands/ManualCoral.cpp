@@ -4,6 +4,12 @@
 
 #include "commands/ManualCoral.h"
 
+/*Initializes the ManualCoral command, enabling manual control of the CoralSubsystem using a joystick.
+
+Parameters
+coral - Pointer to the CoralSubsystem, which manages the coral mechanism.
+joy - Pointer to the frc::Joystick, used to manually control the coral system.*/
+
 ManualCoral::ManualCoral(CoralSubsystem* coral, frc::Joystick* joy): m_coral(coral), m_CoController(joy) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(m_coral);
