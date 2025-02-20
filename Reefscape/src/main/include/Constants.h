@@ -62,6 +62,20 @@ constexpr double positionScaleFactor = 2*std::numbers::pi*0.0508/(6.75);
 
 }  // namespace ModuleConstants
 
+namespace ElevatorConstants{
+    constexpr double l1_h = 0;
+    constexpr double l2_h = 0.339;
+    constexpr double l3_h = 0;
+    constexpr double l4_h = 0.926;
+}
+
+namespace CoralConstants{
+    constexpr double l4 = 28.166;
+    constexpr double l2 = 24.83;
+    constexpr double l3 = 24.83;
+
+}
+
 namespace AutoConstants {
 constexpr auto kMaxSpeed = 2_mps; //4
 constexpr auto kMaxAcceleration = 3_mps_sq;

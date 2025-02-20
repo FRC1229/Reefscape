@@ -14,14 +14,10 @@ void SetAlgaePosition::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void SetAlgaePosition::Execute() {
-  if(m_algae->GetAngle() >= (m_angle-1) && m_algae->GetAngle() <= (m_angle+1)){
-    Cancel();
-  }
-  else{
-    double volt = m_algae->m_AlgaeController.Calculate(m_algae->GetAngle(), m_angle);
-    m_algae->m_AlgaeTiltMotor.SetVoltage(units::volt_t{volt});
-  }
 
+  double volt = m_algae->m_AlgaeController.Calculate(m_algae->GetAngle(), m_angle);
+  m_algae->m_AlgaeTiltMotor.SetVoltage(units::volt_t{volt});
+  
 }
 
 // Called once the command ends or is interrupted.
@@ -32,5 +28,6 @@ void SetAlgaePosition::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool SetAlgaePosition::IsFinished() {
-  return false;
+  double error = 1;
+  return (m_algae->GetAngle() >= (m_angle-error) && m_algae->GetAngle() <= (m_angle+error));
 }

@@ -14,6 +14,7 @@
 #include <frc2/command/ParallelRaceGroup.h>
 #include <frc2/command/RunCommand.h>
 #include <frc2/command/button/Trigger.h>
+#include <pathplanner/lib/auto/AutoBuilder.h>
 #include <frc/filter/SlewRateLimiter.h>
 #include <frc/Joystick.h>
 #include "Constants.h"
@@ -39,9 +40,9 @@ class RobotContainer {
  public:
   RobotContainer();
   //frc2::Command* GetAutonomousCommand();
-  std::function<bool> GetTriggerPressed();
   
   frc2::CommandPtr getAutonomousCommand();
+  frc::SendableChooser<frc2::Command*> autoChooser;
 
   // frc2::CommandPtr AutonomousCommand();
   DriveSubsystem m_drive;
@@ -56,13 +57,21 @@ class RobotContainer {
 
   frc::Timer intake_timer;
 
+
+  
+
   
   
   double increment;
   frc::Joystick m_driverController{OIConstants::kDriverControllerPort};
   frc::Joystick m_copilotController{OIConstants::kCoPilotControllerPort};
+
+
+
+  
   //frc::SendableChooser<frc2::Command*> m_chooser;
   frc::SendableChooser<std::string> m_chooser;
+
 
 
  private:
@@ -82,9 +91,3 @@ class RobotContainer {
   void ConfigureButtonBindings();
 
 };
-
-// class Light : frc2::Trigger{
-//   Light();
-//   public:
-
-// };

@@ -23,6 +23,7 @@ void SetElevatorPos::Execute() {
   // m_elevator->currentPos = distance;
   m_elevator->currentPos = {units::meter_t{m_elevator->m_ElevatorEncoderTop.GetPosition()*0.025},0_mps};
   m_elevator->currentPos2 = {units::meter_t{m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025},0_mps};
+  
   m_elevator->SetElevatorPos(distance,distance);
   
 }

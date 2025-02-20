@@ -56,7 +56,6 @@ void ElevatorSubsystem::SetElevatorPos(frc::TrapezoidProfile<units::meters>::Sta
 
     // Set the SetPoints here
     m_controller.SetGoal(setPoint);
-    m_controller2.SetGoal(setPoint2);
 
     units::meter_t  e1 = units::meter_t{m_ElevatorEncoderTop.GetPosition() * 0.025};
     units::meter_t  e2 = units::meter_t{m_ElevatorEncoderBottom.GetPosition() * 0.025};

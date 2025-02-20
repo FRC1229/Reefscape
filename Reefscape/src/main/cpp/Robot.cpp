@@ -23,6 +23,10 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() {
 
+  frc::SmartDashboard::PutNumber("Bus Voltage", m_container.m_elevator.m_ElevatorMotorTop.GetBusVoltage());
+  frc::SmartDashboard::PutNumber("Elevator appiled output", m_container.m_elevator.m_ElevatorMotorTop.GetAppliedOutput());
+  frc::SmartDashboard::PutNumber("appiled voltage", m_container.m_elevator.m_ElevatorMotorTop.GetAppliedOutput() * m_container.m_elevator.m_ElevatorMotorTop.GetBusVoltage());
+
   frc::SmartDashboard::PutNumber("Encoder 21",m_container.m_elevator.m_ElevatorEncoderTop.GetPosition()*0.025);
   frc::SmartDashboard::PutNumber("Encoder 20",m_container.m_elevator.m_ElevatorEncoderBottom.GetPosition()*0.025);
 

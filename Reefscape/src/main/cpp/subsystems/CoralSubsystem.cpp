@@ -8,7 +8,7 @@ CoralSubsystem::CoralSubsystem():
 m_CoralTilt(24,rev::spark::SparkMax::MotorType::kBrushless), 
 m_CoralEncoder(m_CoralTilt.GetEncoder())
 {
-
+    m_CoralTilt.SetInverted(true);
 }
 
 // This method will be called once per scheduler run

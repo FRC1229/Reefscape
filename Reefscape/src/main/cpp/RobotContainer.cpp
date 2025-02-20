@@ -47,7 +47,12 @@ using namespace DriveConstants;
 using namespace pathplanner;
 
 
-RobotContainer::RobotContainer() {
+RobotContainer::RobotContainer(){
+
+
+
+
+
   // Initialize all of your commands and subsystems here
   // Configure the button bindings
   
@@ -56,8 +61,20 @@ RobotContainer::RobotContainer() {
 
   // m_chooser.AddOption("3.5 Note", threeAndHalf.get());
   // m_chooser.AddOption("Side Auto", sideNote.get());
-  m_chooser.SetDefaultOption("One Meter", "One meter");
-  m_chooser.AddOption("One Meter", "One meter");
+  // m_chooser.SetDefaultOption("One Meter", "One meter");   
+  // m_chooser.AddOption("One Meter", "One meter");
+
+
+  // bool isCompetition = false;
+
+  
+  // autoChooser = AutoBuilder::buildAutoChooserFilter(
+  //   [&isCompetition](const PathPlannerAuto& autoCommand)
+  //   {
+  //     return isCompetition ? autoCommand.GetName().starts_with("comp") : true;
+  //   }
+  // );
+
  
   ConfigureButtonBindings();
 
@@ -81,6 +98,10 @@ RobotContainer::RobotContainer() {
   m_elevator.SetDefaultCommand(ManualElevator(&m_elevator,&m_copilotController).ToPtr());
   m_algae.SetDefaultCommand(ManualAlgae(&m_algae,&m_copilotController).ToPtr());
   m_coral.SetDefaultCommand(ManualCoral(&m_coral,&m_copilotController).ToPtr());
+
+  
+
+
 }
 
 // bool RobotContainer::GetTriggerPressed(){
@@ -93,6 +114,9 @@ RobotContainer::RobotContainer() {
 
 void RobotContainer::ConfigureButtonBindings() {
 
+  frc2::Trigger rightTriggerPressed([this] { return m_copilotController.GetRawAxis(3) > 0.05;}); //Change these big rmemmebr
+  frc2::Trigger leftTriggerPressed([this] { return m_copilotController.GetRawAxis(2) > 0.05;});
+
   // frc2::JoystickButton(&m_driverController, 2).OnTrue(TurnToAngle(&m_drive, &m_driverController, 90.0).ToPtr());
   // frc2::JoystickButton(&m_driverController, 3).OnTrue(TurnToAngle(&m_drive, &m_driverController, -90.0).ToPtr());
   frc2::JoystickButton(&m_driverController, 4).OnTrue(frc2::cmd::RunOnce([this]{m_drive.ZeroHeading();}));
@@ -101,19 +125,22 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_driverController,1).OnTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
 
   //Co
-  // frc2::JoystickButton(&m_copilotController, 1).WhileTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{0.05_m,0_mps}).ToPtr()); //Home
-  // frc2::JoystickButton(&m_copilotController, 2).WhileTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{0.5_m,0_mps}).ToPtr()); // L3
-  // frc2::JoystickButton(&m_copilotController, 3).WhileTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{0.5_m,0_mps}).ToPtr()); // L2
-  // frc2::JoystickButton(&m_copilotController, 4).WhileTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{0.5_m,0_mps}).ToPtr()); // L4
+
+  frc2::JoystickButton(&m_copilotController, 1).WhileTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{0.339_m,0_mps}).ToPtr()); //Home
+  frc2::JoystickButton(&m_copilotController, 2).WhileTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{0.926_m,0_mps}).ToPtr()); // L3
+  frc2::JoystickButton(&m_copilotController, 3).WhileTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{0.5_m,0_mps}).ToPtr()); // L2
+  frc2::JoystickButton(&m_copilotController, 4).WhileTrue(SetElevatorPos(&m_elevator,frc::TrapezoidProfile<units::meters>::State{0.5_m,0_mps}).ToPtr()); // L4
 
   frc2::JoystickButton(&m_copilotController, 5).WhileTrue(SetAlgaePosition(&m_algae,0).ToPtr()); // Home pos
   frc2::JoystickButton(&m_copilotController, 7).WhileTrue( // Figure out triggers
     frc2::SequentialCommandGroup(
-      SetAlgaePosition(&m_algae,17),//Figure out angle before running
+      SetAlgaePosition(&m_algae,17),
       shootCommand(&m_algae, -0.4)
     ).ToPtr()
   );
-  frc2::JoystickButton(&m_copilotController, 1).WhileTrue(frc2::ParallelCommandGroup(
+    
+
+  rightTriggerPressed.WhileTrue(frc2::ParallelCommandGroup(
     shootCommand(&m_algae,0.8),
     SetAlgaePosition(&m_algae,17)
      // Home pos
@@ -121,12 +148,13 @@ void RobotContainer::ConfigureButtonBindings() {
 
 
 
+
+
   frc2::JoystickButton(&m_copilotController, 6).WhileTrue(SetCoralPosition(&m_coral,18).ToPtr()); // Home pos
   frc2::JoystickButton(&m_copilotController, 8).WhileTrue(SetCoralPosition(&m_coral,24).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
-  frc2::JoystickButton(&m_copilotController, 4).WhileTrue(SetCoralPosition(&m_coral,5).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
+  leftTriggerPressed.WhileTrue(SetCoralPosition(&m_coral,10).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
 
-
-  frc2::JoystickButton(&m_copilotController,2).WhileTrue(shootCommand(&m_algae, -0.8).ToPtr());
+  // frc2::JoystickButton(&m_copilotController,2).WhileTrue(shootCommand(&m_algae, -0.8).ToPtr());
   
 
   
@@ -256,7 +284,7 @@ frc2::CommandPtr RobotContainer::getAutonomousCommand(){
     // return m_chooser.GetSelected();
     // std::string autonomous = m_chooser.GetSelected();
 
-    // return PathPlannerAuto("One meter").ToPtr();
-    return PathPlannerAuto("1meter Forward").ToPtr();
+    return PathPlannerAuto("One meter").ToPtr();
+    // return autoChooser.GetSelected();
 
 }

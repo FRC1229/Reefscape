@@ -9,14 +9,13 @@ m_AlgaeMotor(22, rev::spark::SparkMax::MotorType::kBrushless),
 m_AlgaeTiltMotor(23,rev::spark::SparkMax::MotorType::kBrushless),
 m_AlgaeTiltEncoder(m_AlgaeTiltMotor.GetEncoder())
 {
-
+    m_AlgaeTiltMotor.SetInverted(true);
 }
 
 // This method will be called once per scheduler run
 void AlgaeSubsystem::Periodic() {}
 
 void AlgaeSubsystem::run(double speed){
-    m_AlgaeMotor.Set(speed);
 }
 
 void AlgaeSubsystem::ManualTilt(){

@@ -14,12 +14,10 @@ void SetCoralPosition::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void SetCoralPosition::Execute() {
 
-  if((m_angle + 1) > m_coral->GetAngle() && m_coral->GetAngle() > (m_angle - 1)){
-    Cancel();
-  }
-  else{
-    m_coral->MoveToAngle(m_angle);
-  }
+  
+
+
+  m_coral->MoveToAngle(m_angle);
   // m_coral->MoveToAngle(m_angle);
 
 }
@@ -29,5 +27,6 @@ void SetCoralPosition::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool SetCoralPosition::IsFinished() {
-  return false;
+  double error = 1;
+  return (m_angle + error) > m_coral->GetAngle() && m_coral->GetAngle() > (m_angle - error);
 }
