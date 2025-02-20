@@ -12,4 +12,4 @@ jobs:
         run: |
           curl -X POST -H "Content-Type: application/json" \
           -d "{\"content\": \"📢 **Pull Request Alert!**\n🔹 **Title:** ${{ github.event.pull_request.title }}\n🔹 **Author:** ${{ github.event.pull_request.user.login }}\n🔹 **Status:** ${{ github.event.action }}\n🔹 **PR Link:** ${{ github.event.pull_request.html_url }}\"}" \
-          "https://discord.com/api/webhooks/1337975157716946957/3z26H57orRoCxVZMV9HaCGATK0E4QgvYKjmssZtzqG2YO2pHgp4ZTnlwxlobO01IA795"
+          "https://discord.com/api/webhooks/1341950372138455182/iz3JyKeLjADfsIL6WOPRZRdXPw4YUREH6ufLZY1wVHEZ61Q10ZJHVFuieXzsZ1sgywQV"
