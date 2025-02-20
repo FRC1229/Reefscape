@@ -9,7 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Webhook
+        env:
+          HOOK: ${{ secrets.DISCORD_HOOK }}
         run: |
           curl -X POST -H "Content-Type: application/json" \
           -d "{\"content\": \"📢 **Pull Request Alert!**\n🔹 **Title:** ${{ github.event.pull_request.title }}\n🔹 **Author:** ${{ github.event.pull_request.user.login }}\n🔹 **Status:** ${{ github.event.action }}\n🔹 **PR Link:** ${{ github.event.pull_request.html_url }}\"}" \
-          "https://discord.com/api/webhooks/1341950372138455182/iz3JyKeLjADfsIL6WOPRZRdXPw4YUREH6ufLZY1wVHEZ61Q10ZJHVFuieXzsZ1sgywQV"
+          "$HOOK"
+
