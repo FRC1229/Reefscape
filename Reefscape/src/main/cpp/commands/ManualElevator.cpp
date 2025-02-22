@@ -21,8 +21,8 @@ void ManualElevator::Execute() {
 
     if(m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025 > 0){
       
-      m_elevator->m_ElevatorMotorTop.Set(-m_CoController->GetRawAxis(5)*0.2);
-      m_elevator->m_ElevatorMotorBottom.Set(-m_CoController->GetRawAxis(5)*0.2);
+      m_elevator->m_ElevatorMotorTop.Set(-m_CoController->GetRawAxis(5)*0.20);
+      m_elevator->m_ElevatorMotorBottom.Set(-m_CoController->GetRawAxis(5)*0.20);
 
     }
     
@@ -36,8 +36,8 @@ void ManualElevator::Execute() {
   }
   else if(m_CoController->GetRawAxis(5) < -0.05){
    
-    m_elevator->m_ElevatorMotorTop.Set(-m_CoController->GetRawAxis(5)*0.2);
-    m_elevator->m_ElevatorMotorBottom.Set(-m_CoController->GetRawAxis(5)*0.2);
+    m_elevator->m_ElevatorMotorTop.Set(-m_CoController->GetRawAxis(5)*0.20);
+    m_elevator->m_ElevatorMotorBottom.Set(-m_CoController->GetRawAxis(5)*0.20);
 
     m_elevator->currentPos = {units::meter_t{m_elevator->m_ElevatorEncoderTop.GetPosition()*0.025},0_mps};
     m_elevator->currentPos2 = {units::meter_t{m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025},0_mps};
@@ -47,16 +47,18 @@ void ManualElevator::Execute() {
     
     m_elevator->m_controller.SetGoal(m_elevator->currentPos); 
 
-    frc::ElevatorFeedforward m_feedforward(0_V, 0.74_V, 2_V/(0.5_mps), 2_V/(0.5_mps_sq)); // FIND GRAVITY GAINS ON TUESDAY
+    frc::ElevatorFeedforward m_feedforward(0_V, 0.74_V, 2_V/(0.5_mps), 2_V/(0.5_mps_sq)); 
 
     units::volt_t feedForwardCalc = m_feedforward.Calculate(m_elevator->m_controller.GetSetpoint().velocity);
 
-    m_elevator->m_ElevatorMotorTop.SetVoltage(feedForwardCalc);
-    m_elevator->m_ElevatorMotorBottom.SetVoltage(feedForwardCalc);
+    // m_elevator->m_ElevatorMotorTop.SetVoltage(feedForwardCalc);
+    // m_elevator->m_ElevatorMotorBottom.SetVoltage(feedForwardCalc);
 
     frc::SmartDashboard::PutNumber("current pos", m_elevator->currentPos.position.value());
     frc::SmartDashboard::PutNumber("feedFoward volt", feedForwardCalc.value());
     
+    m_elevator->m_ElevatorMotorTop.SetVoltage(units::volt_t{0.74});
+    m_elevator->m_ElevatorMotorBottom.SetVoltage(units::volt_t{0.74});
 
 
 

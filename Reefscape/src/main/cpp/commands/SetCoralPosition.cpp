@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "commands/SetCoralPosition.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 SetCoralPosition::SetCoralPosition(CoralSubsystem* coral, double angle): m_coral(coral), m_angle(angle) {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -23,7 +24,10 @@ void SetCoralPosition::Execute() {
 }
 
 // Called once the command ends or is interrupted.
-void SetCoralPosition::End(bool interrupted) {}
+void SetCoralPosition::End(bool interrupted) {
+
+  frc::SmartDashboard::PutNumber("I'M CORAL AND I HAVE CANCELED",20);
+}
 
 // Returns true when the command should end.
 bool SetCoralPosition::IsFinished() {

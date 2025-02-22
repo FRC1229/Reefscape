@@ -28,6 +28,7 @@ void SetAlgaePosition::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool SetAlgaePosition::IsFinished() {
-  double error = 1;
+  double error = 0.2;
+  // return true;
   return (m_algae->GetAngle() >= (m_angle-error) && m_algae->GetAngle() <= (m_angle+error));
 }
