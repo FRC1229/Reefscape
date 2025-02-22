@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "commands/ManualCoral.h"
+// #include "frc/sm"
 
 ManualCoral::ManualCoral(CoralSubsystem* coral, frc::Joystick* joy): m_coral(coral), m_CoController(joy) {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -25,6 +26,8 @@ void ManualCoral::Execute() {
     else{
       m_coral->m_CoralTilt.Set(0);
     }
+
+    
 
 
 

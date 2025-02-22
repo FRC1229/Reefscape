@@ -38,6 +38,7 @@
 #include "commands/ManualCoral.h"
 #include "commands/SetAlgaePosition.h"
 #include "commands/SetCoralPosition.h"
+#include <pathplanner/lib/auto/NamedCommands.h>
 
 
 
@@ -73,7 +74,7 @@ RobotContainer::RobotContainer(){
   //     return isCompetition ? autoCommand.GetName().starts_with("comp") : true;
   //   }
   // );
-
+  NamedCommands::registerCommand("coralTravel",SetCoralPosition(&m_coral,10).ToPtr());
  
   ConfigureButtonBindings();
 
@@ -297,7 +298,7 @@ frc2::CommandPtr RobotContainer::getAutonomousCommand(){
     // return m_chooser.GetSelected();
     // std::string autonomous = m_chooser.GetSelected();
 
-    return PathPlannerAuto("One meter").ToPtr();
+    return PathPlannerAuto("L4").ToPtr();
     // return autoChooser.GetSelected();
 
 }

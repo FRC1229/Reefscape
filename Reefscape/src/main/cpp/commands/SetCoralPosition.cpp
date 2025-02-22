@@ -31,6 +31,6 @@ void SetCoralPosition::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool SetCoralPosition::IsFinished() {
-  double error = 1;
+  double error = 1.2;
   return (m_angle + error) > m_coral->GetAngle() && m_coral->GetAngle() > (m_angle - error);
 }
