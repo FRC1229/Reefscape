@@ -13,7 +13,7 @@ AutoAlign::AutoAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joysti
 
 // Called when the command is initially scheduled.
 void AutoAlign::Initialize() {
-  double distance = m_vision->getDistance(42.2);
+  double distance = m_vision->getDistance(8.75);
   double xPose = m_drive->GetEstimatedPose().X().value();
   setPoint = xPose + ((distance-5)/39.37);
 }
@@ -22,20 +22,20 @@ void AutoAlign::Initialize() {
 void AutoAlign::Execute() {
   if(m_joystick->GetRawButton(1)){
   
-   double distance = m_vision->getDistance(42.2);
+   double distance = m_vision->getDistance(8.75);
    double poseX = m_drive->GetEstimatedPose().X().value();
 
    setPoint = poseX + ((distance-5)/39.37);
    double speed = alignPid.Calculate(poseX,setPoint);
    double centerSpeed = centerPid.Calculate(m_vision->getTX(), 0);
-   double rotationSpeed = rotationPid.Calculate(m_vision->getTX(),0);
+  //  double rotationSpeed = rotationPid.Calculate(m_vision->getTX(),0);
 
    frc::SmartDashboard::PutNumber("setPoint", setPoint);
    frc::SmartDashboard::PutNumber("poseX", poseX);
    frc::SmartDashboard::PutNumber("distance", distance);
    frc::SmartDashboard::PutNumber("speed calc", speed);
 
-   m_drive->Drive(units::velocity::meters_per_second_t{speed},units::velocity::meters_per_second_t{centerSpeed},units::angular_velocity::radians_per_second_t{rotationSpeed}, false);
+   m_drive->Drive(units::velocity::meters_per_second_t{speed},units::velocity::meters_per_second_t{centerSpeed},units::angular_velocity::radians_per_second_t{0}, false);
 
 
 

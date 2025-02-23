@@ -37,6 +37,15 @@ VisionSubsystem::VisionSubsystem() {
     aprilTagAngles[1] = 45;
     aprilTagAngles[2] = 45;
 
+
+    aprilTagDistance[6] = 8.75;
+    aprilTagDistance[7] = 8.75;
+    aprilTagDistance[8] = 8.75;
+    aprilTagDistance[9] = 8.75;
+    aprilTagDistance[10] = 8.75;
+    aprilTagDistance[11] = 8.75;
+
+
 }
 void VisionSubsystem::Periodic(){
     frc::SmartDashboard::PutNumber("TX", VisionSubsystem::getTX());

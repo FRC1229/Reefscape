@@ -20,7 +20,7 @@ m_controller2(
     frc::TrapezoidProfile<units::meters>::Constraints{0.4_mps, 0.4_mps_sq}
 ),
 m_feedforward(0_V, 0.74_V, 2_V/(0.5_mps), 2_V/(0.5_mps_sq)),
-m_controllerPid(7,0.1,0)
+m_controllerPid(8,0.30,0)
 {
 
     m_ElevatorMotorBottom.SetInverted(true);
@@ -74,9 +74,14 @@ void ElevatorSubsystem::SetElevatorPos(double setpoint){
 
     frc::SmartDashboard::PutNumber("Volt 1", pidCalc1.value());
     frc::SmartDashboard::PutNumber("Volt 2", pidCalc2.value());
-
-    m_ElevatorMotorTop.SetVoltage(frc::ApplyDeadband((pidCalc1*accelScale)+0.74_V,0_V,1.5_V));
-    m_ElevatorMotorBottom.SetVoltage(frc::ApplyDeadband((pidCalc1*accelScale)+0.74_V,0_V,1.5_V));
+    if(setpoint > 0.05){
+        m_ElevatorMotorTop.SetVoltage(frc::ApplyDeadband((pidCalc1*accelScale)+0.74_V,0_V,1.5_V));
+        m_ElevatorMotorBottom.SetVoltage(frc::ApplyDeadband((pidCalc1*accelScale)+0.74_V,0_V,1.5_V));
+    }
+    else{
+        m_ElevatorMotorTop.SetVoltage(frc::ApplyDeadband((pidCalc1*accelScale),0_V,1.5_V));
+        m_ElevatorMotorBottom.SetVoltage(frc::ApplyDeadband((pidCalc1*accelScale),0_V,1.5_V));
+    }
     // frc::SmartDashboard::PutNumber("Setpoint", setPoint.position.value());
 
 

@@ -16,7 +16,7 @@ void SetAlgaePosition::Initialize() {}
 void SetAlgaePosition::Execute() {
 
   double volt = m_algae->m_AlgaeController.Calculate(m_algae->GetAngle(), m_angle);
-  m_algae->m_AlgaeTiltMotor.SetVoltage(units::volt_t{volt});
+  m_algae->m_AlgaeTiltMotor.SetVoltage(frc::ApplyDeadband(units::volt_t{volt},0_V,0.75_V));
   
 }
 

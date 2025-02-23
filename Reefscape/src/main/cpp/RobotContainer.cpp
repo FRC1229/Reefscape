@@ -96,7 +96,7 @@ RobotContainer::RobotContainer(){
       },
       {&m_drive}));
   m_elevator.SetDefaultCommand(ManualElevator(&m_elevator,&m_copilotController).ToPtr());
-  m_algae.SetDefaultCommand(ManualAlgae(&m_algae,&m_copilotController).ToPtr());
+  m_algae.SetDefaultCommand(ManualAlgae(&m_algae,&m_driverController).ToPtr());
   m_coral.SetDefaultCommand(ManualCoral(&m_coral,&m_copilotController).ToPtr());
 
   
@@ -127,9 +127,9 @@ void RobotContainer::ConfigureButtonBindings() {
   //Co
 
   //elevamator
-  frc2::JoystickButton(&m_copilotController, 1).WhileTrue(SetElevatorPos(&m_elevator,0.367).ToPtr()); //Home
-  frc2::JoystickButton(&m_copilotController, 2).WhileTrue(SetElevatorPos(&m_elevator,0.05).ToPtr()); // L3
-  frc2::JoystickButton(&m_copilotController, 3).WhileTrue(SetElevatorPos(&m_elevator,0.5).ToPtr()); // L2
+  frc2::JoystickButton(&m_copilotController, 2).WhileTrue(SetElevatorPos(&m_elevator,0.367).ToPtr()); //Home
+  frc2::JoystickButton(&m_copilotController, 1).WhileTrue(SetElevatorPos(&m_elevator,0.005).ToPtr()); // L3
+  // frc2::JoystickButton(&m_copilotController, 3).WhileTrue(SetElevatorPos(&m_elevator,0.5).ToPtr()); // L2
   frc2::JoystickButton(&m_copilotController, 4).WhileTrue(SetElevatorPos(&m_elevator,0.905).ToPtr()); // L4
 
   // rAlgae Posistion
@@ -141,20 +141,20 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_copilotController, 7).WhileTrue(SetAlgaePosition(&m_algae,2).ToPtr()); // Home pos
   frc2::JoystickButton(&m_copilotController, 5).WhileTrue( // Figure out triggers
     frc2::cmd::Sequence(
-      SetAlgaePosition(&m_algae,14).ToPtr(),
+      SetAlgaePosition(&m_algae,20).ToPtr(),
       frc2::cmd::Parallel(
         shootCommand(&m_algae, -0.4).ToPtr(),
-        SetAlgaePosition(&m_algae,14).ToPtr()
+        SetAlgaePosition(&m_algae,20).ToPtr()
       )
     )
   );
 
   leftTriggerPressed.WhileTrue(
       frc2::cmd::Sequence(
-        SetAlgaePosition(&m_algae,14).ToPtr(),
+        SetAlgaePosition(&m_algae,20).ToPtr(),
         frc2::cmd::Parallel(
           shootCommand(&m_algae, 0.7).ToPtr(),
-          SetAlgaePosition(&m_algae,14).ToPtr()
+          SetAlgaePosition(&m_algae,20).ToPtr()
         )
       )
   );

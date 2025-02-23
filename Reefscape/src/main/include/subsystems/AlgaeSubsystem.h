@@ -32,7 +32,7 @@ class AlgaeSubsystem : public frc2::SubsystemBase {
 
   double GetAngle();
   void MoveToAngle(double angle);
-  frc::PIDController m_AlgaeController {0.1,0.05,0};
+  frc::PIDController m_AlgaeController {0.275,0.1,0};
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be

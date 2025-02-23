@@ -8,6 +8,7 @@ class VisionSubsystem : public frc2::SubsystemBase {
     public:
     
         std::map<int, double> aprilTagAngles;
+        std::map<int,double> aprilTagDistance;
 
         VisionSubsystem();
         
