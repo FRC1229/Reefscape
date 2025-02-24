@@ -21,7 +21,7 @@ class SetElevatorPos
   /* You should consider using the more terse Command factories API instead
    * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
    */
-  SetElevatorPos(ElevatorSubsystem* Elevator,frc::TrapezoidProfile<units::meters>::State distance);
+  SetElevatorPos(ElevatorSubsystem* Elevator,double distance);
 
   void Initialize() override;
 
@@ -33,5 +33,5 @@ class SetElevatorPos
 
   private:
   ElevatorSubsystem* m_elevator;
-  frc::TrapezoidProfile<units::meters>::State distance;
+  double distance;
 };

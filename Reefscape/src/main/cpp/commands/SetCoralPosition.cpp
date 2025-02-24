@@ -3,12 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "commands/SetCoralPosition.h"
-
-/*Initializes the SetCoralPosition command, which sets the CoralSubsystem to a specified angle.
-
-Parameters
-coral - Pointer to the CoralSubsystem, which manages the coral mechanism.
-angle - The target angle (in degrees) to which the coral mechanism should be set.*/
+#include <frc/smartdashboard/SmartDashboard.h>
 
 SetCoralPosition::SetCoralPosition(CoralSubsystem* coral, double angle): m_coral(coral), m_angle(angle) {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -20,20 +15,22 @@ void SetCoralPosition::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void SetCoralPosition::Execute() {
 
-  if((m_angle + 1) > m_coral->GetAngle() && m_coral->GetAngle() > (m_angle - 1)){
-    Cancel();
-  }
-  else{
-    m_coral->MoveToAngle(m_angle);
-  }
+  
+
+
+  m_coral->MoveToAngle(m_angle);
   // m_coral->MoveToAngle(m_angle);
 
 }
 
 // Called once the command ends or is interrupted.
-void SetCoralPosition::End(bool interrupted) {}
+void SetCoralPosition::End(bool interrupted) {
+
+  frc::SmartDashboard::PutNumber("I'M CORAL AND I HAVE CANCELED",20);
+}
 
 // Returns true when the command should end.
 bool SetCoralPosition::IsFinished() {
-  return false;
+  double error = 1.2;
+  return (m_angle + error) > m_coral->GetAngle() && m_coral->GetAngle() > (m_angle - error);
 }

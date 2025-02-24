@@ -5,13 +5,6 @@
 #include "commands/AutoAlign.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
-/*This constructor initializes the AutoAlign command, which aligns the robot using vision data and the drivetrain. It sets up dependencies on the DriveSubsystem and VisionSubsystem, ensuring that no other commands interfere while AutoAlign is active.
-
-Parameters
-drive - Pointer to the DriveSubsystem, which controls the robot's movement.
-vision - Pointer to the VisionSubsystem, responsible for processing vision data.
-joystick - Pointer to the frc::Joystick, which can be used for manual override or adjustments.*/
-
 AutoAlign::AutoAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick): m_drive(drive), m_vision(vision), m_joystick(joystick){ 
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(drive);
@@ -20,7 +13,7 @@ AutoAlign::AutoAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joysti
 
 // Called when the command is initially scheduled.
 void AutoAlign::Initialize() {
-  double distance = m_vision->getDistance(42.2);
+  double distance = m_vision->getDistance(8.75);
   double xPose = m_drive->GetEstimatedPose().X().value();
   setPoint = xPose + ((distance-5)/39.37);
 }
@@ -29,20 +22,20 @@ void AutoAlign::Initialize() {
 void AutoAlign::Execute() {
   if(m_joystick->GetRawButton(1)){
   
-   double distance = m_vision->getDistance(42.2);
+   double distance = m_vision->getDistance(8.75);
    double poseX = m_drive->GetEstimatedPose().X().value();
 
    setPoint = poseX + ((distance-5)/39.37);
    double speed = alignPid.Calculate(poseX,setPoint);
    double centerSpeed = centerPid.Calculate(m_vision->getTX(), 0);
-   double rotationSpeed = rotationPid.Calculate(m_vision->getTX(),0);
+  //  double rotationSpeed = rotationPid.Calculate(m_vision->getTX(),0);
 
    frc::SmartDashboard::PutNumber("setPoint", setPoint);
    frc::SmartDashboard::PutNumber("poseX", poseX);
    frc::SmartDashboard::PutNumber("distance", distance);
    frc::SmartDashboard::PutNumber("speed calc", speed);
 
-   m_drive->Drive(units::velocity::meters_per_second_t{speed},units::velocity::meters_per_second_t{centerSpeed},units::angular_velocity::radians_per_second_t{rotationSpeed}, false);
+   m_drive->Drive(units::velocity::meters_per_second_t{speed},units::velocity::meters_per_second_t{centerSpeed},units::angular_velocity::radians_per_second_t{0}, false);
 
 
 

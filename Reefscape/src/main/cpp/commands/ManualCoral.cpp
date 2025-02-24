@@ -3,12 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "commands/ManualCoral.h"
-
-/*Initializes the ManualCoral command, enabling manual control of the CoralSubsystem using a joystick.
-
-Parameters
-coral - Pointer to the CoralSubsystem, which manages the coral mechanism.
-joy - Pointer to the frc::Joystick, used to manually control the coral system.*/
+// #include "frc/sm"
 
 ManualCoral::ManualCoral(CoralSubsystem* coral, frc::Joystick* joy): m_coral(coral), m_CoController(joy) {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -31,6 +26,8 @@ void ManualCoral::Execute() {
     else{
       m_coral->m_CoralTilt.Set(0);
     }
+
+    
 
 
 
