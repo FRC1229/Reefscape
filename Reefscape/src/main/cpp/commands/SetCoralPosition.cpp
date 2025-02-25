@@ -7,6 +7,7 @@
 
 SetCoralPosition::SetCoralPosition(CoralSubsystem* coral, double angle): m_coral(coral), m_angle(angle) {
   // Use addRequirements() here to declare subsystem dependencies.
+  AddRequirements(m_coral);
 }
 
 // Called when the command is initially scheduled.
@@ -31,6 +32,6 @@ void SetCoralPosition::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool SetCoralPosition::IsFinished() {
-  double error = 1.2;
+  double error = 2;
   return (m_angle + error) > m_coral->GetAngle() && m_coral->GetAngle() > (m_angle - error);
 }

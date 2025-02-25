@@ -5,27 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "coralTravel"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Fwd to L4"
+            "pathName": "L1 dump"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ElevatorPosL4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "coralShootL4"
+            "name": "L1Shoot"
           }
         }
       ]

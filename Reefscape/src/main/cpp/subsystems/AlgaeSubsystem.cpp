@@ -28,8 +28,7 @@ double AlgaeSubsystem::GetAngle(){
 }
 
 void AlgaeSubsystem::MoveToAngle(double angle){
-    if(!(GetAngle() >= angle-1 && GetAngle() <= angle+1)){
-        double volt = m_AlgaeController.Calculate(GetAngle(), angle);
-        m_AlgaeTiltMotor.SetVoltage(units::volt_t{volt});
-    }
+    double volt = m_AlgaeController.Calculate(GetAngle(), angle);
+    m_AlgaeTiltMotor.SetVoltage(units::volt_t{volt});
+
 }

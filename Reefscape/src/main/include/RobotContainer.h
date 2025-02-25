@@ -26,6 +26,7 @@
 #include <subsystems/ElevatorSubsystem.h>
 #include <subsystems/AlgaeSubsystem.h>
 #include <subsystems/CoralSubsystem.h>
+#include <subsystems/L1Subsystem.h>
 
 
 
@@ -50,6 +51,7 @@ class RobotContainer {
   ElevatorSubsystem m_elevator;
   AlgaeSubsystem m_algae;
   CoralSubsystem m_coral;
+  L1Subsystem m_l1;
 
 
   frc::DigitalInput sensor{0};
