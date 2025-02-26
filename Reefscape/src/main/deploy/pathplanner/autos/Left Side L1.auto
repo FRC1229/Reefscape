@@ -5,15 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "ElevatorPosL4"
+            "pathName": "Bot Side to L1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "coralShootL4"
+            "name": "L1Shoot"
           }
         }
       ]

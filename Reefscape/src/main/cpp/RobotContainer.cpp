@@ -311,7 +311,7 @@ frc2::CommandPtr RobotContainer::getAutonomousCommand(){
     // return m_chooser.GetSelected();
     // std::string autonomous = m_chooser.GetSelected();
 
-    return PathPlannerAuto("L1").ToPtr();
+    return PathPlannerAuto("Left Side L1").ToPtr();
     // return autoChooser.GetSelected();
 
 }

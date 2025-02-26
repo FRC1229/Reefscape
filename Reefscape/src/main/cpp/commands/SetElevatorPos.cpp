@@ -37,5 +37,5 @@ void SetElevatorPos::End(bool interrupted) {
 // Returns true when the command should end.
 bool SetElevatorPos::IsFinished() {
   // return false;
-  return ((distance + 0.1) > m_elevator->m_ElevatorEncoderBottom.GetPosition() * 0.025 && m_elevator->m_ElevatorEncoderBottom.GetPosition() * 0.025 > (distance - 0.1));
+  return ((distance + 0.05) > m_elevator->m_ElevatorEncoderBottom.GetPosition() * 0.025 && m_elevator->m_ElevatorEncoderBottom.GetPosition() * 0.025 > (distance - 0.05));
 }

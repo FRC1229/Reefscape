@@ -5,15 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "coralTravel"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Fwd to L4"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Fwd to L4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralTravel"
+                }
+              }
+            ]
           }
         },
         {
@@ -26,6 +33,12 @@
           "type": "named",
           "data": {
             "name": "coralShootL4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "coralTravel"
           }
         }
       ]
