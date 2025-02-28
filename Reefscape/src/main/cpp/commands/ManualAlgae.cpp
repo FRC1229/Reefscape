@@ -16,8 +16,6 @@ void ManualAlgae::Initialize() {}
 void ManualAlgae::Execute() {
 
     m_algae->m_AlgaeTiltMotor.Set(0);
-    m_algae->m_RollerMotor.Set(0);
-
     if(m_CoController->GetPOV() == 0){
       m_algae->m_AlgaeTiltMotor.Set(0.1);
     }

@@ -5,7 +5,6 @@
 #include "subsystems/AlgaeSubsystem.h"
 
 AlgaeSubsystem::AlgaeSubsystem():
-m_RollerMotor(22, rev::spark::SparkMax::MotorType::kBrushless),
 m_AlgaeTiltMotor(23,rev::spark::SparkMax::MotorType::kBrushless),
 m_AlgaeTiltEncoder(m_AlgaeTiltMotor.GetEncoder())
 {
@@ -15,9 +14,7 @@ m_AlgaeTiltEncoder(m_AlgaeTiltMotor.GetEncoder())
 // This method will be called once per scheduler run
 void AlgaeSubsystem::Periodic() {}
 
-void AlgaeSubsystem::run(double speed){
-    m_RollerMotor.Set(speed);
-}
+
 
 void AlgaeSubsystem::ManualTilt(){
 

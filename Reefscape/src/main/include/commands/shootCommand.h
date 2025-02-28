@@ -6,7 +6,7 @@
 
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandHelper.h>
-#include "subsystems/AlgaeSubsystem.h"
+#include "subsystems/rollerSubsystem.h"
 
 /**
  * An example command.
@@ -21,9 +21,9 @@ class shootCommand
   /* You should consider using the more terse Command factories API instead
    * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
    */
-  shootCommand(AlgaeSubsystem* algae,double speed);
+  shootCommand(RollerSubsystem* roller ,double speed);
 
-  AlgaeSubsystem* m_algae;
+  RollerSubsystem* m_roller;
   double m_speed;
 
   void Initialize() override;

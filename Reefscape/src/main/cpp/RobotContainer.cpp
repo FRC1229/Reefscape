@@ -21,6 +21,7 @@
 #include <frc/filter/SlewRateLimiter.h>
 #include "Constants.h"
 #include "subsystems/DriveSubsystem.h"
+#include <subsystems/LEDSubsystem.h>
 #include <frc2/command/InstantCommand.h>
 #include <iostream>
 #include <pathplanner/lib/auto/NamedCommands.h>
@@ -42,6 +43,7 @@
 #include "commands/SetServoPosition.h"
 #include <commands/SetServoPosition.h>
 #include <commands/AutoL1Command.h>
+#include <commands/UpdateLEDCommand.h>
 
 
 
@@ -111,8 +113,9 @@ RobotContainer::RobotContainer(){
   m_elevator.SetDefaultCommand(ManualElevator(&m_elevator,&m_copilotController).ToPtr());
   m_algae.SetDefaultCommand(ManualAlgae(&m_algae,&m_driverController).ToPtr());
   m_coral.SetDefaultCommand(ManualCoral(&m_coral,&m_copilotController).ToPtr());
-  m_l1.SetDefaultCommand(SetServoPosition(&m_l1,&m_driverController));
-
+  m_l1.SetDefaultCommand(SetServoPosition(&m_l1,&m_driverController).ToPtr());
+  m_Led.SetDefaultCommand(UpdateLEDCommand(&m_Led,&m_driverController,&m_elevator).ToPtr());
+  m_roller.SetDefaultCommand(shootCommand(&m_roller, 0).ToPtr());
   
 
 
@@ -131,18 +134,28 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::Trigger rightTriggerPressed([this] { return m_copilotController.GetRawAxis(3) > 0.05;}); 
   frc2::Trigger leftTriggerPressed([this] { return m_copilotController.GetRawAxis(2) > 0.05;});
 
+  frc2::Trigger DriverrightTriggerPressed([this] { return m_driverController.GetRawAxis(3) > 0.05;}); 
+  frc2::Trigger DriverleftTriggerPressed([this] { return m_driverController.GetRawAxis(2) > 0.05;});
+
   // frc2::JoystickButton(&m_driverController, 2).OnTrue(TurnToAngle(&m_drive, &m_driverController, 90.0).ToPtr());
   // frc2::JoystickButton(&m_driverController, 3).OnTrue(TurnToAngle(&m_drive, &m_driverController, -90.0).ToPtr());
   frc2::JoystickButton(&m_driverController, 4).OnTrue(frc2::cmd::RunOnce([this]{m_drive.ZeroHeading();}));
   frc2::JoystickButton(&m_driverController, 6).OnTrue(frc2::cmd::RunOnce([this]{m_drive.GetCurrentCommand()->Cancel();}));
   // frc2::JoystickButton(&m_driverController,2).OnTrue(RotateTo(&m_drive,&m_driverController,45).ToPtr());
   frc2::JoystickButton(&m_driverController,1).OnTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
+  //DriverleftTriggerPressed.WhileTrue(UpdateLEDCommand(m_Led).ToPtr());
+
+  frc2::JoystickButton(&m_driverController,7).WhileTrue(shootCommand(&m_roller,-0.70).ToPtr());
+  frc2::JoystickButton(&m_driverController,8).WhileTrue(shootCommand(&m_roller,0.70).ToPtr());
+
+  
+
 
   //Co
 
   //elevamator
   frc2::JoystickButton(&m_copilotController, 2).WhileTrue(SetElevatorPos(&m_elevator,0.367).ToPtr()); //Home
-  frc2::JoystickButton(&m_copilotController, 1).WhileTrue(SetElevatorPos(&m_elevator,0.005).ToPtr()); // L3
+  frc2::JoystickButton(&m_copilotController, 1).WhileTrue(SetElevatorPos(&m_elevator,0).ToPtr()); // L3
   // frc2::JoystickButton(&m_copilotController, 3).WhileTrue(SetElevatorPos(&m_elevator,0.5).ToPtr()); // L2
   frc2::JoystickButton(&m_copilotController, 4).WhileTrue(SetElevatorPos(&m_elevator,0.905).ToPtr()); // L4
 
@@ -157,25 +170,26 @@ void RobotContainer::ConfigureButtonBindings() {
     frc2::cmd::Sequence(
       SetAlgaePosition(&m_algae,20).ToPtr(),
       frc2::cmd::Parallel(
-        shootCommand(&m_algae, -0.4).ToPtr(),
+        shootCommand(&m_roller, -0.4).ToPtr(),
         SetAlgaePosition(&m_algae,20).ToPtr()
       )
     )
   );
 
+  
+
   leftTriggerPressed.WhileTrue(
-      frc2::cmd::Sequence(
         frc2::cmd::Parallel(
-          shootCommand(&m_algae, 0.7).ToPtr(),
+          shootCommand(&m_roller, 0.7).ToPtr(),
           SetAlgaePosition(&m_algae,20).ToPtr()
         )
-      )
+      
   );
 
 
 
   //Coral
-  frc2::JoystickButton(&m_copilotController, 6).WhileTrue(SetCoralPosition(&m_coral,18 ).ToPtr()); // Home pos
+  frc2::JoystickButton(&m_copilotController, 6).WhileTrue(SetCoralPosition(&m_coral,22 ).ToPtr()); // Home pos
   frc2::JoystickButton(&m_copilotController, 8).WhileTrue(SetCoralPosition(&m_coral,5).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
   // leftTriggerPressed.WhileTrue(SetCoralPosition(&m_coral,10).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
   frc2::JoystickButton(&m_copilotController, 3).WhileTrue(SetCoralPosition(&m_coral, 33).ToPtr());//L4 pos

@@ -57,9 +57,11 @@ void ManualElevator::Execute() {
     frc::SmartDashboard::PutNumber("current pos", m_elevator->currentPos.position.value());
     frc::SmartDashboard::PutNumber("feedFoward volt", feedForwardCalc.value());
     
-    m_elevator->m_ElevatorMotorTop.SetVoltage(units::volt_t{0.74});
-    m_elevator->m_ElevatorMotorBottom.SetVoltage(units::volt_t{0.74});
-
+   
+    if(m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025 > 0.05){
+      m_elevator->m_ElevatorMotorTop.SetVoltage(units::volt_t{0.74});
+      m_elevator->m_ElevatorMotorBottom.SetVoltage(units::volt_t{0.74});
+    }
 
 
 

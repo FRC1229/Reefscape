@@ -74,7 +74,7 @@ void ElevatorSubsystem::SetElevatorPos(double setpoint){
 
     frc::SmartDashboard::PutNumber("Volt 1", pidCalc1.value());
     frc::SmartDashboard::PutNumber("Volt 2", pidCalc2.value());
-    if(setpoint > 0.05){
+    if(setpoint >= 0.005){
         m_ElevatorMotorTop.SetVoltage(frc::ApplyDeadband((pidCalc1*accelScale)+0.74_V,0_V,1.5_V));
         m_ElevatorMotorBottom.SetVoltage(frc::ApplyDeadband((pidCalc1*accelScale)+0.74_V,0_V,1.5_V));
     }

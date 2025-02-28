@@ -4,8 +4,9 @@
 
 #include "commands/shootCommand.h"
 
-shootCommand::shootCommand(AlgaeSubsystem* algae, double speed): m_algae(algae), m_speed(speed){
+shootCommand::shootCommand(RollerSubsystem* roller, double speed): m_roller(roller), m_speed(speed){
   // Use addRequirements() here to declare subsystem dependencies.
+  AddRequirements(roller);
 }
 
 // Called when the command is initially scheduled.
@@ -14,7 +15,7 @@ void shootCommand::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void shootCommand::Execute() {
 
-  m_algae->run(m_speed);
+  m_roller->run(m_speed);
 
 }
 

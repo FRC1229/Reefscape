@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "commands/SetCoralPosition.h"
-#include <frc/smartdashboard/SmartDashboard.h>
+  #include <frc/smartdashboard/SmartDashboard.h>
 
 SetCoralPosition::SetCoralPosition(CoralSubsystem* coral, double angle): m_coral(coral), m_angle(angle) {
   // Use addRequirements() here to declare subsystem dependencies.

@@ -27,6 +27,8 @@
 #include <subsystems/AlgaeSubsystem.h>
 #include <subsystems/CoralSubsystem.h>
 #include <subsystems/L1Subsystem.h>
+#include <subsystems/LEDSubsystem.h>
+#include <subsystems/RollerSubsystem.h>
 
 
 
@@ -52,10 +54,12 @@ class RobotContainer {
   AlgaeSubsystem m_algae;
   CoralSubsystem m_coral;
   L1Subsystem m_l1;
+  LEDSubsystem m_Led;
+  RollerSubsystem m_roller;
 
 
   frc::DigitalInput sensor{0};
-  frc::DigitalInput m_limitSwitch{9};
+  //frc::DigitalInput m_limitSwitch{9};
 
   frc::Timer intake_timer;
 
