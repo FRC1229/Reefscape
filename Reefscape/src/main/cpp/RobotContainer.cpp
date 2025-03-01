@@ -44,6 +44,7 @@
 #include <commands/SetServoPosition.h>
 #include <commands/AutoL1Command.h>
 #include <commands/UpdateLEDCommand.h>
+#include <frc/shuffleboard/Shuffleboard.h>
 
 
 
@@ -69,15 +70,19 @@ RobotContainer::RobotContainer(){
   // m_chooser.AddOption("One Meter", "One meter");
 
 
-  // bool isCompetition = false;
+  bool isCompetition = false;
 
   
-  // autoChooser = AutoBuilder::buildAutoChooserFilter(
-  //   [&isCompetition](const PathPlannerAuto& autoCommand)
-  //   {
-  //     return isCompetition ? autoCommand.GetName().starts_with("comp") : true;
-  //   }
-  // );
+  autoChooser = AutoBuilder::buildAutoChooserFilter(
+    [&isCompetition](const PathPlannerAuto& autoCommand)
+    {
+      return isCompetition ? autoCommand.GetName().starts_with("comp") : true;
+    }
+  );
+
+  frc::SmartDashboard::PutData("Auto Chooser", &autoChooser);
+
+
   NamedCommands::registerCommand("coralTravel",std::move(SetCoralPosition(&m_coral,5).ToPtr())); 
   NamedCommands::registerCommand("coralShootL4",std::move(SetCoralPosition(&m_coral,33).ToPtr()));
   NamedCommands::registerCommand("ElevatorPosL4",std::move(SetElevatorPos(&m_elevator,0.905).ToPtr()));
@@ -325,7 +330,8 @@ frc2::CommandPtr RobotContainer::getAutonomousCommand(){
     // return m_chooser.GetSelected();
     // std::string autonomous = m_chooser.GetSelected();
 
-    return PathPlannerAuto("Left Side L1").ToPtr();
+    // return PathPlannerAuto("Left Side L1").ToPtr();
+    return frc2::CommandPtr(std::unique_ptr<frc2::Command>(autoChooser.GetSelected()));
     // return autoChooser.GetSelected();
 
 }
