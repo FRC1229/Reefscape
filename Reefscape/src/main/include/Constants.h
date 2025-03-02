@@ -77,8 +77,8 @@ namespace CoralConstants{
 }
 
 namespace AutoConstants {
-constexpr auto kMaxSpeed = 2_mps; //4
-constexpr auto kMaxAcceleration = 3_mps_sq;
+constexpr auto kMaxSpeed = 3_mps; //4
+constexpr auto kMaxAcceleration = 4.712_mps_sq;
 constexpr auto kMaxAngularSpeed = 3.142_rad_per_s; //2.142
 constexpr auto kMaxAngularAcceleration = 3.142_rad_per_s_sq;
 

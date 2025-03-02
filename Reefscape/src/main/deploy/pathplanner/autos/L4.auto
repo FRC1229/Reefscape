@@ -30,9 +30,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "coralShootL4"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralShootL4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ElevatorPosL4"
+                }
+              }
+            ]
           }
         },
         {

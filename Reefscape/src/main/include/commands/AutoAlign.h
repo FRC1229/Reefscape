@@ -39,7 +39,7 @@ class AutoAlign
   frc::Joystick* m_joystick;
   double setPoint;
   frc::PIDController alignPid {0.4,0.1,0};
-  frc::PIDController centerPid {0.0,0,0};
+  frc::PIDController centerPid {0.1,0,0};
   frc::PIDController rotationPid {0.1,0.0,0.0};
 
 };

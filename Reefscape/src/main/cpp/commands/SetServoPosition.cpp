@@ -6,7 +6,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 SetServoPosition::SetServoPosition(L1Subsystem* l1, frc::Joystick* joystick) : m_l1(l1),m_joystick(joystick) {
-  CurrentState = a45;
+  CurrentState = a0;
   AddRequirements(m_l1);
   // Use addRequirements() here to declare subsystem dependencies.
 }

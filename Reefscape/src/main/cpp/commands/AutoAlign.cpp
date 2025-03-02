@@ -35,7 +35,7 @@ void AutoAlign::Execute() {
    frc::SmartDashboard::PutNumber("distance", distance);
    frc::SmartDashboard::PutNumber("speed calc", speed);
 
-   m_drive->Drive(units::velocity::meters_per_second_t{speed},units::velocity::meters_per_second_t{centerSpeed},units::angular_velocity::radians_per_second_t{0}, false);
+   m_drive->Drive(units::velocity::meters_per_second_t{0},units::velocity::meters_per_second_t{centerSpeed},units::angular_velocity::radians_per_second_t{0}, false);
 
 
 

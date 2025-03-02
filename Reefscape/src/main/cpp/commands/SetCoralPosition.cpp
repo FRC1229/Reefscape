@@ -26,7 +26,7 @@ void SetCoralPosition::Execute() {
 
 // Called once the command ends or is interrupted.
 void SetCoralPosition::End(bool interrupted) {
-
+  m_coral->m_CoralTilt.Set(0);
   frc::SmartDashboard::PutNumber("I'M CORAL AND I HAVE CANCELED",20);
 }
 

@@ -32,6 +32,9 @@ void SetElevatorPos::Execute() {
 void SetElevatorPos::End(bool interrupted) {
   frc::SmartDashboard::PutNumber("Command Canceled", m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025);
   m_elevator->accelScale = 0;
+  // m_elevator->m_ElevatorMotorBottom.Set(0);
+  // m_elevator->m_ElevatorMotorTop.Set(0);
+
 }
 
 // Returns true when the command should end.
