@@ -92,6 +92,7 @@ RobotContainer::RobotContainer(){
   NamedCommands::registerCommand("L1Shoot",std::move(AutoL1Command(&m_l1,0.5).ToPtr()));
   NamedCommands::registerCommand("L1Intake",std::move(AutoL1Command(&m_l1,0.25).ToPtr()));
   NamedCommands::registerCommand("L1Travel",std::move(AutoL1Command(&m_l1,0.25).ToPtr()));
+  NamedCommands::registerCommand("Coral Intake", std::move(SetCoralPosition(&m_coral,22).toPtr()));
 
 
   
