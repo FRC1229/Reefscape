@@ -66,6 +66,7 @@ RobotContainer::RobotContainer(){
   m_chooser.AddOption("L4", "L4");
   m_chooser.AddOption("processor L1", "Left Side L1");
   m_chooser.AddOption("not processor L1", "Right Side to L1");
+  m_chooser.AddOption("not double L1", "double L1");
   m_chooser.AddOption("L1", "L1");
 
 
