@@ -7,6 +7,7 @@
 
 SetAlgaePosition::SetAlgaePosition(AlgaeSubsystem* algae, double angle): m_algae(algae), m_angle(angle) {
   // Use addRequirements() here to declare subsystem dependencies.
+  AddRequirements(m_algae);
 }
 
 // Called when the command is initially scheduled.

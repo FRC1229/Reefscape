@@ -5,15 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "1M Forward"
+            "name": "ElevatorPosL4"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "coralTravel"
+            "name": "coralShootL4"
           }
         }
       ]

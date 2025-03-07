@@ -20,7 +20,7 @@ m_controller2(
     frc::TrapezoidProfile<units::meters>::Constraints{0.4_mps, 0.4_mps_sq}
 ),
 m_feedforward(0_V, 0.74_V, 2_V/(0.5_mps), 2_V/(0.5_mps_sq)),
-m_controllerPid(8,0.30,0)
+m_controllerPid(9,0.30,0)
 {
 
     m_ElevatorMotorBottom.SetInverted(true);
@@ -56,7 +56,7 @@ void ElevatorSubsystem::SetElevatorPos(double setpoint){
 
     // Set the SetPoints here
     if(accelScale <= 1){
-        accelScale+=0.2;
+        accelScale+=0.1;
     }
 
     double  e1 = m_ElevatorEncoderTop.GetPosition() * 0.025;
@@ -74,7 +74,7 @@ void ElevatorSubsystem::SetElevatorPos(double setpoint){
 
     frc::SmartDashboard::PutNumber("Volt 1", pidCalc1.value());
     frc::SmartDashboard::PutNumber("Volt 2", pidCalc2.value());
-    if(setpoint > 0.05){
+    if(setpoint >= 0.005){
         m_ElevatorMotorTop.SetVoltage(frc::ApplyDeadband((pidCalc1*accelScale)+0.74_V,0_V,1.5_V));
         m_ElevatorMotorBottom.SetVoltage(frc::ApplyDeadband((pidCalc1*accelScale)+0.74_V,0_V,1.5_V));
     }

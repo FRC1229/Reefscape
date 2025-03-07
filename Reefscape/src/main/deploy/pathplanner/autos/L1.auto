@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1M Forward"
+            "pathName": "L1 dump"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "coralTravel"
+            "name": "L1Shoot"
           }
         }
       ]

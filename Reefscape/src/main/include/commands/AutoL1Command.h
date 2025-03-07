@@ -6,9 +6,7 @@
 
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandHelper.h>
-#include <subsystems/DriveSubsystem.h>
-#include <subsystems/VisionSubsystem.h>
-#include <frc/Joystick.h>
+#include <subsystems/L1Subsystem.h>
 
 /**
  * An example command.
@@ -17,13 +15,16 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class AutoAlign
-    : public frc2::CommandHelper<frc2::Command, AutoAlign> {
+class AutoL1Command
+    : public frc2::CommandHelper<frc2::Command, AutoL1Command> {
  public:
   /* You should consider using the more terse Command factories API instead
    * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
    */
-  AutoAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick);
+  AutoL1Command(L1Subsystem* m_l1, double angle);
+
+  L1Subsystem* m_l1;
+  double m_angle;
 
   void Initialize() override;
 
@@ -32,14 +33,4 @@ class AutoAlign
   void End(bool interrupted) override;
 
   bool IsFinished() override;
-
-  private:
-  DriveSubsystem* m_drive;
-  VisionSubsystem* m_vision;
-  frc::Joystick* m_joystick;
-  double setPoint;
-  frc::PIDController alignPid {0.4,0.1,0};
-  frc::PIDController centerPid {0.1,0,0};
-  frc::PIDController rotationPid {0.075,0.0,0.0};
-
 };

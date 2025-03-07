@@ -49,9 +49,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "coralTravel"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "L4 to Intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L1Intake"
+                }
+              }
+            ]
           }
         }
       ]

@@ -6,8 +6,7 @@
 
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandHelper.h>
-#include <subsystems/DriveSubsystem.h>
-#include <subsystems/VisionSubsystem.h>
+#include <subsystems/L1Subsystem.h>
 #include <frc/Joystick.h>
 
 /**
@@ -17,13 +16,24 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class AutoAlign
-    : public frc2::CommandHelper<frc2::Command, AutoAlign> {
+class SetServoPosition
+    : public frc2::CommandHelper<frc2::Command, SetServoPosition> {
  public:
   /* You should consider using the more terse Command factories API instead
    * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
    */
-  AutoAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick);
+  SetServoPosition(L1Subsystem* m_l1, frc::Joystick* joystick);
+
+  L1Subsystem* m_l1;
+  frc::Joystick* m_joystick;
+
+  enum AngleState{
+    a0,
+    a45,
+    a90
+  };
+
+  AngleState CurrentState;
 
   void Initialize() override;
 
@@ -32,14 +42,4 @@ class AutoAlign
   void End(bool interrupted) override;
 
   bool IsFinished() override;
-
-  private:
-  DriveSubsystem* m_drive;
-  VisionSubsystem* m_vision;
-  frc::Joystick* m_joystick;
-  double setPoint;
-  frc::PIDController alignPid {0.4,0.1,0};
-  frc::PIDController centerPid {0.1,0,0};
-  frc::PIDController rotationPid {0.075,0.0,0.0};
-
 };
