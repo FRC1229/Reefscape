@@ -32,7 +32,7 @@
 #include <frc2/command/button/POVButton.h>
 #include "commands/AutoAlign.h"
 #include "commands/RotateTo.h"
-#include "commands/SetElevatorPos.h"
+#include "commands/SetElevatorPos.h"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 #include "commands/ManualElevator.h"
 #include "commands/shootCommand.h"
 #include "commands/ManualAlgae.h"
@@ -49,7 +49,7 @@
 
 using namespace DriveConstants;
 using namespace pathplanner;
-
+frc::Timer m_ledTimer;
 
 RobotContainer::RobotContainer(){
 
@@ -123,7 +123,7 @@ RobotContainer::RobotContainer(){
   m_algae.SetDefaultCommand(ManualAlgae(&m_algae,&m_driverController).ToPtr());
   m_coral.SetDefaultCommand(ManualCoral(&m_coral,&m_copilotController).ToPtr());
   m_l1.SetDefaultCommand(SetServoPosition(&m_l1,&m_driverController).ToPtr());
-  m_Led.SetDefaultCommand(UpdateLEDCommand(&m_Led,&m_driverController,&m_elevator).ToPtr());
+  m_Led.SetDefaultCommand(UpdateLEDCommand(&m_Led,&m_driverController,&m_elevator, &m_ledTimer).ToPtr());
   m_roller.SetDefaultCommand(shootCommand(&m_roller, 0).ToPtr());
   
 
@@ -156,10 +156,6 @@ void RobotContainer::ConfigureButtonBindings() {
 
   frc2::JoystickButton(&m_driverController,7).WhileTrue(shootCommand(&m_roller,-0.70).ToPtr());
   frc2::JoystickButton(&m_driverController,8).WhileTrue(shootCommand(&m_roller,0.70).ToPtr());
-
-  // LED blink
-
-  frc2::JoystickButton(&m_copilotController, 3).WhileTrue(m_Led.Blink());
 
   
 
@@ -205,7 +201,6 @@ void RobotContainer::ConfigureButtonBindings() {
   //Coral
   frc2::JoystickButton(&m_copilotController, 6).WhileTrue(SetCoralPosition(&m_coral,22 ).ToPtr()); // Home pos
   frc2::JoystickButton(&m_copilotController, 8).WhileTrue(SetCoralPosition(&m_coral,5).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
-  frc2::JoystickButton(&m_copilotController, 2).WhileTrue(Blink().ToPtr()); // Change To Desired Button
   // leftTriggerPressed.WhileTrue(SetCoralPosition(&m_coral,10).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
   frc2::JoystickButton(&m_copilotController, 3).WhileTrue(SetCoralPosition(&m_coral, 33).ToPtr());//L4 pos
   rightTriggerPressed.WhileTrue(SetCoralPosition(&m_coral, 29.5).ToPtr());
