@@ -93,7 +93,7 @@ RobotContainer::RobotContainer(){
   NamedCommands::registerCommand("L1Shoot",std::move(AutoL1Command(&m_l1,0.5).ToPtr()));
   NamedCommands::registerCommand("L1Intake",std::move(AutoL1Command(&m_l1,0.25).ToPtr()));
   NamedCommands::registerCommand("L1Travel",std::move(AutoL1Command(&m_l1,0.25).ToPtr()));
-  NamedCommands::registerCommand("Coral Intake", std::move(SetCoralPosition(&m_coral,22).toPtr()));
+  NamedCommands::registerCommand("Coral Intake", std::move(SetCoralPosition(&m_coral,22).ToPtr()));
 
 
   
@@ -157,6 +157,10 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_driverController,7).WhileTrue(shootCommand(&m_roller,-0.70).ToPtr());
   frc2::JoystickButton(&m_driverController,8).WhileTrue(shootCommand(&m_roller,0.70).ToPtr());
 
+  // LED blink
+
+  frc2::JoystickButton(&m_copilotController, 3).WhileTrue(m_Led.Blink());
+
   
 
 
@@ -201,6 +205,7 @@ void RobotContainer::ConfigureButtonBindings() {
   //Coral
   frc2::JoystickButton(&m_copilotController, 6).WhileTrue(SetCoralPosition(&m_coral,22 ).ToPtr()); // Home pos
   frc2::JoystickButton(&m_copilotController, 8).WhileTrue(SetCoralPosition(&m_coral,5).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
+  frc2::JoystickButton(&m_copilotController, 2).WhileTrue(Blink().ToPtr()); // Change To Desired Button
   // leftTriggerPressed.WhileTrue(SetCoralPosition(&m_coral,10).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
   frc2::JoystickButton(&m_copilotController, 3).WhileTrue(SetCoralPosition(&m_coral, 33).ToPtr());//L4 pos
   rightTriggerPressed.WhileTrue(SetCoralPosition(&m_coral, 29.5).ToPtr());

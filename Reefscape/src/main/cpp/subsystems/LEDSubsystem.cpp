@@ -4,7 +4,6 @@
 
 #include "subsystems/LEDSubsystem.h"
 
-
 LEDSubsystem::LEDSubsystem()
 {
     m_led.SetLength(121);
@@ -16,6 +15,7 @@ LEDSubsystem::LEDSubsystem()
 // This method will be called once per scheduler run
 void LEDSubsystem::Periodic() {
 
+
 }
 
 void LEDSubsystem::SetLedColor(int r, int g, int b, int length){
@@ -24,6 +24,26 @@ void LEDSubsystem::SetLedColor(int r, int g, int b, int length){
     }
 
     m_led.SetData(m_ledBuffer);
-
-
 }
+
+void LEDSubsystem::Blink() {
+    m_ledTimer.Start();
+
+    if (m_ledTimer.Get().value() < 0.5){
+        for(int i = 0; i<121;i++){
+            m_ledBuffer[i].SetRGB(255,0,0);
+        }
+    } else if (m_ledTimer.Get().value() > 0.5 && m_ledTimer.Get().value() < 1) {
+        for(int i = 0; i<121;i++){
+            m_ledBuffer[i].SetRGB(0,255,0);
+        }
+        m_ledTimer.Reset();
+    }
+
+    m_led.SetData(m_ledBuffer);
+
+    
+}
+
+
+

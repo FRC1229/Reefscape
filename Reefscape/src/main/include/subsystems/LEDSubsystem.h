@@ -6,8 +6,11 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include <frc/AddressableLED.h>
+#include <frc/LEDPattern.h>
 #include <subsystems/ElevatorSubsystem.h>
 #include <subsystems/AlgaeSubsystem.h>
+#include <frc/Timer.h>
+
 
 class LEDSubsystem : public frc2::SubsystemBase {
  public:
@@ -15,6 +18,10 @@ class LEDSubsystem : public frc2::SubsystemBase {
   ElevatorSubsystem* m_Elevator;
   AlgaeSubsystem* m_algae;
   frc::AddressableLED m_led{8};
+  frc::Timer m_ledTimer;
+  
+
+  
   std::array<frc::AddressableLED::LEDData, 121> m_ledBuffer; 
 
   /**
@@ -22,6 +29,7 @@ class LEDSubsystem : public frc2::SubsystemBase {
    */
   void Periodic() override;
   void SetLedColor(int r, int g, int b, int length);
+  void Blink();
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be

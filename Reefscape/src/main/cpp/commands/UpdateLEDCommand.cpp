@@ -15,7 +15,7 @@
 
 
 
-UpdateLEDCommand::UpdateLEDCommand(LEDSubsystem* LED, frc::Joystick* joystick, ElevatorSubsystem* m_Elevator): m_Led(LED), m_DriveController(joystick), m_Elevator(m_Elevator) {
+UpdateLEDCommand::UpdateLEDCommand(LEDSubsystem* LED, frc::Joystick* joystick,ElevatorSubsystem* m_Elevator): m_Led(LED), m_DriveController(joystick), m_Elevator(m_Elevator) {
 
   // Use addRequirements() here to declare subsystem dependencies.
 
@@ -55,7 +55,6 @@ void UpdateLEDCommand::Execute() {
   else{
       m_Led->SetLedColor(0,0,255,121);
    }
-
 
 
   //   else if(m_Elevator->readEncoder()>0.903 && m_Elevator->readEncoder()<0.907){
