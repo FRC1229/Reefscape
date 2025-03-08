@@ -10,17 +10,24 @@ shootCommand::shootCommand(RollerSubsystem* roller, double speed): m_roller(roll
 }
 
 // Called when the command is initially scheduled.
-void shootCommand::Initialize() {}
+void shootCommand::Initialize() {
+    // Ensure motor is off before starting
+    m_roller->run(0);  
+}
 
 // Called repeatedly when this Command is scheduled to run
 void shootCommand::Execute() {
-
-  m_roller->run(m_speed);
-
+  // Only update speed if necessary (avoids unnecessary CAN bus traffic)
+  if (m_roller->getCurrentSpeed() != m_speed) {
+      m_roller->run(m_speed);
+  }
 }
 
 // Called once the command ends or is interrupted.
-void shootCommand::End(bool interrupted) {}
+void shootCommand::End(bool interrupted) {
+    // Stop motor to prevent unintended movement
+  m_roller->run(0);
+}
 
 // Returns true when the command should end.
 bool shootCommand::IsFinished() {

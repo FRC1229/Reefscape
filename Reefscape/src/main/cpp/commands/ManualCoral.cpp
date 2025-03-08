@@ -4,6 +4,8 @@
 
 #include "commands/ManualCoral.h"
 // #include "frc/sm"
+#include <frc/MathUtil.h> // Required for ApplyDeadband
+
 
 ManualCoral::ManualCoral(CoralSubsystem* coral, frc::Joystick* joy): m_coral(coral), m_CoController(joy) {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -15,28 +17,23 @@ void ManualCoral::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ManualCoral::Execute() {
+    // Get joystick input and apply WPILib deadband function
+    double input = frc::ApplyDeadband(m_CoController->GetRawAxis(1), 0.05);
 
+    // Apply scaling factor
+    double speed = -input * 0.1;
 
-    if(m_CoController->GetRawAxis(1) > 0.05){
-      m_coral->m_CoralTilt.Set(-m_CoController->GetRawAxis(1)*0.1);
-    }
-    else if(m_CoController->GetRawAxis(1) < -0.05){
-      m_coral->m_CoralTilt.Set(-m_CoController->GetRawAxis(1)*0.1);
-    }
-    else{
-      m_coral->m_CoralTilt.Set(0);
-    }
-
-    
-
-
-
+    // Set motor speed
+    m_coral->m_CoralTilt.Set(speed);
 }
 
 // Called once the command ends or is interrupted.
-void ManualCoral::End(bool interrupted) {}
+void ManualCoral::End(bool interrupted) {
+    // Ensure the motor stops when the command ends
+    m_coral->m_CoralTilt.Set(0);
+}
 
 // Returns true when the command should end.
 bool ManualCoral::IsFinished() {
-  return false;
+    return false; // Keeps running until interrupted
 }
