@@ -4,7 +4,7 @@
 
 #include "subsystems/RollerSubsystem.h"
 
-RollerSubsystem::RollerSubsystem():
+RollerSubsystem::RollerSubsystem()
 m_RollerMotor(22, rev::spark::SparkMax::MotorType::kBrushless)
 {
     };
@@ -17,3 +17,8 @@ void RollerSubsystem::Periodic() {
 void RollerSubsystem::run(double speed){
     m_RollerMotor.Set(speed);
 }   
+
+// Stops the roller
+void RollerSubsystem::Stop() {
+    m_RollerMotor.Set(0);
+}
