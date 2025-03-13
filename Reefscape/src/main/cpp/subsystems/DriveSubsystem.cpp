@@ -22,6 +22,7 @@
 #include <iostream>
 #include <math.h>
 #include <LimelightHelpers.h>
+#include <frc/smartdashboard/Field2d.h>
 
 using namespace pathplanner;
 using namespace DriveConstants;
@@ -99,11 +100,30 @@ void DriveSubsystem::Periodic() {
                     {m_frontLeft.GetPosition(), m_rearLeft.GetPosition(),
                      m_frontRight.GetPosition(), m_rearRight.GetPosition()});
 
+
+  if(m_vision.seeTarget()){
+    m_odometry.AddVisionMeasurement(m_vision.getCameraRobotPose(), frc::Timer::GetFPGATimestamp());
+  }
+
+
+
+  m_field.SetRobotPose(m_odometry.GetEstimatedPosition());
+
+
   frc::SmartDashboard::PutNumber("gyro", m_gyro.GetYaw().GetValue().value());
   frc::SmartDashboard::PutNumber("POSEX", m_odometry.GetEstimatedPosition().X().value());
   frc::SmartDashboard::PutNumber("POSEY", m_odometry.GetEstimatedPosition().Y().value());
 
-  frc::Pose2d visionPose = LimelightHelpers::toPose2D(LimelightHelpers::getBotpose());
+  frc::SmartDashboard::PutNumber("Vision X", m_vision.getCameraRobotPose().X().value());
+  frc::SmartDashboard::PutNumber("Vision Y", m_vision.getCameraRobotPose().Y().value());
+
+
+
+  // frc::Pose2d visionPose = LimelightHelpers::toPose2D(LimelightHelpers::getBotpose());
+
+
+
+
   //m_odometry.AddVisionMeasurement(visionPose, frc::Timer::GetFPGATimestamp());
 
 

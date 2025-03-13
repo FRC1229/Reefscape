@@ -13,6 +13,8 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
+#include <frc/Timer.h>
+
 
 
 UpdateLEDCommand::UpdateLEDCommand(LEDSubsystem* LED, frc::Joystick* joystick, ElevatorSubsystem* m_Elevator): m_Led(LED), m_DriveController(joystick), m_Elevator(m_Elevator) {
@@ -37,10 +39,10 @@ void UpdateLEDCommand::Execute() {
 
   frc::SmartDashboard::PutNumber("LED ELEVATOR",m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025);
 
-  if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.322 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.332){
+  if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.365 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.397){
      m_Led->SetLedColor(51,201,199,121);
   }
-  else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.004 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.06){
+  else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.06){
      m_Led->SetLedColor(51,0,199,121);
   }
   else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.904 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.906){
@@ -52,9 +54,6 @@ void UpdateLEDCommand::Execute() {
   else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.765 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.775){
      m_Led->SetLedColor(51,0,0,121);
   }
-  else{
-      m_Led->SetLedColor(0,0,255,121);
-   }
 
 
 

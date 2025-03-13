@@ -21,6 +21,8 @@
 #include "Constants.h"
 #include "SwerveModule.h"
 #include <studica/AHRS.h>
+#include <subsystems/VisionSubsystem.h>
+#include <frc/smartdashboard/Field2d.h>
 
 
 class DriveSubsystem : public frc2::SubsystemBase {
@@ -35,6 +37,10 @@ class DriveSubsystem : public frc2::SubsystemBase {
   SwerveModule m_rearLeft;
   SwerveModule m_frontRight;
   SwerveModule m_rearRight;
+
+  VisionSubsystem m_vision;
+
+  frc::Field2d m_field;
 
   frc::SlewRateLimiter<units::scalar> x_speedLimiter{10 / 1_s};
   frc::SlewRateLimiter<units::scalar> y_speedLimiter{10 / 1_s};

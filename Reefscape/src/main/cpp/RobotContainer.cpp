@@ -68,6 +68,7 @@ RobotContainer::RobotContainer(){
   m_chooser.AddOption("not processor L1", "Right Side to L1");
   m_chooser.AddOption("not double L1", "double L1");
   m_chooser.AddOption("L1", "L1");
+  m_chooser.AddOption("AutoAlign Test", "AutoAlign Test");
 
 
   m_chooser.SetDefaultOption("L4", "L4");   
@@ -93,7 +94,8 @@ RobotContainer::RobotContainer(){
   NamedCommands::registerCommand("L1Shoot",std::move(AutoL1Command(&m_l1,0.5).ToPtr()));
   NamedCommands::registerCommand("L1Intake",std::move(AutoL1Command(&m_l1,0.25).ToPtr()));
   NamedCommands::registerCommand("L1Travel",std::move(AutoL1Command(&m_l1,0.25).ToPtr()));
-  NamedCommands::registerCommand("Coral Intake", std::move(SetCoralPosition(&m_coral,22).toPtr()));
+  NamedCommands::registerCommand("Coral Intake", std::move(SetCoralPosition(&m_coral,22).ToPtr()));
+  NamedCommands::registerCommand("Autoalign", std::move(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr()));
 
 
   
@@ -151,7 +153,37 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_driverController, 4).OnTrue(frc2::cmd::RunOnce([this]{m_drive.ZeroHeading();}));
   frc2::JoystickButton(&m_driverController, 6).OnTrue(frc2::cmd::RunOnce([this]{m_drive.GetCurrentCommand()->Cancel();}));
   // frc2::JoystickButton(&m_driverController,2).OnTrue(RotateTo(&m_drive,&m_driverController,45).ToPtr());
+
+
+  frc::Pose2d targetPose = frc::Pose2d(1.27_m, 1.56_m, frc::Rotation2d(225_deg));
+
+  frc::Pose2d targetPose2 = frc::Pose2d(5.99_m, 0.6_m, frc::Rotation2d(270_deg));
+
+  pathplanner::PathConstraints Constraints = pathplanner::PathConstraints(
+    units::meters_per_second_t{2.0}, units::meters_per_second_squared_t{2.0},
+    units::degrees_per_second_t{540},units::degrees_per_second_squared_t{720}
+
+  );
+
+  frc2::CommandPtr pathfindingCommand = pathplanner::AutoBuilder::pathfindToPose(
+    targetPose,
+    Constraints,
+    0.0_mps
+  );
+
+  frc2::CommandPtr pathfindingCommand2 = pathplanner::AutoBuilder::pathfindToPose(
+    targetPose2,
+    Constraints,
+    0.0_mps
+  );
+
+  // Use to get close but pid in after for accuracte
+  
   frc2::JoystickButton(&m_driverController,1).WhileTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
+
+  frc2::POVButton(&m_driverController,90).WhileTrue(std::move(pathfindingCommand));
+  frc2::POVButton(&m_driverController,270).WhileTrue(std::move(pathfindingCommand2));
+
   //DriverleftTriggerPressed.WhileTrue(UpdateLEDCommand(m_Led).ToPtr());
 
   frc2::JoystickButton(&m_driverController,7).WhileTrue(shootCommand(&m_roller,-0.70).ToPtr());
@@ -199,7 +231,7 @@ void RobotContainer::ConfigureButtonBindings() {
 
 
   //Coral
-  frc2::JoystickButton(&m_copilotController, 6).WhileTrue(SetCoralPosition(&m_coral,22 ).ToPtr()); // Home pos
+  frc2::JoystickButton(&m_copilotController, 6).WhileTrue(SetCoralPosition(&m_coral,23 ).ToPtr()); // Home pos
   frc2::JoystickButton(&m_copilotController, 8).WhileTrue(SetCoralPosition(&m_coral,5).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
   // leftTriggerPressed.WhileTrue(SetCoralPosition(&m_coral,10).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
   frc2::JoystickButton(&m_copilotController, 3).WhileTrue(SetCoralPosition(&m_coral, 33).ToPtr());//L4 pos

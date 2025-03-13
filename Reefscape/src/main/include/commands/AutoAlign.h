@@ -8,7 +8,18 @@
 #include <frc2/command/CommandHelper.h>
 #include <subsystems/DriveSubsystem.h>
 #include <subsystems/VisionSubsystem.h>
+#include <subsystems/DriveSubsystem.h>
+#include <subsystems/SwerveModule.h>
+#include <frc/geometry/Pose2d.h>
+#include <frc/geometry/Rotation2d.h>
+#include <frc/kinematics/ChassisSpeeds.h>
+#include <frc/kinematics/SwerveDriveKinematics.h>
+#include <frc/kinematics/SwerveDriveOdometry.h>
+#include <frc/estimator/SwerveDrivePoseEstimator.h>
 #include <frc/Joystick.h>
+#include <ctre/phoenix6/Pigeon2.hpp>
+#include <studica/AHRS.h>
+
 
 /**
  * An example command.
@@ -34,12 +45,23 @@ class AutoAlign
   bool IsFinished() override;
 
   private:
+
+
+  // ctre::phoenix6::hardware::Pigeon2 m_gyro {14};
+
   DriveSubsystem* m_drive;
   VisionSubsystem* m_vision;
   frc::Joystick* m_joystick;
+  int lastTag;
+
+  
+
   double setPoint;
   frc::PIDController alignPid {0.4,0.1,0};
-  frc::PIDController centerPid {0.1,0,0};
-  frc::PIDController rotationPid {0.075,0.0,0.0};
+
+  frc::PIDController centerPid {0.75,0,0};
+
+  frc::PIDController rotationPid {0.2,0.0,0.00};
+  
 
 };

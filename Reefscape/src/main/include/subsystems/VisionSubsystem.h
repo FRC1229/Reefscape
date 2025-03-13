@@ -1,33 +1,56 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+#include <photon/PhotonCamera.h>
+#include <photon/PhotonPoseEstimator.h>
+#include <photon/PhotonUtils.h>
 #include <vector>
 #include <map>
 
 class VisionSubsystem : public frc2::SubsystemBase {
     public:
-    
-        std::map<int, double> aprilTagAngles;
-        std::map<int,double> aprilTagDistance;
 
         VisionSubsystem();
-        
+
+        photon::PhotonCamera camera{"1229_Camera"};
+        std::unique_ptr<photon::PhotonPoseEstimator> poseEstimator;
+        frc::Transform3d RobotToCamera;
+        frc::Pose2d currentPose;
+        frc::AprilTagFieldLayout tagLayout;
+
+
         void Periodic() override;
         void putShuffleboard();
+        frc::Pose2d getPose();
+        std::map<int, frc::Pose2d> targetPoses;
+
+        frc::Pose2d GetUpdatePose();
+
         
-        
-        double getTX();
+        photon::PhotonPipelineResult getResult();
+        photon::PhotonTrackedTarget BestResult();
+
+        frc::AprilTagFieldLayout layout = frc::LoadAprilTagLayoutField(frc::AprilTagField::k2025ReefscapeAndyMark);
+
+        frc::Transform2d cameraToRobot = frc::Transform2d{
+            units::meter_t{-0.27},
+            units::meter_t{0},
+            frc::Rotation2d(units::degree_t{0})
+        };
+
+        bool seeTarget();
+        double getYaw();
         double getTY();
+        double getYmeters();
+        double getXmeters();
+        double getZAngle();
+        frc::Pose2d getCameraRobotPose();
+
         int getID();
         double getDistance(double targetHeight);
-        std::vector<double> getPose();
+        double getYawfromPose();
+     
         
       
-        double getTXLeft();
-        double getTXRight();
-        double getTYLeft();
-        double getTYRight();
-        std::vector<double> getPoseLeft();
-        std::vector<double> getPoseRight();
+       
 };
-
