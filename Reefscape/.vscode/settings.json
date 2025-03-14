@@ -23,6 +23,7 @@
     "system_error": "cpp",
     "regex": "cpp",
     "iterator": "cpp",
-    "vector": "cpp"
+    "vector": "cpp",
+    "*.inc": "cpp"
   }
 }

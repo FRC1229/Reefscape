@@ -20,7 +20,6 @@
 #include <ctre/phoenix6/Pigeon2.hpp>
 #include <studica/AHRS.h>
 
-
 /**
  * An example command.
  *
@@ -28,13 +27,27 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class AutoAlign
-    : public frc2::CommandHelper<frc2::Command, AutoAlign> {
+class AutoLastAlign
+    : public frc2::CommandHelper<frc2::Command, AutoLastAlign> {
  public:
   /* You should consider using the more terse Command factories API instead
    * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
    */
-  AutoAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick);
+  AutoLastAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick);
+
+  DriveSubsystem* m_drive;
+  VisionSubsystem* m_vision;
+  frc::Joystick* m_joystick;
+
+
+  double setPoint;
+  frc::PIDController alignPid {0.4,0.1,0};
+
+  frc::PIDController centerPid {0.75,0,0};
+
+  frc::PIDController rotationPid {0.2,0.0,0.00};
+  
+
 
   void Initialize() override;
 
@@ -43,25 +56,4 @@ class AutoAlign
   void End(bool interrupted) override;
 
   bool IsFinished() override;
-
-  private:
-
-
-  // ctre::phoenix6::hardware::Pigeon2 m_gyro {14};
-
-  DriveSubsystem* m_drive;
-  VisionSubsystem* m_vision;
-  frc::Joystick* m_joystick;
-
-  
-
-  double setPoint;
-  double error = 0.02;
-  frc::PIDController alignPid {0.4,0.1,0};
-
-  frc::PIDController centerPid {0.75,0,0};
-
-  frc::PIDController rotationPid {0.1,0.0,0.00};
-  
-
 };

@@ -9,7 +9,8 @@
 VisionSubsystem::VisionSubsystem() {
 
     targetPoses[18] = frc::Pose2d(3.19_m, 4.03_m, frc::Rotation2d(0_deg));
-    targetPoses[17] = frc::Pose2d(3.79_m, 2.81_m, frc::Rotation2d(60_deg));
+    targetPoses[17] = frc::Pose2d(3.963_m, 2.906_m, frc::Rotation2d(60_deg)); //3.79, 2.81
+    // targetPoses[22] = frc::Pose2d(3.79_m, 2.81_m, frc::Rotation2d(60_deg));
     // targetPoses[16] = frc::Pose2d()
 
    

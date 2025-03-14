@@ -31,6 +31,7 @@
 #include <frc2/command/SequentialCommandGroup.h>
 #include <frc2/command/button/POVButton.h>
 #include "commands/AutoAlign.h"
+#include "commands/AutoLastAlign.h"
 #include "commands/RotateTo.h"
 #include "commands/SetElevatorPos.h"
 #include "commands/ManualElevator.h"
@@ -69,6 +70,7 @@ RobotContainer::RobotContainer(){
   m_chooser.AddOption("not double L1", "double L1");
   m_chooser.AddOption("L1", "L1");
   m_chooser.AddOption("AutoAlign Test", "AutoAlign Test");
+  m_chooser.AddOption("Algae Movements", "Algae Movements");
 
 
   m_chooser.SetDefaultOption("L4", "L4");   
@@ -90,6 +92,7 @@ RobotContainer::RobotContainer(){
   NamedCommands::registerCommand("coralTravel",std::move(SetCoralPosition(&m_coral,5).ToPtr())); 
   NamedCommands::registerCommand("coralShootL4",std::move(SetCoralPosition(&m_coral,33).ToPtr()));
   NamedCommands::registerCommand("ElevatorPosL4",std::move(SetElevatorPos(&m_elevator,0.905).ToPtr()));
+  NamedCommands::registerCommand("ElevatorPosL3",std::move(SetElevatorPos(&m_elevator,0.414).ToPtr()));
   NamedCommands::registerCommand("ElevatorPosHome",std::move(SetElevatorPos(&m_elevator,0.005).ToPtr()));
   NamedCommands::registerCommand("L1Shoot",std::move(AutoL1Command(&m_l1,0.5).ToPtr()));
   NamedCommands::registerCommand("L1Intake",std::move(AutoL1Command(&m_l1,0.25).ToPtr()));
@@ -97,6 +100,20 @@ RobotContainer::RobotContainer(){
   NamedCommands::registerCommand("Coral Intake", std::move(SetCoralPosition(&m_coral,22).ToPtr()));
   NamedCommands::registerCommand("Autoalign", std::move(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr()));
 
+  NamedCommands::registerCommand("AlgaeGrab", 
+  frc2::cmd::Parallel(
+        shootCommand(&m_roller, 0.4).ToPtr(),
+        SetAlgaePosition(&m_algae,20).ToPtr()
+  ));
+
+  NamedCommands::registerCommand("AlgaeShoot", 
+  frc2::cmd::Parallel(
+        shootCommand(&m_roller, -0.7).ToPtr(),
+        SetAlgaePosition(&m_algae,20).ToPtr()
+  ));
+
+
+  NamedCommands::registerCommand("AlgaeHome", SetAlgaePosition(&m_algae,2).ToPtr());
 
   
 
@@ -180,6 +197,9 @@ void RobotContainer::ConfigureButtonBindings() {
   // Use to get close but pid in after for accuracte
   
   frc2::JoystickButton(&m_driverController,1).WhileTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
+
+  frc2::JoystickButton(&m_driverController,3).WhileTrue(AutoLastAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
+
 
   frc2::POVButton(&m_driverController,90).WhileTrue(std::move(pathfindingCommand));
   frc2::POVButton(&m_driverController,270).WhileTrue(std::move(pathfindingCommand2));

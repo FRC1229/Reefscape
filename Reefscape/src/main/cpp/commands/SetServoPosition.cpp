@@ -39,7 +39,7 @@ void SetServoPosition::Execute() {
   switch (CurrentState)
   {
   case a45:
-    m_l1->SetAngle(0.25);
+    m_l1->SetAngle(0.15);
     break;
   
   case a0:

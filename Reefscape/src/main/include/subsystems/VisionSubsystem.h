@@ -17,6 +17,7 @@ class VisionSubsystem : public frc2::SubsystemBase {
         frc::Transform3d RobotToCamera;
         frc::Pose2d currentPose;
         frc::AprilTagFieldLayout tagLayout;
+        int lastTag;
 
 
         void Periodic() override;
