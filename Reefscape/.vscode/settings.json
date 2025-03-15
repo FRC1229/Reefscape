@@ -22,6 +22,8 @@
     "optional": "cpp",
     "system_error": "cpp",
     "regex": "cpp",
-    "iterator": "cpp"
+    "iterator": "cpp",
+    "vector": "cpp",
+    "*.inc": "cpp"
   }
 }

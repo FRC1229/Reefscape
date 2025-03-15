@@ -5,6 +5,7 @@
 #include <cameraserver/CameraServer.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
+#include <subsystems/VisionSubsystem.h>
 
 
 void Robot::RobotInit() {
@@ -45,6 +46,22 @@ void Robot::RobotPeriodic() {
   frc::SmartDashboard::PutNumber("Algae Angle", m_container.m_algae.GetAngle());
 
   frc::SmartDashboard::PutNumber("Current Goal", m_container.m_elevator.m_controller.GetGoal().position.value());
+
+
+  frc::SmartDashboard::PutData("Field", &m_container.m_drive.m_field);
+
+  
+
+  // frc::SmartDashboard::PutNumber("camera Yaw", m_container.m_vision.getYaw());
+    // frc::SmartDashboard::PutNumber("Y meters", m_container.m_vision.getYmeters());
+    // frc::SmartDashboard::PutNumber("X meters", m_container.m_vision.getXmeters());
+    // frc::SmartDashboard::PutNumber("Z meters", m_container.m_vision.getZAngle());
+
+
+  // frc::SmartDashboard::PutNumber("Est Pose X", m_container.m_vision.GetUpdatePose().X().value());
+  // frc::SmartDashboard::PutNumber("Est Pose Y", m_container.m_vision.GetUpdatePose().Y().value());
+
+
 
 
   frc2::CommandScheduler::GetInstance().Run();

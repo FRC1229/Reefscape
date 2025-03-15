@@ -24,7 +24,7 @@ class CoralSubsystem : public frc2::SubsystemBase {
    * Will be called periodically whenever the CommandScheduler runs.
    * 
    */
-  frc::PIDController m_coralController {0.19,0,0};
+  frc::PIDController m_coralController {0.2,0,0};
   void Periodic() override;
   double GetAngle();
   void MoveToAngle(double angle);
