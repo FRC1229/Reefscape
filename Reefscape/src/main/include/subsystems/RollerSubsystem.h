@@ -17,6 +17,7 @@ class RollerSubsystem : public frc2::SubsystemBase {
    */
   void Periodic() override;
   void run(double speed);
+  void Stop();
 
 
  private:

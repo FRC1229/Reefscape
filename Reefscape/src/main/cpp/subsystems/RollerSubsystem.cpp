@@ -5,9 +5,9 @@
 #include "subsystems/RollerSubsystem.h"
 
 RollerSubsystem::RollerSubsystem()
-m_RollerMotor(22, rev::spark::SparkMax::MotorType::kBrushless)
+: m_RollerMotor(22, rev::spark::SparkMax::MotorType::kBrushless)
 {
-    };
+    }
 
 // This method will be called once per scheduler run
 void RollerSubsystem::Periodic() {
