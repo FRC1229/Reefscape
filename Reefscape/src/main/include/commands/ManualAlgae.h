@@ -24,15 +24,17 @@ class ManualAlgae
    * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
    */
   ManualAlgae(AlgaeSubsystem* algae, frc::Joystick* m_joystick);
-
   AlgaeSubsystem* m_algae;
   frc::Joystick* m_CoController;
 
   void Initialize() override;
-
   void Execute() override;
-
   void End(bool interrupted) override;
-
   bool IsFinished() override;
+
+ private:
+
+  const int m_TiltAxis = 1; // Y-axis; adjust based on your joystick configuration
+  const double m_Deadband = 0.05;
+  const double m_SpeedMultiplier = 0.5; // Adjust for desired sensitivity
 };

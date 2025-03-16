@@ -14,8 +14,6 @@ m_AlgaeTiltEncoder(m_AlgaeTiltMotor.GetEncoder())
 // This method will be called once per scheduler run
 void AlgaeSubsystem::Periodic() {}
 
-
-
 void AlgaeSubsystem::ManualTilt(){
 
 }
@@ -29,3 +27,17 @@ void AlgaeSubsystem::MoveToAngle(double angle){
     m_AlgaeTiltMotor.SetVoltage(units::volt_t{volt});
 
 }
+
+void AlgaeSubsystem::SetTiltSpeed(double speed) {
+  double currentAngle = GetAngle();
+
+  // Check if the desired movement is within the allowable range
+  if ((currentAngle <= m_MinAngle && speed < 0) ||
+      (currentAngle >= m_MaxAngle && speed > 0)) {
+    // Stop the motor if it's about to move beyond the limits
+    m_AlgaeTiltMotor.Set(0.0);
+  } else {
+    m_AlgaeTiltMotor.Set(speed);
+  }
+}
+
