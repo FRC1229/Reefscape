@@ -5,7 +5,14 @@
 #include "commands/ManualElevator.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 
-ManualElevator::ManualElevator(ElevatorSubsystem* elevator, frc::Joystick* m_controller): m_elevator(elevator),m_CoController(m_controller) {
+constexpr double kJoystickDeadband = 0.05;
+constexpr double kElevatorSpeedFactor = 0.20;
+constexpr double kElevatorMaxHeight = 0.95; // meters
+constexpr double kElevatorMinHeight = 0.0;  // meters
+constexpr units::volt_t kFeedforwardVoltage{0.74};
+
+ManualElevator::ManualElevator(ElevatorSubsystem* elevator, frc::Joystick* controller)
+    : m_elevator(elevator), m_controller(controller)  {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(m_elevator);
 }
@@ -15,64 +22,54 @@ void ManualElevator::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ManualElevator::Execute() {
-  if(m_CoController->GetRawAxis(5) > 0.05){
+    double joystickValue = ApplyDeadband(m_controller->GetRawAxis(5));
 
-    // if(m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025 < 0.95){
+  double currentHeight = GetElevatorHeight();
 
-    if(m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025 > 0){
-      
-      m_elevator->m_ElevatorMotorTop.Set(-m_CoController->GetRawAxis(5)*0.20);
-      m_elevator->m_ElevatorMotorBottom.Set(-m_CoController->GetRawAxis(5)*0.20);
+  if (joystickValue > 0 && currentHeight < kElevatorMaxHeight) {
+    // Moving up
+    SetElevatorSpeed(-joystickValue * kElevatorSpeedFactor);
+  } else if (joystickValue < 0 && currentHeight > kElevatorMinHeight) {
+    // Moving down
+    SetElevatorSpeed(-joystickValue * kElevatorSpeedFactor);
+  } else {
+    // Hold position with feedforward
+    m_elevator->m_controller.SetGoal(m_elevator->currentPos);
 
-    }
-    
-    m_elevator->currentPos = {units::meter_t{m_elevator->m_ElevatorEncoderTop.GetPosition()*0.025},0_mps};
-    m_elevator->currentPos2 = {units::meter_t{m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025},0_mps};
-    // }
-    // else{
-    //   m_elevator->m_ElevatorMotorTop.Set(0);
-    //   m_elevator->m_ElevatorMotorBottom.Set(0);
-    // }
+    frc::ElevatorFeedforward feedforward{0_V, kFeedforwardVoltage, 2_V / (0.5_mps), 2_V / (0.5_mps_sq)};
+    units::volt_t feedforwardCalc = feedforward.Calculate(m_elevator->m_controller.GetSetpoint().velocity);
+
+    SetElevatorVoltage(feedforwardCalc);
+
+    frc::SmartDashboard::PutNumber("Current Position", m_elevator->currentPos.position.value());
+    frc::SmartDashboard::PutNumber("Feedforward Voltage", feedforwardCalc.value());
   }
-  else if(m_CoController->GetRawAxis(5) < -0.05){
-   
-    m_elevator->m_ElevatorMotorTop.Set(-m_CoController->GetRawAxis(5)*0.20);
-    m_elevator->m_ElevatorMotorBottom.Set(-m_CoController->GetRawAxis(5)*0.20);
-
-    m_elevator->currentPos = {units::meter_t{m_elevator->m_ElevatorEncoderTop.GetPosition()*0.025},0_mps};
-    m_elevator->currentPos2 = {units::meter_t{m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025},0_mps};
-
-  }
-  else{
-    
-    m_elevator->m_controller.SetGoal(m_elevator->currentPos); 
-
-    frc::ElevatorFeedforward m_feedforward(0_V, 0.74_V, 2_V/(0.5_mps), 2_V/(0.5_mps_sq)); 
-
-    units::volt_t feedForwardCalc = m_feedforward.Calculate(m_elevator->m_controller.GetSetpoint().velocity);
-
-    // m_elevator->m_ElevatorMotorTop.SetVoltage(feedForwardCalc);
-    // m_elevator->m_ElevatorMotorBottom.SetVoltage(feedForwardCalc);
-
-    frc::SmartDashboard::PutNumber("current pos", m_elevator->currentPos.position.value());
-    frc::SmartDashboard::PutNumber("feedFoward volt", feedForwardCalc.value());
-    
-   
-    if(m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025 > 0.05){
-      m_elevator->m_ElevatorMotorTop.SetVoltage(units::volt_t{0.74});
-      m_elevator->m_ElevatorMotorBottom.SetVoltage(units::volt_t{0.74});
-    }
-
-
-
-  }
-
 }
 
 // Called once the command ends or is interrupted.
-void ManualElevator::End(bool interrupted) {}
+void ManualElevator::End(bool interrupted) {
+  SetElevatorSpeed(0.0);
+}
 
 // Returns true when the command should end.
 bool ManualElevator::IsFinished() {
   return false;
+}
+
+double ManualElevator::ApplyDeadband(double value) {
+  return (std::abs(value) > kJoystickDeadband) ? value : 0.0;
+}
+
+double ManualElevator::GetElevatorHeight() {
+  return m_elevator->m_ElevatorEncoderBottom.GetPosition() * 0.025;
+}
+
+void ManualElevator::SetElevatorSpeed(double speed) {
+  m_elevator->m_ElevatorMotorTop.Set(speed);
+  m_elevator->m_ElevatorMotorBottom.Set(speed);
+}
+
+void ManualElevator::SetElevatorVoltage(units::volt_t voltage) {
+  m_elevator->m_ElevatorMotorTop.SetVoltage(voltage);
+  m_elevator->m_ElevatorMotorBottom.SetVoltage(voltage);
 }

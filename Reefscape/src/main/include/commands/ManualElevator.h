@@ -6,6 +6,7 @@
 
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandHelper.h>
+#include <frc2/command/SubsystemBase.h>
 #include "subsystems/ElevatorSubsystem.h"
 #include <frc/Joystick.h>
 /**
@@ -23,9 +24,6 @@ class ManualElevator
    */
   ManualElevator(ElevatorSubsystem* elevator, frc::Joystick* m_joystick);
 
-  ElevatorSubsystem* m_elevator;
-  frc::Joystick* m_CoController;
-
   void Initialize() override;
 
   void Execute() override;
@@ -33,4 +31,14 @@ class ManualElevator
   void End(bool interrupted) override;
 
   bool IsFinished() override;
+
+private:
+  double ApplyDeadband(double value);
+  double GetElevatorHeight();
+  void SetElevatorSpeed(double speed);
+  void SetElevatorVoltage(units::volt_t voltage);
+
+  ElevatorSubsystem* m_elevator;
+  frc::Joystick* m_controller;
+
 };
