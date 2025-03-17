@@ -1,44 +1,40 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #include "Commands/SetElevatorPos.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/controller/ProfiledPIDController.h>
+#include <frc/controller/ElevatorFeedforward.h>
+#include <frc/trajectory/TrapezoidProfile.h>
 
-SetElevatorPos::SetElevatorPos(ElevatorSubsystem* subsystem, double dis) : m_elevator(subsystem), distance(dis) {
-  // Use addRequirements() here to declare subsystem dependencies.
+SetElevatorPos::SetElevatorPos(ElevatorSubsystem* subsystem, double targetPosition)
+    : m_elevator(subsystem), m_targetPosition(targetPosition),
+      m_controller(
+          frc::TrapezoidProfile<units::meters>::Constraints{
+              units::meters_per_second_t(kMaxVelocity),
+              units::meters_per_second_squared_t(kMaxAcceleration)},
+          0.0) {
   AddRequirements({subsystem});
 }
 
-// Called when the command is initially scheduled.
-void SetElevatorPos::Initialize() {}
+void SetElevatorPos::Initialize() {
+  m_controller.SetGoal(m_targetPosition);
+}
 
-// Called repeatedly when this Command is scheduled to run
 void SetElevatorPos::Execute() {
-  // if({
-  //   Cancel();
-  //   // m_drive->Drive(units::velocity::meters_per_second_t(0), units::velocity::meters_per_second_t(0), units::angular_velocity::radians_per_second_t(-rotationCalc), true);
-  // }
-  // m_elevator->goal = {0.5_m,0_mps};
-  // m_elevator->currentPos = distance;
-  // m_elevator->currentPos2 = {units::meter_t{m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025},0_mps};
-  
-  m_elevator->SetElevatorPos(distance);
-  
+  double currentPosition = m_elevator->GetCurrentHeight();
+  auto profileState = m_controller.Calculate(currentPosition);
+
+  double pidOutput = m_controller.Calculate(currentPosition);
+  double feedforward = m_feedforward.Calculate(profileState.velocity);
+
+  m_elevator->SetMotorOutput(pidOutput + feedforward);
+
+  frc::SmartDashboard::PutNumber("Elevator Position", currentPosition);
+  frc::SmartDashboard::PutNumber("Elevator Velocity", profileState.velocity.to<double>());
 }
 
-
-// Called once the command ends or is interrupted.
 void SetElevatorPos::End(bool interrupted) {
-  frc::SmartDashboard::PutNumber("Command Canceled", m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025);
-  m_elevator->accelScale = 0;
-  // m_elevator->m_ElevatorMotorBottom.Set(0);
-  // m_elevator->m_ElevatorMotorTop.Set(0);
-
+  m_elevator->SetMotorOutput(0.0);
 }
 
-// Returns true when the command should end.
 bool SetElevatorPos::IsFinished() {
-  // return false;
-  return ((distance + 0.001) > m_elevator->m_ElevatorEncoderBottom.GetPosition() * 0.025 && m_elevator->m_ElevatorEncoderBottom.GetPosition() * 0.025 > (distance - 0.001));
+  return m_controller.AtGoal();
 }

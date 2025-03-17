@@ -6,32 +6,26 @@
 
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandHelper.h>
-#include <subsystems/ElevatorSubsystem.h>
+#include "subsystems/ElevatorSubsystem.h"
 
-/**
- * An example command.
- *
- * <p>Note that this extends CommandHelper, rather extending Command
- * directly; this is crucially important, or else the decorator functions in
- * Command will *not* work!
- */
 class SetElevatorPos
     : public frc2::CommandHelper<frc2::Command, SetElevatorPos> {
  public:
-  /* You should consider using the more terse Command factories API instead
-   * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
+  /**
+   * Constructor for SetElevatorPos command.
+   *
+   * @param elevator The elevator subsystem used by this command.
+   * @param targetPosition The desired elevator position in meters.
    */
-  SetElevatorPos(ElevatorSubsystem* Elevator,double distance);
+  SetElevatorPos(ElevatorSubsystem* elevator, double targetPosition);
 
   void Initialize() override;
-
   void Execute() override;
-
   void End(bool interrupted) override;
-
   bool IsFinished() override;
 
-  private:
+ private:
   ElevatorSubsystem* m_elevator;
-  double distance;
+  double m_targetPosition;
+  static constexpr double kPositionTolerance = 0.001; // Tolerance in meters
 };
