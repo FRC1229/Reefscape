@@ -3,7 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "subsystems/LEDSubsystem.h"
+#include <frc/LEDPattern.h>
 
+frc::AddressableLED m_led   {8};
+std::array<frc::AddressableLED::LEDData, kLength>
+    m_ledBuffer;
 
 LEDSubsystem::LEDSubsystem()
 {
@@ -26,4 +30,24 @@ void LEDSubsystem::SetLedColor(int r, int g, int b, int length){
     m_led.SetData(m_ledBuffer);
 
 
+}
+
+void Rainbow(int saturation, int value){
+    units::meter_t kLedSpacing{1 / 120.0};
+    frc::LEDPattern m_rainbow = frc::LEDPattern::Rainbow(255, 128);
+      frc::LEDPattern m_scrollingRainbow =
+      m_rainbow.ScrollAtAbsoluteSpeed(1_mps, kLedSpacing);
+      m_scrollingRainbow.ApplyTo(m_ledBuffer);
+      m_led.SetData(m_ledBuffer);
+}
+
+void ScrollEffect(){
+    std::array<std::pair<double, frc::Color>, 2> maskSteps{std::pair{0.0, frc::Color::kBlue},
+                                                  std::pair{0.1, frc::Color::kBlack}};
+  frc::LEDPattern base = frc::LEDPattern::Rainbow(255, 255);
+  frc::LEDPattern mask = frc::LEDPattern::Steps(maskSteps).ScrollAtRelativeSpeed(units::hertz_t{0.25});
+
+  frc::LEDPattern pattern =  base.Mask(mask);
+  pattern.ApplyTo(m_ledBuffer);  
+  m_led.SetData(m_ledBuffer);
 }

@@ -8,6 +8,13 @@
 #include <frc/AddressableLED.h>
 #include <subsystems/ElevatorSubsystem.h>
 #include <subsystems/AlgaeSubsystem.h>
+#include <frc/LEDPattern.h>
+
+static constexpr int kLength = 120;
+
+extern frc::AddressableLED m_led;
+extern std::array<frc::AddressableLED::LEDData, kLength>
+    m_ledBuffer;
 
 class LEDSubsystem : public frc2::SubsystemBase {
  public:
@@ -22,6 +29,8 @@ class LEDSubsystem : public frc2::SubsystemBase {
    */
   void Periodic() override;
   void SetLedColor(int r, int g, int b, int length);
+  void Rainbow(int saturation, int value);
+  void ScrollEffect();
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be
