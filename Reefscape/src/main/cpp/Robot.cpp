@@ -83,9 +83,7 @@ void Robot::RobotPeriodic() {
  * can use it to reset any subsystem information you want to clear when the
  * robot is disabled.
  */
-void Robot::DisabledInit() {
-
-}
+void Robot::DisabledInit() {}
 
 void Robot::DisabledPeriodic() {}
 
