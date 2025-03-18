@@ -12,27 +12,23 @@
 
 static constexpr int kLength = 120;
 
-extern frc::AddressableLED m_led;
-extern std::array<frc::AddressableLED::LEDData, kLength>
-    m_ledBuffer;
-
 class LEDSubsystem : public frc2::SubsystemBase {
  public:
   LEDSubsystem();
-  ElevatorSubsystem* m_Elevator;
-  AlgaeSubsystem* m_algae;
-  frc::AddressableLED m_led{8};
-  std::array<frc::AddressableLED::LEDData, 121> m_ledBuffer; 
-
+  
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic() override;
+  
   void SetLedColor(int r, int g, int b, int length);
   void Rainbow(int saturation, int value);
   void ScrollEffect();
 
  private:
-  // Components (e.g. motor controllers and sensors) should generally be
-  // declared private and exposed only through public methods.
+  frc::AddressableLED m_led{8};
+  std::array<frc::AddressableLED::LEDData, kLength> m_ledBuffer;
+
+  ElevatorSubsystem* m_Elevator;
+  AlgaeSubsystem* m_algae;
 };
