@@ -24,6 +24,7 @@
     "regex": "cpp",
     "iterator": "cpp",
     "vector": "cpp",
-    "*.inc": "cpp"
+    "*.inc": "cpp",
+    "span": "cpp"
   }
 }

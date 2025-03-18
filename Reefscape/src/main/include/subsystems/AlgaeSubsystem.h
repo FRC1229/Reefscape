@@ -19,6 +19,7 @@ class AlgaeSubsystem : public frc2::SubsystemBase {
   rev::spark::SparkMax m_AlgaeTiltMotor;
   rev::spark::SparkRelativeEncoder m_AlgaeTiltEncoder;
   
+  
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -28,6 +29,7 @@ class AlgaeSubsystem : public frc2::SubsystemBase {
   void run(double speed);
 
   void ManualTilt();
+
 
   double GetAngle();
   void MoveToAngle(double angle);

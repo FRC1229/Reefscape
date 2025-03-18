@@ -45,6 +45,7 @@
 #include <commands/SetServoPosition.h>
 #include <commands/AutoL1Command.h>
 #include <commands/UpdateLEDCommand.h>
+#include <commands/ToggleCommand.h>
 
 
 
@@ -225,6 +226,8 @@ void RobotContainer::ConfigureButtonBindings() {
   // rAlgae Posistion
   frc2::POVButton(&m_copilotController,0).WhileTrue(SetElevatorPos(&m_elevator,0.770).ToPtr());
   frc2::POVButton(&m_copilotController,180).WhileTrue(SetElevatorPos(&m_elevator,0.414).ToPtr());
+
+  frc2::POVButton(&m_copilotController,90).OnTrue(ToggleCommand(&m_coral).ToPtr());
 
 
   //Algae

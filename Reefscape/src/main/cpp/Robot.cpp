@@ -47,6 +47,8 @@ void Robot::RobotPeriodic() {
 
   frc::SmartDashboard::PutNumber("Current Goal", m_container.m_elevator.m_controller.GetGoal().position.value());
 
+  frc::SmartDashboard::PutBoolean("Servo shoot on or off", m_container.m_coral.shot);
+
 
   frc::SmartDashboard::PutData("Field", &m_container.m_drive.m_field);
 
@@ -98,7 +100,8 @@ void Robot::AutonomousInit() {
   m_container.m_drive.ZeroHeading();
   m_container.m_drive.ResetEncoders();
   m_container.m_drive.ResetOdometry(frc::Pose2d{2_m,7_m,frc::Rotation2d{0_deg}});
-  
+
+
   m_autonomousCommand = m_container.getAutonomousCommand();
 
   if (m_autonomousCommand) {

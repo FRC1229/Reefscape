@@ -6,7 +6,9 @@
 
 AutoLastAlign::AutoLastAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick)
     :m_drive(drive), m_vision(vision), m_joystick(joystick) {
-      
+    
+    AddRequirements(m_drive);
+    AddRequirements(m_vision);
   // Use addRequirements() here to declare subsystem dependencies.
 }
 

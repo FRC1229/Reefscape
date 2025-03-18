@@ -28,8 +28,8 @@ double MYABS(double value){
 void AutoAlign::Execute() {
   if(m_vision->seeTarget()){
   
-    frc::Pose2d targetPose = m_vision->targetPoses[m_vision->getID()];
-    m_vision->lastTag = m_vision->getID();
+    frc::Pose2d targetPose = m_vision->targetPoses[m_vision->ClosestTarget().GetFiducialId()];
+    m_vision->lastTag = m_vision->ClosestTarget().GetFiducialId();
 
 
     if(!(MYABS(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error)){
@@ -108,7 +108,7 @@ bool AutoAlign::IsFinished() {
   
 
   if(m_vision->seeTarget()){
-    frc::Pose2d targetPose = m_vision->targetPoses[m_vision->getID()];
+    frc::Pose2d targetPose = m_vision->targetPoses[m_vision->ClosestTarget().GetFiducialId()];
   }
   else{
     frc::Pose2d targetPose = m_vision->targetPoses[m_vision->lastTag];

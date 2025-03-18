@@ -6,7 +6,9 @@
 
 CoralSubsystem::CoralSubsystem(): 
 m_CoralTilt(24,rev::spark::SparkMax::MotorType::kBrushless), 
-m_CoralEncoder(m_CoralTilt.GetEncoder())
+m_CoralEncoder(m_CoralTilt.GetEncoder()),
+m_servoL {7},
+m_servoR {6}
 {
     m_CoralTilt.SetInverted(true);
 }
@@ -16,6 +18,17 @@ void CoralSubsystem::Periodic() {}
 
 double CoralSubsystem::GetAngle(){
     return m_CoralEncoder.GetPosition();
+}
+
+void CoralSubsystem::ShootToggle(){
+    if(shot){
+        m_servoL.Set(0);
+        m_servoR.Set(0);
+    }
+    else{
+        m_servoL.Set(0.1);
+        m_servoR.Set(0.1);
+    }
 }
 
 void CoralSubsystem::MoveToAngle(double angle){

@@ -20,7 +20,7 @@ m_controller2(
     frc::TrapezoidProfile<units::meters>::Constraints{0.4_mps, 0.4_mps_sq}
 ),
 m_feedforward(0_V, 0.74_V, 2_V/(0.5_mps), 2_V/(0.5_mps_sq)),
-m_controllerPid(9,0.40,0)
+m_controllerPid(9,0.20,0)
 {
 
     m_ElevatorMotorBottom.SetInverted(true);
