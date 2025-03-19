@@ -22,7 +22,7 @@ double MYABS(double value){
   }
   else{
     return value;
-  }
+  }   
 }
 
 void AutoAlign::Execute() {
@@ -30,6 +30,7 @@ void AutoAlign::Execute() {
   
     frc::Pose2d targetPose = m_vision->targetPoses[m_vision->ClosestTarget().GetFiducialId()];
     m_vision->lastTag = m_vision->ClosestTarget().GetFiducialId();
+    
 
 
     if(!(MYABS(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error)){
@@ -45,15 +46,13 @@ void AutoAlign::Execute() {
 
     
 
-      m_drive->Drive(units::velocity::meters_per_second_t{Xspeed}, 
+      m_drive->DriveOdo(units::velocity::meters_per_second_t{Xspeed}, 
                     units::velocity::meters_per_second_t{Yspeed},
                     units::angular_velocity::radians_per_second_t{rotationSpeed}, true);
 
     }
 
-    frc::SmartDashboard::PutNumber("hi",targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value());
-    frc::SmartDashboard::PutNumber("Hi Y", MYABS(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()));
-    frc::SmartDashboard::PutBoolean("ISDONE????CHALLENGEIMPOSSIBLE", MYABS(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error);
+    
   }
   else{
 
@@ -77,19 +76,18 @@ void AutoAlign::Execute() {
 
       
 
-    
+    frc::SmartDashboard::PutNumber("Align speed X", Xspeed);
+    frc::SmartDashboard::PutNumber("Align speed Y", Yspeed);
+    frc::SmartDashboard::PutNumber("Align speed rot", rotationSpeed);
 
-      m_drive->Drive(units::velocity::meters_per_second_t{Xspeed}, 
+      m_drive->DriveOdo(units::velocity::meters_per_second_t{Xspeed}, 
                     units::velocity::meters_per_second_t{Yspeed},
                     units::angular_velocity::radians_per_second_t{rotationSpeed}, true);
     }
 
 
     
-    frc::SmartDashboard::PutNumber("hi",targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value());
-    frc::SmartDashboard::PutNumber("Hi Y", targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value());
-    frc::SmartDashboard::PutBoolean("ISDONE????CHALLENGEIMPOSSIBLE", MYABS(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error);
-
+    
   }
 }
 

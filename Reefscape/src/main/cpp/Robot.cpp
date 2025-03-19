@@ -36,6 +36,9 @@ void Robot::RobotPeriodic() {
   frc::SmartDashboard::PutNumber("corrected 21",(m_container.m_elevator.m_ElevatorEncoderTop.GetPosition()*m)+b);
   frc::SmartDashboard::PutNumber("raw 20",m_container.m_elevator.m_ElevatorEncoderBottom.GetPosition());
 
+
+  // frc::SmartDashboard::PutNumber("Closest Tag", m_container.m_vision.ClosestTarget().fiducialId);
+
   
 
   frc::SmartDashboard::PutNumber("Coral Raw Angle", m_container.m_coral.m_CoralEncoder.GetPosition());

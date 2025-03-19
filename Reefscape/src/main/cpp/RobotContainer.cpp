@@ -173,13 +173,13 @@ void RobotContainer::ConfigureButtonBindings() {
   // frc2::JoystickButton(&m_driverController,2).OnTrue(RotateTo(&m_drive,&m_driverController,45).ToPtr());
 
 
-  frc::Pose2d targetPose = frc::Pose2d(1.27_m, 1.56_m, frc::Rotation2d(225_deg));
+  frc::Pose2d targetPose = frc::Pose2d(3.0_m, 4.02_m, frc::Rotation2d(0_deg));
 
-  frc::Pose2d targetPose2 = frc::Pose2d(5.99_m, 0.6_m, frc::Rotation2d(270_deg));
+  frc::Pose2d targetPose2 = frc::Pose2d(1_m, 4.02_m, frc::Rotation2d(180_deg));
 
   pathplanner::PathConstraints Constraints = pathplanner::PathConstraints(
-    units::meters_per_second_t{2.0}, units::meters_per_second_squared_t{2.0},
-    units::degrees_per_second_t{540},units::degrees_per_second_squared_t{720}
+    units::meters_per_second_t{1.2}, units::meters_per_second_squared_t{1.8},
+    units::degrees_per_second_t{150},units::degrees_per_second_squared_t{300}
 
   );
 
@@ -202,8 +202,8 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_driverController,3).WhileTrue(AutoLastAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
 
 
-  frc2::POVButton(&m_driverController,90).WhileTrue(std::move(pathfindingCommand));
-  frc2::POVButton(&m_driverController,270).WhileTrue(std::move(pathfindingCommand2));
+  frc2::POVButton(&m_driverController,90).WhileTrue(std::move(pathfindingCommand).AndThen(std::move(pathfindingCommand2)));
+  // frc2::POVButton(&m_driverController,270).WhileTrue(std::move(pathfindingCommand2));
 
   //DriverleftTriggerPressed.WhileTrue(UpdateLEDCommand(m_Led).ToPtr());
 
