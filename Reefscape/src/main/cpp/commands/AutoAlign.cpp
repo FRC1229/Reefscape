@@ -10,6 +10,7 @@ AutoAlign::AutoAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joysti
 }
 
 void AutoAlign::Initialize() {
+ 
   // double distance = m_vision->getDistance(12);
   // double xPose = m_drive->GetEstimatedPose().X().value();
   // double setPoint = xPose + ((distance - 5) / 39.37);
@@ -43,6 +44,29 @@ void AutoAlign::Execute() {
 
       // Xspeed = frc::ApplyDeadband(Xspeed,0.0,1.0);
       // Yspeed = frc::ApplyDeadband(Xspeed,0.0,1.0);
+      double xClamp = 0.8;
+      double yClamp = 0.8;
+      double rotClamp = 0.5;
+      if(Xspeed > xClamp){
+        Xspeed=xClamp;
+      }
+      else if(Xspeed < -xClamp){
+        Xspeed=-xClamp;
+      }
+
+      if(Yspeed > yClamp){
+        Yspeed=yClamp;
+      }
+      else if(Yspeed < -yClamp){
+        Yspeed=-yClamp;
+      }
+
+      if(rotationSpeed > rotClamp){
+        rotationSpeed=rotClamp;
+      }
+      else if(rotationSpeed < -rotClamp){
+        rotationSpeed=-rotClamp;
+      }
 
     
 
@@ -70,6 +94,29 @@ void AutoAlign::Execute() {
 
       // Xspeed = frc::ApplyDeadband(Xspeed,0.0,1.0);
       // Yspeed = frc::ApplyDeadband(Xspeed,0.0,1.0);
+      double xClamp = 0.8;
+      double yClamp = 0.8;
+      double rotClamp = 0.5;
+      if(Xspeed > xClamp){
+        Xspeed=xClamp;
+      }
+      else if(Xspeed < -xClamp){
+        Xspeed=-xClamp;
+      }
+
+      if(Yspeed > yClamp){
+        Yspeed=yClamp;
+      }
+      else if(Yspeed < -yClamp){
+        Yspeed=-yClamp;
+      }
+
+      if(rotationSpeed > rotClamp){
+        rotationSpeed=rotClamp;
+      }
+      else if(rotationSpeed < -rotClamp){
+        rotationSpeed=-rotClamp;
+      }
 
       double x = m_drive->m_odometry.GetEstimatedPosition().X().value();
       double y = m_drive->m_odometry.GetEstimatedPosition().Y().value();

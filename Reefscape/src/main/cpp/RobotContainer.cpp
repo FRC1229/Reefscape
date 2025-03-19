@@ -173,9 +173,11 @@ void RobotContainer::ConfigureButtonBindings() {
   // frc2::JoystickButton(&m_driverController,2).OnTrue(RotateTo(&m_drive,&m_driverController,45).ToPtr());
 
 
-  frc::Pose2d targetPose = frc::Pose2d(3.0_m, 4.02_m, frc::Rotation2d(0_deg));
+  frc::Pose2d targetPose = frc::Pose2d(5.76_m, 4.03_m, frc::Rotation2d(180_deg));
 
-  frc::Pose2d targetPose2 = frc::Pose2d(1_m, 4.02_m, frc::Rotation2d(180_deg));
+  frc::Pose2d targetPose2 = frc::Pose2d(5.8_m, 2.5_m, frc::Rotation2d(180_deg));
+
+  frc::Pose2d targetPose3 = frc::Pose2d(1.11_m, 1.02_m, frc::Rotation2d(234_deg));
 
   pathplanner::PathConstraints Constraints = pathplanner::PathConstraints(
     units::meters_per_second_t{1.2}, units::meters_per_second_squared_t{1.8},
@@ -195,6 +197,13 @@ void RobotContainer::ConfigureButtonBindings() {
     0.0_mps
   );
 
+  frc2::CommandPtr pathfindingCommand3 = pathplanner::AutoBuilder::pathfindToPose(
+    targetPose3,
+    Constraints,
+    0.0_mps
+  );
+
+
   // Use to get close but pid in after for accuracte
   
   frc2::JoystickButton(&m_driverController,1).WhileTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
@@ -202,7 +211,7 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_driverController,3).WhileTrue(AutoLastAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
 
 
-  frc2::POVButton(&m_driverController,90).WhileTrue(std::move(pathfindingCommand).AndThen(std::move(pathfindingCommand2)));
+  frc2::POVButton(&m_driverController,90).WhileTrue(std::move(pathfindingCommand).AndThen(std::move(pathfindingCommand2)).AndThen(std::move(pathfindingCommand3)));
   // frc2::POVButton(&m_driverController,270).WhileTrue(std::move(pathfindingCommand2));
 
   //DriverleftTriggerPressed.WhileTrue(UpdateLEDCommand(m_Led).ToPtr());
