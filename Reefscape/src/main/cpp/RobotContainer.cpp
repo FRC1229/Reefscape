@@ -90,6 +90,23 @@ RobotContainer::RobotContainer(){
 
   frc::SmartDashboard::PutData("Auto chooser", &m_chooser);
 
+
+  frc::Pose2d targetPose = frc::Pose2d(1.11_m, 1.02_m, frc::Rotation2d(234_deg));
+
+  pathplanner::PathConstraints Constraints = pathplanner::PathConstraints(
+    units::meters_per_second_t{1.2}, units::meters_per_second_squared_t{1.8},
+    units::degrees_per_second_t{150},units::degrees_per_second_squared_t{300}
+
+  );
+
+  frc2::CommandPtr pathfindingCommand = pathplanner::AutoBuilder::pathfindToPose(
+    targetPose,
+    Constraints,
+    0.0_mps
+  );
+
+
+  NamedCommands::registerCommand("pathFind", std::move(pathfindingCommand));
   NamedCommands::registerCommand("coralTravel",std::move(SetCoralPosition(&m_coral,5).ToPtr())); 
   NamedCommands::registerCommand("coralShootL4",std::move(SetCoralPosition(&m_coral,33).ToPtr()));
   NamedCommands::registerCommand("ElevatorPosL4",std::move(SetElevatorPos(&m_elevator,0.905).ToPtr()));

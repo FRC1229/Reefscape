@@ -38,37 +38,39 @@ void AutoAlign::Execute() {
 
       
       double Xspeed = centerPid.Calculate(m_drive->m_odometry.GetEstimatedPosition().X().value(), targetPose.X().value());
-      double Yspeed = centerPid.Calculate(m_drive->m_odometry.GetEstimatedPosition().Y().value(), targetPose.Y().value());
+      double Yspeed = alignPid.Calculate(m_drive->m_odometry.GetEstimatedPosition().Y().value(), targetPose.Y().value());
       double rotationSpeed = rotationPid.Calculate(m_drive->m_odometry.GetEstimatedPosition().Rotation().Degrees().value(), targetPose.Rotation().Degrees().value());
 
 
       // Xspeed = frc::ApplyDeadband(Xspeed,0.0,1.0);
       // Yspeed = frc::ApplyDeadband(Xspeed,0.0,1.0);
-      double xClamp = 0.8;
-      double yClamp = 0.8;
-      double rotClamp = 0.5;
-      if(Xspeed > xClamp){
-        Xspeed=xClamp;
-      }
-      else if(Xspeed < -xClamp){
-        Xspeed=-xClamp;
-      }
+      // double xClamp = 0.8;
+      // double yClamp = 0.8;
+      // double rotClamp = 0.5;
+      // if(Xspeed > xClamp){
+      //   Xspeed=xClamp;
+      // }
+      // else if(Xspeed < -xClamp){
+      //   Xspeed=-xClamp;
+      // }
 
-      if(Yspeed > yClamp){
-        Yspeed=yClamp;
-      }
-      else if(Yspeed < -yClamp){
-        Yspeed=-yClamp;
-      }
+      // if(Yspeed > yClamp){
+      //   Yspeed=yClamp;
+      // }
+      // else if(Yspeed < -yClamp){
+      //   Yspeed=-yClamp;
+      // }
 
-      if(rotationSpeed > rotClamp){
-        rotationSpeed=rotClamp;
-      }
-      else if(rotationSpeed < -rotClamp){
-        rotationSpeed=-rotClamp;
-      }
+      // if(rotationSpeed > rotClamp){
+      //   rotationSpeed=rotClamp;
+      // }
+      // else if(rotationSpeed < -rotClamp){
+      //   rotationSpeed=-rotClamp;
+      // }
 
-    
+    frc::SmartDashboard::PutNumber("Xspeed", Xspeed);
+    frc::SmartDashboard::PutNumber("Yspeed", Yspeed);
+    frc::SmartDashboard::PutNumber("Rotspeed", rotationSpeed);
 
       m_drive->DriveOdo(units::velocity::meters_per_second_t{Xspeed}, 
                     units::velocity::meters_per_second_t{Yspeed},
@@ -88,46 +90,46 @@ void AutoAlign::Execute() {
     if(!(MYABS(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error)){
 
       double Xspeed = centerPid.Calculate(m_drive->m_odometry.GetEstimatedPosition().X().value(), targetPose.X().value());
-      double Yspeed = centerPid.Calculate(m_drive->m_odometry.GetEstimatedPosition().Y().value(), targetPose.Y().value());
+      double Yspeed = alignPid.Calculate(m_drive->m_odometry.GetEstimatedPosition().Y().value(), targetPose.Y().value());
       double rotationSpeed = rotationPid.Calculate(m_drive->m_odometry.GetEstimatedPosition().Rotation().Degrees().value(), targetPose.Rotation().Degrees().value());
 
 
       // Xspeed = frc::ApplyDeadband(Xspeed,0.0,1.0);
       // Yspeed = frc::ApplyDeadband(Xspeed,0.0,1.0);
-      double xClamp = 0.8;
-      double yClamp = 0.8;
-      double rotClamp = 0.5;
-      if(Xspeed > xClamp){
-        Xspeed=xClamp;
-      }
-      else if(Xspeed < -xClamp){
-        Xspeed=-xClamp;
-      }
+      // double xClamp = 0.8;
+      // double yClamp = 0.8;
+      // double rotClamp = 0.5;
+      // if(Xspeed > xClamp){
+      //   Xspeed=xClamp;
+      // }
+      // else if(Xspeed < -xClamp){
+      //   Xspeed=-xClamp;
+      // }
 
-      if(Yspeed > yClamp){
-        Yspeed=yClamp;
-      }
-      else if(Yspeed < -yClamp){
-        Yspeed=-yClamp;
-      }
+      // if(Yspeed > yClamp){
+      //   Yspeed=yClamp;
+      // }
+      // else if(Yspeed < -yClamp){
+      //   Yspeed=-yClamp;
+      // }
 
-      if(rotationSpeed > rotClamp){
-        rotationSpeed=rotClamp;
-      }
-      else if(rotationSpeed < -rotClamp){
-        rotationSpeed=-rotClamp;
-      }
+      // if(rotationSpeed > rotClamp){
+      //   rotationSpeed=rotClamp;
+      // }
+      // else if(rotationSpeed < -rotClamp){
+      //   rotationSpeed=-rotClamp;
+      // }
 
       double x = m_drive->m_odometry.GetEstimatedPosition().X().value();
       double y = m_drive->m_odometry.GetEstimatedPosition().Y().value();
 
       
 
-    frc::SmartDashboard::PutNumber("Align speed X", Xspeed);
-    frc::SmartDashboard::PutNumber("Align speed Y", Yspeed);
-    frc::SmartDashboard::PutNumber("Align speed rot", rotationSpeed);
+    frc::SmartDashboard::PutNumber("Xspeed", Xspeed);
+    frc::SmartDashboard::PutNumber("Yspeed", Yspeed);
+    frc::SmartDashboard::PutNumber("Rotspeed", rotationSpeed);
 
-      m_drive->DriveOdo(units::velocity::meters_per_second_t{Xspeed}, 
+    m_drive->DriveOdo(units::velocity::meters_per_second_t{Xspeed}, 
                     units::velocity::meters_per_second_t{Yspeed},
                     units::angular_velocity::radians_per_second_t{rotationSpeed}, true);
     }

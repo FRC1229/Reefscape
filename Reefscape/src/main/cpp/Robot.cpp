@@ -24,33 +24,33 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() {
 
-  frc::SmartDashboard::PutNumber("Bus Voltage", m_container.m_elevator.m_ElevatorMotorTop.GetBusVoltage());
-  frc::SmartDashboard::PutNumber("Elevator appiled output", m_container.m_elevator.m_ElevatorMotorTop.GetAppliedOutput());
-  frc::SmartDashboard::PutNumber("appiled voltage", m_container.m_elevator.m_ElevatorMotorTop.GetAppliedOutput() * m_container.m_elevator.m_ElevatorMotorTop.GetBusVoltage());
+  // frc::SmartDashboard::PutNumber("Bus Voltage", m_container.m_elevator.m_ElevatorMotorTop.GetBusVoltage());
+  // frc::SmartDashboard::PutNumber("Elevator appiled output", m_container.m_elevator.m_ElevatorMotorTop.GetAppliedOutput());
+  // frc::SmartDashboard::PutNumber("appiled voltage", m_container.m_elevator.m_ElevatorMotorTop.GetAppliedOutput() * m_container.m_elevator.m_ElevatorMotorTop.GetBusVoltage());
 
-  frc::SmartDashboard::PutNumber("Encoder 21",m_container.m_elevator.m_ElevatorEncoderTop.GetPosition()*0.025);
-  frc::SmartDashboard::PutNumber("Encoder 20",m_container.m_elevator.m_ElevatorEncoderBottom.GetPosition()*0.025);
-  double m = 3.10832482259;
-  double b = 84.6299613527;
+  // frc::SmartDashboard::PutNumber("Encoder 21",m_container.m_elevator.m_ElevatorEncoderTop.GetPosition()*0.025);
+  // frc::SmartDashboard::PutNumber("Encoder 20",m_container.m_elevator.m_ElevatorEncoderBottom.GetPosition()*0.025);
+  // double m = 3.10832482259;
+  // double b = 84.6299613527;
 
-  frc::SmartDashboard::PutNumber("corrected 21",(m_container.m_elevator.m_ElevatorEncoderTop.GetPosition()*m)+b);
-  frc::SmartDashboard::PutNumber("raw 20",m_container.m_elevator.m_ElevatorEncoderBottom.GetPosition());
+  // frc::SmartDashboard::PutNumber("corrected 21",(m_container.m_elevator.m_ElevatorEncoderTop.GetPosition()*m)+b);
+  // frc::SmartDashboard::PutNumber("raw 20",m_container.m_elevator.m_ElevatorEncoderBottom.GetPosition());
 
 
   // frc::SmartDashboard::PutNumber("Closest Tag", m_container.m_vision.ClosestTarget().fiducialId);
 
   
 
-  frc::SmartDashboard::PutNumber("Coral Raw Angle", m_container.m_coral.m_CoralEncoder.GetPosition());
-  frc::SmartDashboard::PutNumber("Algae Raw Angle", m_container.m_algae.m_AlgaeTiltEncoder.GetPosition());
+  // frc::SmartDashboard::PutNumber("Coral Raw Angle", m_container.m_coral.m_CoralEncoder.GetPosition());
+  // frc::SmartDashboard::PutNumber("Algae Raw Angle", m_container.m_algae.m_AlgaeTiltEncoder.GetPosition());
 
 
-  frc::SmartDashboard::PutNumber("Coral Angle", m_container.m_coral.GetAngle());
-  frc::SmartDashboard::PutNumber("Algae Angle", m_container.m_algae.GetAngle());
+  // frc::SmartDashboard::PutNumber("Coral Angle", m_container.m_coral.GetAngle());
+  // frc::SmartDashboard::PutNumber("Algae Angle", m_container.m_algae.GetAngle());
 
-  frc::SmartDashboard::PutNumber("Current Goal", m_container.m_elevator.m_controller.GetGoal().position.value());
+  // frc::SmartDashboard::PutNumber("Current Goal", m_container.m_elevator.m_controller.GetGoal().position.value());
 
-  frc::SmartDashboard::PutBoolean("Servo shoot on or off", m_container.m_coral.shot);
+  // frc::SmartDashboard::PutBoolean("Servo shoot on or off", m_container.m_coral.shot);
 
 
   frc::SmartDashboard::PutData("Field", &m_container.m_drive.m_field);

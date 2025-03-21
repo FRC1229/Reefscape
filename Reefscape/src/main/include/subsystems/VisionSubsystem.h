@@ -41,6 +41,7 @@ class VisionSubsystem : public frc2::SubsystemBase {
             frc::Rotation2d(units::degree_t{0})
         };
 
+
         bool seeTarget();
         double getYaw();
         double getTY();
@@ -48,6 +49,7 @@ class VisionSubsystem : public frc2::SubsystemBase {
         double getXmeters();
         double getZAngle();
         frc::Pose2d getCameraRobotPose();
+        std::vector<frc::Pose2d> getCameraRobotPoses();
 
         int getID();
         double getDistance(double targetHeight);

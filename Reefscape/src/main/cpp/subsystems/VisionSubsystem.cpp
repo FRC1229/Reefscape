@@ -26,7 +26,7 @@ VisionSubsystem::VisionSubsystem() {
     targetPoses[17] = frc::Pose2d(3.85_m, 2.906_m, frc::Rotation2d(60_deg));
     targetPoses[18] = frc::Pose2d(3.22_m, 4.03_m, frc::Rotation2d(0_deg));
     targetPoses[19] = frc::Pose2d(3.85_m, 5.13_m, frc::Rotation2d(300_deg));
-    targetPoses[20] = frc::Pose2d(5.12_m, 5.13_m, frc::Rotation2d(270_deg));
+    targetPoses[20] = frc::Pose2d(5.12_m, 5.13_m, frc::Rotation2d(240_deg));
     targetPoses[21] = frc::Pose2d(5.76_m, 4.03_m, frc::Rotation2d(180_deg));
     targetPoses[22] = frc::Pose2d(5.12_m, 2.93_m, frc::Rotation2d(120_deg));//3.79, 2.81
     // targetPoses[22] = frc::Pose2d(3.79_m, 2.81_m, frc::Rotation2d(60_deg));
@@ -57,14 +57,16 @@ photon::PhotonPipelineResult VisionSubsystem::getResult(){
 }
 
 photon::PhotonTrackedTarget VisionSubsystem::ClosestTarget(){
-    std::span<const photon::PhotonTrackedTarget> targets = getResult().GetTargets();
-    photon::PhotonTrackedTarget closestTrag = targets[0];
-    for(photon::PhotonTrackedTarget targ : targets){
-        if(targ.GetBestCameraToTarget().X().value() < closestTrag.GetBestCameraToTarget().X().value()){
-            closestTrag = targ;
+    if(getResult().HasTargets()){
+        std::span<const photon::PhotonTrackedTarget> targets = getResult().GetTargets();
+        photon::PhotonTrackedTarget closestTrag = targets[0];
+        for(photon::PhotonTrackedTarget targ : targets){
+            if(targ.GetBestCameraToTarget().X().value() < closestTrag.GetBestCameraToTarget().X().value()){
+                closestTrag = targ;
+            }
         }
+        return closestTrag;
     }
-    return closestTrag;
 }
 
 photon::PhotonTrackedTarget VisionSubsystem::BestResult(){
@@ -128,6 +130,44 @@ frc::Pose2d VisionSubsystem::getCameraRobotPose(){
         
     }
 }
+
+
+std::vector<frc::Pose2d> VisionSubsystem::getCameraRobotPoses(){
+    std::vector<frc::Pose2d> allPoses;
+    if(getResult().HasTargets()){
+        for(auto target : getResult().GetTargets()){
+
+            
+            frc::Transform3d best_camera_to_target = target.GetBestCameraToTarget();
+
+            int tagId = target.GetFiducialId();
+
+            frc::Transform2d best_camera_to_target_2D = frc::Transform2d{
+                best_camera_to_target.X(),
+                best_camera_to_target.Y(),
+                best_camera_to_target.Rotation().ToRotation2d()
+            };
+
+            std::optional<frc::Pose3d> field_to_target = layout.GetTagPose(tagId);
+
+
+            if (!field_to_target.has_value()){
+                allPoses.push_back(frc::Pose2d());
+            }
+
+            frc::Pose2d field_to_tag_2d = field_to_target.value().ToPose2d();
+            
+            allPoses.push_back(photon::PhotonUtils::EstimateFieldToRobot(
+                best_camera_to_target_2D,
+                field_to_tag_2d,
+                cameraToRobot
+            )); 
+
+            return allPoses;
+        }
+    }
+}
+
 
 double VisionSubsystem::getXmeters() {
     if(getResult().HasTargets()){

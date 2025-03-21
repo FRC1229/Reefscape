@@ -9,6 +9,31 @@
           "data": {
             "name": "Autoalign"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorPosL4"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralShootL4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ElevatorPosL4"
+                }
+              }
+            ]
+          }
         }
       ]
     }

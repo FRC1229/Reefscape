@@ -102,7 +102,9 @@ void DriveSubsystem::Periodic() {
 
 
   if(m_vision.seeTarget()){
-    m_odometry.AddVisionMeasurement(m_vision.getCameraRobotPose(), frc::Timer::GetFPGATimestamp());
+    for(auto tar : m_vision.getCameraRobotPoses()){
+      m_odometry.AddVisionMeasurement(tar, frc::Timer::GetFPGATimestamp());
+    }
   }
 
 
