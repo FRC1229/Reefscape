@@ -57,11 +57,11 @@ class AutoAlign
 
   double setPoint;
   double error = 0.02;
-  frc::PIDController alignPid {0.4,0.1,0};
+  frc::PIDController centerPid {1,0,0}; //1.4 , 0, 0 good teleop
 
-  frc::PIDController centerPid {0.75,0,0};
+  frc::PIDController alignPid {1,0,0};
 
-  frc::PIDController rotationPid {0.1,0.0,0.00};
+  frc::PIDController rotationPid {0.03,0.0,0.00}; //0.05
   
 
 };

@@ -34,29 +34,11 @@
               }
             ]
           }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.25
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "coralTravel"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ElevatorPosHome"
-          }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

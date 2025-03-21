@@ -76,7 +76,11 @@ namespace CoralConstants{
 
 }
 
+
+
+
 namespace AutoConstants {
+
 constexpr auto kMaxSpeed = 3_mps; //4
 constexpr auto kMaxAcceleration = 4.712_mps_sq;
 constexpr auto kMaxAngularSpeed = 3.142_rad_per_s; //2.142
@@ -85,6 +89,8 @@ constexpr auto kMaxAngularAcceleration = 3.142_rad_per_s_sq;
 inline constexpr double kPXController = 0.5;
 inline constexpr double kPYController = 0.5;
 inline constexpr double kPThetaController = 0.5;
+
+// inline constexpr std::map<int, frc::Pose2d> targetPoses;
 
 // pathplanner::RobotConfig config = pathplanner::RobotConfig::fromGUISettings();
 //

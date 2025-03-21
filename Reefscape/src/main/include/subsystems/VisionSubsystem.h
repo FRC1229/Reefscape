@@ -13,6 +13,7 @@ class VisionSubsystem : public frc2::SubsystemBase {
         VisionSubsystem();
 
         photon::PhotonCamera camera{"1229_Camera"};
+        //photon::PhotonCamera cameraRight{"1229_Camera"};
         std::unique_ptr<photon::PhotonPoseEstimator> poseEstimator;
         frc::Transform3d RobotToCamera;
         frc::Pose2d currentPose;
@@ -30,6 +31,7 @@ class VisionSubsystem : public frc2::SubsystemBase {
         
         photon::PhotonPipelineResult getResult();
         photon::PhotonTrackedTarget BestResult();
+        photon::PhotonTrackedTarget ClosestTarget();
 
         frc::AprilTagFieldLayout layout = frc::LoadAprilTagLayoutField(frc::AprilTagField::k2025ReefscapeAndyMark);
 
@@ -39,6 +41,7 @@ class VisionSubsystem : public frc2::SubsystemBase {
             frc::Rotation2d(units::degree_t{0})
         };
 
+
         bool seeTarget();
         double getYaw();
         double getTY();
@@ -46,6 +49,7 @@ class VisionSubsystem : public frc2::SubsystemBase {
         double getXmeters();
         double getZAngle();
         frc::Pose2d getCameraRobotPose();
+        std::vector<frc::Pose2d> getCameraRobotPoses();
 
         int getID();
         double getDistance(double targetHeight);

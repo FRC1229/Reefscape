@@ -102,7 +102,9 @@ void DriveSubsystem::Periodic() {
 
 
   if(m_vision.seeTarget()){
-    m_odometry.AddVisionMeasurement(m_vision.getCameraRobotPose(), frc::Timer::GetFPGATimestamp());
+    for(auto tar : m_vision.getCameraRobotPoses()){
+      m_odometry.AddVisionMeasurement(tar, frc::Timer::GetFPGATimestamp());
+    }
   }
 
 
@@ -116,6 +118,7 @@ void DriveSubsystem::Periodic() {
 
   frc::SmartDashboard::PutNumber("Vision X", m_vision.getCameraRobotPose().X().value());
   frc::SmartDashboard::PutNumber("Vision Y", m_vision.getCameraRobotPose().Y().value());
+
 
 
 
@@ -144,6 +147,69 @@ void DriveSubsystem::Periodic() {
 
 }
 
+void DriveSubsystem::DriveOdo(units::meters_per_second_t xSpeed,
+                           units::meters_per_second_t ySpeed,
+                           units::radians_per_second_t rot,
+                           bool fieldRelative) {
+  
+  // ****************************
+  
+  // double gyroAngle = m_gyro.GetAngle();
+
+  // gyroAngle = (double)((int)(gyroAngle * 100) % 36000) / 100.0;
+
+  // double rotCalc = rotatePID.Calculate(gyroAngle,gyroSetpoint);
+
+  // rot = units::radians_per_second_t{frc::ApplyDeadband(-rotCalc,0.01)};
+
+  //***********************************
+
+  // double gyroAngle = m_gyro.GetAngle();
+
+  // gyroAngle = (double)((int)(gyroAngle * 100) % 36000) / 100.0;
+
+  // //frc::SmartDashboard::PutNumber("GyroAnglePID",-gyroAngle);
+  // double rotCalc = rotatePID.Calculate(gyroAngle,gyroSetpoint);
+
+  // rot = units::radians_per_second_t{frc::ApplyDeadband(-rotCalc,0.07)};
+  // double goal = 180.0;
+  // double clamp_var = 1.1;
+  // double inv_p = -70.0;
+  // double rotclamped = std::clamp(frc::ApplyDeadband((-gyroAngle - goal),1.0) / inv_p,-clamp_var,clamp_var);
+  // rot = units::radians_per_second_t{rotclamped};
+
+  // if (gyroAngle < 180){
+  //   rot = units::radians_per_second_t{-0.1};
+  // }
+  // else{
+  //   rot = units::radians_per_second_t{0.1};
+  // }
+
+  auto states = kDriveKinematics.ToSwerveModuleStates(
+      fieldRelative ? frc::ChassisSpeeds::FromFieldRelativeSpeeds(
+                          xSpeed, ySpeed, rot, m_odometry.GetEstimatedPosition().Rotation())
+                    : frc::ChassisSpeeds{xSpeed, ySpeed, rot});
+
+  kDriveKinematics.DesaturateWheelSpeeds(&states, AutoConstants::kMaxSpeed);
+
+  auto [fl, fr, bl, br] = states;
+
+  m_frontLeft.SetDesiredState(fl);
+  m_frontRight.SetDesiredState(fr); 
+  m_rearLeft.SetDesiredState(bl);
+  m_rearRight.SetDesiredState(br);
+
+  FrontLeft = fl;
+  FrontRight = fr;
+  RearLeft =  bl;
+  RearRight = br;
+
+  frc::SmartDashboard::PutNumber("Desired Vel", FrontLeft.speed.value());
+  // frc::SmartDashboard::PutNumber("Rot PID Out",rotCalc);
+  frc::SmartDashboard::PutNumber("rot rps", rot.value());
+  frc::SmartDashboard::PutNumber("Yaw", m_gyro.GetYaw().GetValue().value());
+
+}
 
 void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
                            units::meters_per_second_t ySpeed,

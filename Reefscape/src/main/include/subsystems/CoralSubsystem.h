@@ -13,12 +13,21 @@
 #include <frc/controller/ElevatorFeedforward.h>
 #include <frc/trajectory/TrapezoidProfile.h>
 #include <frc/trajectory/Trajectory.h>
+#include <frc/Servo.h>
 
 class CoralSubsystem : public frc2::SubsystemBase {
  public:
   CoralSubsystem();
+
+  frc::Servo m_servoL;
+  frc::Servo m_servoR;
+
+  bool shot = false;
+
   rev::spark::SparkMax m_CoralTilt;
   rev::spark::SparkRelativeEncoder m_CoralEncoder;
+
+  void ShootToggle();
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.

@@ -45,6 +45,7 @@
 #include <commands/SetServoPosition.h>
 #include <commands/AutoL1Command.h>
 #include <commands/UpdateLEDCommand.h>
+#include <commands/ToggleCommand.h>
 
 
 
@@ -89,6 +90,23 @@ RobotContainer::RobotContainer(){
 
   frc::SmartDashboard::PutData("Auto chooser", &m_chooser);
 
+
+  frc::Pose2d targetPose = frc::Pose2d(1.11_m, 1.02_m, frc::Rotation2d(234_deg));
+
+  pathplanner::PathConstraints Constraints = pathplanner::PathConstraints(
+    units::meters_per_second_t{1.2}, units::meters_per_second_squared_t{1.8},
+    units::degrees_per_second_t{150},units::degrees_per_second_squared_t{300}
+
+  );
+
+  frc2::CommandPtr pathfindingCommand = pathplanner::AutoBuilder::pathfindToPose(
+    targetPose,
+    Constraints,
+    0.0_mps
+  );
+
+
+  NamedCommands::registerCommand("pathFind", std::move(pathfindingCommand));
   NamedCommands::registerCommand("coralTravel",std::move(SetCoralPosition(&m_coral,5).ToPtr())); 
   NamedCommands::registerCommand("coralShootL4",std::move(SetCoralPosition(&m_coral,33).ToPtr()));
   NamedCommands::registerCommand("ElevatorPosL4",std::move(SetElevatorPos(&m_elevator,0.905).ToPtr()));
@@ -172,13 +190,15 @@ void RobotContainer::ConfigureButtonBindings() {
   // frc2::JoystickButton(&m_driverController,2).OnTrue(RotateTo(&m_drive,&m_driverController,45).ToPtr());
 
 
-  frc::Pose2d targetPose = frc::Pose2d(1.27_m, 1.56_m, frc::Rotation2d(225_deg));
+  frc::Pose2d targetPose = frc::Pose2d(5.76_m, 4.03_m, frc::Rotation2d(180_deg));
 
-  frc::Pose2d targetPose2 = frc::Pose2d(5.99_m, 0.6_m, frc::Rotation2d(270_deg));
+  frc::Pose2d targetPose2 = frc::Pose2d(5.8_m, 2.5_m, frc::Rotation2d(180_deg));
+
+  frc::Pose2d targetPose3 = frc::Pose2d(1.11_m, 1.02_m, frc::Rotation2d(234_deg));
 
   pathplanner::PathConstraints Constraints = pathplanner::PathConstraints(
-    units::meters_per_second_t{2.0}, units::meters_per_second_squared_t{2.0},
-    units::degrees_per_second_t{540},units::degrees_per_second_squared_t{720}
+    units::meters_per_second_t{1.2}, units::meters_per_second_squared_t{1.8},
+    units::degrees_per_second_t{150},units::degrees_per_second_squared_t{300}
 
   );
 
@@ -194,6 +214,13 @@ void RobotContainer::ConfigureButtonBindings() {
     0.0_mps
   );
 
+  frc2::CommandPtr pathfindingCommand3 = pathplanner::AutoBuilder::pathfindToPose(
+    targetPose3,
+    Constraints,
+    0.0_mps
+  );
+
+
   // Use to get close but pid in after for accuracte
   
   frc2::JoystickButton(&m_driverController,1).WhileTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
@@ -201,8 +228,8 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_driverController,3).WhileTrue(AutoLastAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
 
 
-  frc2::POVButton(&m_driverController,90).WhileTrue(std::move(pathfindingCommand));
-  frc2::POVButton(&m_driverController,270).WhileTrue(std::move(pathfindingCommand2));
+  frc2::POVButton(&m_driverController,90).WhileTrue(std::move(pathfindingCommand).AndThen(std::move(pathfindingCommand2)).AndThen(std::move(pathfindingCommand3)));
+  // frc2::POVButton(&m_driverController,270).WhileTrue(std::move(pathfindingCommand2));
 
   //DriverleftTriggerPressed.WhileTrue(UpdateLEDCommand(m_Led).ToPtr());
 
@@ -225,6 +252,8 @@ void RobotContainer::ConfigureButtonBindings() {
   // rAlgae Posistion
   frc2::POVButton(&m_copilotController,0).WhileTrue(SetElevatorPos(&m_elevator,0.770).ToPtr());
   frc2::POVButton(&m_copilotController,180).WhileTrue(SetElevatorPos(&m_elevator,0.414).ToPtr());
+
+  frc2::POVButton(&m_copilotController,90).OnTrue(ToggleCommand(&m_coral).ToPtr());
 
 
   //Algae
