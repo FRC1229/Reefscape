@@ -27,6 +27,7 @@ class Robot : public frc::TimedRobot {
   std::optional<frc2::CommandPtr> m_autonomousCommand;
 
   RobotContainer m_container;
+  frc::Joystick m_rumbleController{OIConstants::kDriverControllerPort};
 
   //frc::DigitalInput input{0};
 };
