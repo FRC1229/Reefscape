@@ -27,11 +27,11 @@ double MYABS(double value){
 
 void AutoAlign::Execute() {
   if(m_vision->seeTarget()){
-  
+    
     frc::Pose2d targetPose = m_vision->targetPoses[m_vision->getID()];
     m_vision->lastTag = m_vision->getID();
 
-
+    m_joystick.SetRumble(frc::GenericHID::RumbleType::kBotRumble, 0.9);
     if(!(MYABS(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error)){
 
       
