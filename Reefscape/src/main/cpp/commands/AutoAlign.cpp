@@ -96,7 +96,7 @@ void AutoAlign::Execute() {
 
 
 void AutoAlign::End(bool interrupted) {
-  m_joystick->SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.5);
+  //m_joystick->SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.5);
 }
 
 
@@ -117,7 +117,7 @@ bool AutoAlign::IsFinished() {
     } else {
       m_joystick->SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.0);
     }
-  
+    m_joystick->SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.0);
   }
   else{
     
