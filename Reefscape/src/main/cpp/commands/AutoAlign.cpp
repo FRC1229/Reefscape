@@ -76,7 +76,7 @@ void AutoAlign::Execute() {
       double x = m_drive->m_odometry.GetEstimatedPosition().X().value();
       double y = m_drive->m_odometry.GetEstimatedPosition().Y().value();
 
-      
+
 
     
 
@@ -95,7 +95,9 @@ void AutoAlign::Execute() {
 }
 
 
-void AutoAlign::End(bool interrupted) {}
+void AutoAlign::End(bool interrupted) {
+  m_joystick->SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.5);
+}
 
 
 
@@ -109,19 +111,13 @@ bool AutoAlign::IsFinished() {
   
 
   if(m_vision->seeTarget()){
-    frc::Pose2d targetPose = m_vision->targetPoses[m_vision->getID()];
-    
-    m_rumbletimer->Start();
-    if (m_rumbletimer->Get().value() < 1.0) {
+    frc::Pose2d targetPose = m_vision->targetPoses[m_vision->getID()];  
+    if(!(MYABS(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error)){
       m_joystick->SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.5);
-    }
-
-    if (m_rumbletimer->Get().value() > 1.0) {
+    } else {
       m_joystick->SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.0);
-      m_rumbletimer->Stop();
-      m_rumbletimer->Reset();
     }
-    
+  
   }
   else{
     
