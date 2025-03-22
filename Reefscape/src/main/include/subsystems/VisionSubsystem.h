@@ -13,6 +13,7 @@ class VisionSubsystem : public frc2::SubsystemBase {
         VisionSubsystem();
 
         photon::PhotonCamera camera{"1229_Camera"};
+        photon::PhotonCamera camera_Left{"1229_Camera_Left"};
         //photon::PhotonCamera cameraRight{"1229_Camera"};
         std::unique_ptr<photon::PhotonPoseEstimator> poseEstimator;
         frc::Transform3d RobotToCamera;
@@ -35,10 +36,16 @@ class VisionSubsystem : public frc2::SubsystemBase {
 
         frc::AprilTagFieldLayout layout = frc::LoadAprilTagLayoutField(frc::AprilTagField::k2025ReefscapeAndyMark);
 
+        // frc::Transform2d cameraToRobot = frc::Transform2d{
+        //     units::meter_t{-0.27},
+        //     units::meter_t{0},
+        //     frc::Rotation2d(units::degree_t{0})
+        // };
+
         frc::Transform2d cameraToRobot = frc::Transform2d{
-            units::meter_t{-0.27},
-            units::meter_t{0},
-            frc::Rotation2d(units::degree_t{0})
+            units::meter_t{-0.25},
+            units::meter_t{-0.28},
+            frc::Rotation2d(units::degree_t{35})
         };
 
 
