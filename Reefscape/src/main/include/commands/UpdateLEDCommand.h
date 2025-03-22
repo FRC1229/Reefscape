@@ -25,9 +25,7 @@ class UpdateLEDCommand
    */
   UpdateLEDCommand(LEDSubsystem* LED, frc::Joystick* joystick, ElevatorSubsystem* m_Elevator);
 
-  LEDSubsystem* m_Led;
-  frc::Joystick* m_DriveController;
-  ElevatorSubsystem* m_Elevator;
+  
  
   
   void Initialize() override;
@@ -37,4 +35,9 @@ class UpdateLEDCommand
   void End(bool interrupted) override;
 
   bool IsFinished() override;
+
+  private:
+  LEDSubsystem* m_Led;
+  frc::Joystick* m_DriveController;
+  ElevatorSubsystem* m_Elevator;
 };

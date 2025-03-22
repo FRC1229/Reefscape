@@ -29,6 +29,7 @@
 #include <subsystems/L1Subsystem.h>
 #include <subsystems/LEDSubsystem.h>
 #include <subsystems/RollerSubsystem.h>
+#include <frc/XboxController.h>
 
 
 
@@ -71,6 +72,7 @@ class RobotContainer {
   double increment;
   frc::Joystick m_driverController{OIConstants::kDriverControllerPort};
   frc::Joystick m_copilotController{OIConstants::kCoPilotControllerPort};
+  frc::XboxController XboxDriver{OIConstants::kDriverControllerPort};
 
 
 

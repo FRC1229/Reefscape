@@ -4,10 +4,14 @@
 
 #include "Commands/SetElevatorPos.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include "Commands/UpdateLEDCommand.h"
+#include <subsystems/LEDSubsystem.h>
 
-SetElevatorPos::SetElevatorPos(ElevatorSubsystem* subsystem, double dis) : m_elevator(subsystem), distance(dis) {
+SetElevatorPos::SetElevatorPos(ElevatorSubsystem* subsystem, LEDSubsystem* led, double dis) : m_elevator(subsystem), m_Led(led) ,distance(dis) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({subsystem});
+  AddRequirements({led});
+
 }
 
 // Called when the command is initially scheduled.
@@ -22,7 +26,7 @@ void SetElevatorPos::Execute() {
   // m_elevator->goal = {0.5_m,0_mps};
   // m_elevator->currentPos = distance;
   // m_elevator->currentPos2 = {units::meter_t{m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025},0_mps};
-  
+  m_Led->SetLedColor(255, 0, 0, 120);
   m_elevator->SetElevatorPos(distance);
   
 }
@@ -40,5 +44,6 @@ void SetElevatorPos::End(bool interrupted) {
 // Returns true when the command should end.
 bool SetElevatorPos::IsFinished() {
   // return false;
+  m_Led->SetLedColor(0, 255, 0, 120);
   return ((distance + 0.001) > m_elevator->m_ElevatorEncoderBottom.GetPosition() * 0.025 && m_elevator->m_ElevatorEncoderBottom.GetPosition() * 0.025 > (distance - 0.001));
 }

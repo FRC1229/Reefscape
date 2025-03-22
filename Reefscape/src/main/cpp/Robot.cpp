@@ -6,6 +6,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
 #include <subsystems/VisionSubsystem.h>
+#include <subsystems/LEDSubsystem.h>
 
 
 void Robot::RobotInit() {
@@ -88,11 +89,11 @@ void Robot::RobotPeriodic() {
  * can use it to reset any subsystem information you want to clear when the
  * robot is disabled.
  */
-void Robot::DisabledInit() {
-//Workss??
-}
+void Robot::DisabledInit() {}
 
-void Robot::DisabledPeriodic() {}
+void Robot::DisabledPeriodic() {
+  m_container.m_Led.Rainbow(255, 255);
+}
 
 /**
  * This autonomous runs the autonomous command selected by your {@link

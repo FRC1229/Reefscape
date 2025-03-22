@@ -2,6 +2,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <Constants.h>
 
+
 AutoAlign::AutoAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick)
     :m_drive(drive), m_vision(vision), m_joystick(joystick){
   AddRequirements(drive);
@@ -161,7 +162,7 @@ bool AutoAlign::IsFinished() {
     frc::Pose2d targetPose = m_vision->targetPoses[m_vision->lastTag];
   }
   
-
+  m_joystick->kBothRumble;
   return MYABS(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error;
 
 

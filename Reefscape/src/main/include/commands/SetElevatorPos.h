@@ -7,6 +7,8 @@
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandHelper.h>
 #include <subsystems/ElevatorSubsystem.h>
+#include <subsystems/LEDSubsystem.h>
+
 
 /**
  * An example command.
@@ -21,7 +23,7 @@ class SetElevatorPos
   /* You should consider using the more terse Command factories API instead
    * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
    */
-  SetElevatorPos(ElevatorSubsystem* Elevator,double distance);
+  SetElevatorPos(ElevatorSubsystem* Elevator, LEDSubsystem* LED,double distance);
 
   void Initialize() override;
 
@@ -33,5 +35,6 @@ class SetElevatorPos
 
   private:
   ElevatorSubsystem* m_elevator;
+  LEDSubsystem* m_Led;
   double distance;
 };
