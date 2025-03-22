@@ -90,6 +90,7 @@ void Robot::RobotPeriodic() {
  */
 void Robot::DisabledInit() {
 //Workss??
+  m_rumbleController.SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.9);
 }
 
 void Robot::DisabledPeriodic() {}
