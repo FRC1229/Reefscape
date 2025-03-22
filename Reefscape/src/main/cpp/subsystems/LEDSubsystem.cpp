@@ -54,11 +54,11 @@ void LEDSubsystem::sideLed(std::string sideChoose){
     color.ApplyTo(m_ledBuffer);
     if (sideChoose == "left") {
        for(int i = 0; i < 60; i++){
-        m_buffer[i] = m_ledBuffer[i];
+        m_buffer[i+60] = m_ledBuffer[i];
         } 
     } else if (sideChoose == "right"){
         for(int i = 0; i < 60; i++){
-        m_buffer[i+60] = m_ledBuffer[i];
+        m_buffer[i] = m_ledBuffer[i];
         }
 
     }

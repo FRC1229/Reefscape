@@ -109,9 +109,9 @@ RobotContainer::RobotContainer(){
   NamedCommands::registerCommand("pathFind", std::move(pathfindingCommand));
   NamedCommands::registerCommand("coralTravel",std::move(SetCoralPosition(&m_coral,5).ToPtr())); 
   NamedCommands::registerCommand("coralShootL4",std::move(SetCoralPosition(&m_coral,33).ToPtr()));
-  NamedCommands::registerCommand("ElevatorPosL4",std::move(SetElevatorPos(&m_elevator,&m_Led,0.905).ToPtr()));
-  NamedCommands::registerCommand("ElevatorPosL3",std::move(SetElevatorPos(&m_elevator,&m_Led,0.414).ToPtr()));
-  NamedCommands::registerCommand("ElevatorPosHome",std::move(SetElevatorPos(&m_elevator,&m_Led,0.005).ToPtr()));
+  NamedCommands::registerCommand("ElevatorPosL4",std::move(SetElevatorPos(&m_elevator,0.905).ToPtr()));
+  NamedCommands::registerCommand("ElevatorPosL3",std::move(SetElevatorPos(&m_elevator,0.414).ToPtr()));
+  NamedCommands::registerCommand("ElevatorPosHome",std::move(SetElevatorPos(&m_elevator,0.005).ToPtr()));
   NamedCommands::registerCommand("L1Shoot",std::move(AutoL1Command(&m_l1,0.5).ToPtr()));
   NamedCommands::registerCommand("L1Intake",std::move(AutoL1Command(&m_l1,0.25).ToPtr()));
   NamedCommands::registerCommand("L1Travel",std::move(AutoL1Command(&m_l1,0.25).ToPtr()));
@@ -245,14 +245,14 @@ void RobotContainer::ConfigureButtonBindings() {
   //Co
 
   //elevamator
-  frc2::JoystickButton(&m_copilotController, 2).WhileTrue(SetElevatorPos(&m_elevator,&m_Led,0.367).ToPtr()); //Home
-  frc2::JoystickButton(&m_copilotController, 1).WhileTrue(SetElevatorPos(&m_elevator,&m_Led,0).ToPtr()); // L3
+  frc2::JoystickButton(&m_copilotController, 2).WhileTrue(SetElevatorPos(&m_elevator,0.367).ToPtr()); //Home
+  frc2::JoystickButton(&m_copilotController, 1).WhileTrue(SetElevatorPos(&m_elevator,0).ToPtr()); // L3
   // frc2::JoystickButton(&m_copilotController, 3).WhileTrue(SetElevatorPos(&m_elevator,0.5).ToPtr()); // L2
-  frc2::JoystickButton(&m_copilotController, 4).WhileTrue(SetElevatorPos(&m_elevator,&m_Led,0.905).ToPtr()); // L4
+  frc2::JoystickButton(&m_copilotController, 4).WhileTrue(SetElevatorPos(&m_elevator,0.905).ToPtr()); // L4
 
   // rAlgae Posistion
-  frc2::POVButton(&m_copilotController,0).WhileTrue(SetElevatorPos(&m_elevator,&m_Led,0.770).ToPtr());
-  frc2::POVButton(&m_copilotController,180).WhileTrue(SetElevatorPos(&m_elevator,&m_Led,0.414).ToPtr());
+  frc2::POVButton(&m_copilotController,0).WhileTrue(SetElevatorPos(&m_elevator,0.770).ToPtr());
+  frc2::POVButton(&m_copilotController,180).WhileTrue(SetElevatorPos(&m_elevator,0.414).ToPtr());
 
   frc2::POVButton(&m_copilotController,90).OnTrue(ToggleCommand(&m_coral).ToPtr());
 
