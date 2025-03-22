@@ -194,6 +194,9 @@ void RobotContainer::ConfigureButtonBindings() {
   // frc2::JoystickButton(&m_driverController,2).OnTrue(RotateTo(&m_drive,&m_driverController,45).ToPtr())
   DriverrightTriggerPressed.OnTrue(frc2::cmd::RunOnce([this]{m_Led.sideLed("right");}));
   DriverleftTriggerPressed.OnTrue(frc2::cmd::RunOnce([this]{m_Led.sideLed("left");}));
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
   frc::Pose2d targetPose = frc::Pose2d(5.76_m, 4.03_m, frc::Rotation2d(180_deg));
