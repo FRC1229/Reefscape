@@ -27,7 +27,7 @@ double MYABS(double value){
 }
 
 void AutoAlign::Execute() {
-  if(m_vision->seeTarget()){
+  if(m_vision->getResult().HasTargets()){
   
     frc::Pose2d targetPose = m_vision->targetPoses[m_vision->ClosestTarget().GetFiducialId()];
     m_vision->lastTag = m_vision->ClosestTarget().GetFiducialId();
@@ -154,7 +154,7 @@ bool AutoAlign::IsFinished() {
 
   
 
-  if(m_vision->seeTarget()){
+  if(m_vision->getResult().HasTargets()){
     frc::Pose2d targetPose = m_vision->targetPoses[m_vision->ClosestTarget().GetFiducialId()];
   }
   else{
