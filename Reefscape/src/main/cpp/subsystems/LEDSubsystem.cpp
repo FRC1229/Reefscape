@@ -50,7 +50,7 @@ void LEDSubsystem::Scroll(frc::Color col) {
 
 void LEDSubsystem::sideLed(std::string sideChoose){
     std::array<frc::AddressableLED::LEDData, 120> m_buffer;
-    frc::LEDPattern color = frc::LEDPattern::Solid(frc::Color::kAquamarine);
+    frc::LEDPattern color = frc::LEDPattern::Solid(frc::Color::kRed);
     color.ApplyTo(m_ledBuffer);
     if (sideChoose == "left") {
        for(int i = 0; i < 60; i++){
@@ -60,6 +60,8 @@ void LEDSubsystem::sideLed(std::string sideChoose){
         for(int i = 0; i < 60; i++){
         m_buffer[i+60] = m_ledBuffer[i];
         }
+
     }
+    m_led.SetData(m_buffer);
     
 }
