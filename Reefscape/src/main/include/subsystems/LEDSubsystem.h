@@ -22,6 +22,9 @@ class LEDSubsystem : public frc2::SubsystemBase {
    */
   void Periodic() override;
   void SetLedColor(int r, int g, int b, int length);
+  void Rainbow(int sat, int val);
+  void Scroll(frc::Color col);
+  void sideLed(std::string sideChoose);
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be
