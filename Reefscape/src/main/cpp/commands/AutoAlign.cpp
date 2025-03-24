@@ -1,9 +1,10 @@
 #include "commands/AutoAlign.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/Timer.h>
 #include <Constants.h>
 
-AutoAlign::AutoAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick)
-    :m_drive(drive), m_vision(vision), m_joystick(joystick){
+AutoAlign::AutoAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick, frc::Timer* rumbletimer)
+    :m_drive(drive), m_vision(vision), m_joystick(joystick),m_rumbletimer(rumbletimer){
   AddRequirements(drive);
   AddRequirements(vision);
   rotationPid.EnableContinuousInput(0,360);
@@ -141,7 +142,9 @@ void AutoAlign::Execute() {
 }
 
 
-void AutoAlign::End(bool interrupted) {}
+void AutoAlign::End(bool interrupted) {
+  m_joystick->SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.0);
+}
 
 
 
@@ -156,13 +159,25 @@ bool AutoAlign::IsFinished() {
 
   if(m_vision->seeTarget()){
     frc::Pose2d targetPose = m_vision->targetPoses[m_vision->ClosestTarget().GetFiducialId()];
-  }
-  else{
-    frc::Pose2d targetPose = m_vision->targetPoses[m_vision->lastTag];
-  }
-  
+    double xError = MYABS(targetPose.X().value() - m_drive->m_odometry.GetEstimatedPosition().X().value());
+    double yError = MYABS(targetPose.Y().value() - m_drive->m_odometry.GetEstimatedPosition().Y().value());
 
-  return MYABS(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error;
+    targetPose = m_vision->targetPoses[m_vision->getID()];
+    if ((xError < error && yError < error)) {
+      m_rumbletimer->Start();
+
+      if(m_rumbletimer->Get().value() < 1){
+        m_joystick->SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.5);
+      } else {
+        m_joystick->SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.0);
+        m_rumbletimer->Stop();
+        m_rumbletimer->Reset();
+        
+      }
+    } 
+    
+  
+  return xError < error && yError < error;
 
 
 

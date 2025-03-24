@@ -116,7 +116,7 @@ RobotContainer::RobotContainer(){
   NamedCommands::registerCommand("L1Intake",std::move(AutoL1Command(&m_l1,0.25).ToPtr()));
   NamedCommands::registerCommand("L1Travel",std::move(AutoL1Command(&m_l1,0.25).ToPtr()));
   NamedCommands::registerCommand("Coral Intake", std::move(SetCoralPosition(&m_coral,22).ToPtr()));
-  NamedCommands::registerCommand("Autoalign", std::move(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr()));
+  NamedCommands::registerCommand("Autoalign", std::move(AutoAlign(&m_drive,&m_vision,&m_driverController,&rumbletimer).ToPtr()));
 
   NamedCommands::registerCommand("AlgaeGrab", 
   frc2::cmd::Parallel(
@@ -223,7 +223,7 @@ void RobotContainer::ConfigureButtonBindings() {
 
   // Use to get close but pid in after for accuracte
   
-  frc2::JoystickButton(&m_driverController,1).WhileTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
+  frc2::JoystickButton(&m_driverController,1).WhileTrue(AutoAlign(&m_drive,&m_vision,&m_driverController,&rumbletimer).ToPtr());
 
   frc2::JoystickButton(&m_driverController,3).WhileTrue(AutoLastAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
 
