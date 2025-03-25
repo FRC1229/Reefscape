@@ -18,6 +18,7 @@ void AutoAlign::Initialize() {
 
 
 double MYABS(double value){
+  
   if(value < 0){
     return value * -1;
   }
@@ -27,10 +28,10 @@ double MYABS(double value){
 }
 
 void AutoAlign::Execute() {
-  if(m_vision->getResult().HasTargets()){
+  if(m_vision->camera_Left.getResult().HasTargets()){
   
-    frc::Pose2d targetPose = m_vision->targetPoses[m_vision->ClosestTarget().GetFiducialId()];
-    m_vision->lastTag = m_vision->ClosestTarget().GetFiducialId();
+    frc::Pose2d targetPose = m_vision->targetPoses[m_vision->camera_Left.ClosestTarget().GetFiducialId()];
+    m_vision->lastTag = m_vision->camera_Left.ClosestTarget().GetFiducialId();
     
 
 
@@ -154,8 +155,8 @@ bool AutoAlign::IsFinished() {
 
   
 
-  if(m_vision->getResult().HasTargets()){
-    frc::Pose2d targetPose = m_vision->targetPoses[m_vision->ClosestTarget().GetFiducialId()];
+  if(m_vision->camera_Left.getResult().HasTargets()){
+    frc::Pose2d targetPose = m_vision->targetPoses[m_vision->camera_Left.ClosestTarget().GetFiducialId()];
   }
   else{
     frc::Pose2d targetPose = m_vision->targetPoses[m_vision->lastTag];

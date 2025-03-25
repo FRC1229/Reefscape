@@ -101,11 +101,24 @@ void DriveSubsystem::Periodic() {
                      m_frontRight.GetPosition(), m_rearRight.GetPosition()});
 
 
-  if(m_vision.seeTarget()){
-    for(auto tar : m_vision.getCameraRobotPoses()){
+  // if(m_vision.camera_Left.seeTarget()){
+  //   // m_odometry.AddVisionMeasurement(m_vision.camera_Left.getCameraRobotPose(), frc::Timer::GetFPGATimestamp());
+  //   for(auto tar : m_vision.camera_Left.getCameraRobotPoses()){
+  //     m_odometry.AddVisionMeasurement(tar, frc::Timer::GetFPGATimestamp());
+  //   }
+  // }
+  if(m_vision.camera_Right.seeTarget()){
+    // m_odometry.AddVisionMeasurement(m_vision.camera_Right.getCameraRobotPose(), frc::Timer::GetFPGATimestamp());
+    for(auto tar : m_vision.camera_Right.getCameraRobotPoses()){
       m_odometry.AddVisionMeasurement(tar, frc::Timer::GetFPGATimestamp());
     }
   }
+
+  //  if(m_vision.camera_Right.seeTarget()){
+  //   for(auto tar : m_vision.camera_Right.getCameraRobotPoses()){
+  //     m_odometry.AddVisionMeasurement(tar, frc::Timer::GetFPGATimestamp());
+  //   }
+  // }
 
 
 
@@ -116,8 +129,8 @@ void DriveSubsystem::Periodic() {
   frc::SmartDashboard::PutNumber("POSEX", m_odometry.GetEstimatedPosition().X().value());
   frc::SmartDashboard::PutNumber("POSEY", m_odometry.GetEstimatedPosition().Y().value());
 
-  frc::SmartDashboard::PutNumber("Vision X", m_vision.getCameraRobotPose().X().value());
-  frc::SmartDashboard::PutNumber("Vision Y", m_vision.getCameraRobotPose().Y().value());
+  // frc::SmartDashboard::PutNumber("Vision X", m_vision.getCameraRobotPose().X().value());
+  // frc::SmartDashboard::PutNumber("Vision Y", m_vision.getCameraRobotPose().Y().value());
 
 
 

@@ -7,6 +7,8 @@
 #include <span>
 #include <vector>
 
+
+
 VisionSubsystem::VisionSubsystem() {
     //Red Side 
     targetPoses[1] = frc::Pose2d(16.44_m, 1.02_m, frc::Rotation2d(306_deg));
@@ -46,17 +48,26 @@ void VisionSubsystem::Periodic() {
    
 }
 
+Camera::Camera(std::string c, frc::Transform2d t): 
+cam{c}, 
+cameraToRobot{t}
+{}
+
+
 frc::Pose2d VisionSubsystem::GetUpdatePose(){
-    // std::optional<photon::EstimatedRobotPose> estimatedPose = poseEstimator->Update(getResult());
+    // std::optional<photon::EstimatedRobotPose> estimatedPose = poseEstimator->Update(getResultLeft());
     // if(estimatedPose.has_value()){
     //     return estimatedPose.value().estimatedPose.ToPose2d();
     // }
 }
-photon::PhotonPipelineResult VisionSubsystem::getResult(){
-    return camera_Left.GetLatestResult();
+photon::PhotonPipelineResult Camera::getResult(){
+    if(cam.GetLatestResult().HasTargets()){
+        return cam.GetLatestResult();
+    }
 }
 
-photon::PhotonTrackedTarget VisionSubsystem::ClosestTarget(){
+
+photon::PhotonTrackedTarget Camera::ClosestTarget(){
     if(getResult().HasTargets()){
         std::span<const photon::PhotonTrackedTarget> targets = getResult().GetTargets();
         photon::PhotonTrackedTarget closestTrag = targets[0];
@@ -69,37 +80,37 @@ photon::PhotonTrackedTarget VisionSubsystem::ClosestTarget(){
     }
 }
 
-photon::PhotonTrackedTarget VisionSubsystem::BestResult(){
+photon::PhotonTrackedTarget Camera::BestResult(){
     if(getResult().HasTargets()){
         return getResult().GetBestTarget();
     }
 }
 
-bool VisionSubsystem::seeTarget(){
+bool Camera::seeTarget(){
     return getResult().HasTargets();
 }
-double VisionSubsystem::getYaw() {
+double Camera::getYaw() {
     if(getResult().HasTargets()){
 
         return BestResult().GetYaw();
     }
 }
 
-double VisionSubsystem::getTY() {
+double Camera::getTY() {
     if(getResult().HasTargets()){
 
         return BestResult().GetPitch();
     }
 }
 
-double VisionSubsystem::getYmeters() {
+double Camera::getYmeters() {
     if(getResult().HasTargets()){
         return BestResult().GetBestCameraToTarget().Y().value();
     }
 
 }
 
-frc::Pose2d VisionSubsystem::getCameraRobotPose(){
+frc::Pose2d Camera::getCameraRobotPose(){
     if(getResult().HasTargets()){
 
         auto target = BestResult();
@@ -132,7 +143,7 @@ frc::Pose2d VisionSubsystem::getCameraRobotPose(){
 }
 
 
-std::vector<frc::Pose2d> VisionSubsystem::getCameraRobotPoses(){
+std::vector<frc::Pose2d> Camera::getCameraRobotPoses(){
     std::vector<frc::Pose2d> allPoses;
     if(getResult().HasTargets()){
         for(auto target : getResult().GetTargets()){
@@ -169,36 +180,36 @@ std::vector<frc::Pose2d> VisionSubsystem::getCameraRobotPoses(){
 }
 
 
-double VisionSubsystem::getXmeters() {
+double Camera::getXmeters() {
     if(getResult().HasTargets()){
         return BestResult().GetBestCameraToTarget().X().value();
     }
 
 }
 
-double VisionSubsystem::getZAngle(){
+double Camera::getZAngle(){
     if(getResult().HasTargets()){
         // return BestResult().
     }
 }
 
-int VisionSubsystem::getID() {
+int Camera::getID() {
     if(getResult().HasTargets()){
         return BestResult().GetFiducialId();
     }
 }
 
 
-double VisionSubsystem::getDistance(double targetHeight) {
-    double ty = getTY();
-    double mountAngle = 5;
-    double goalHeight = targetHeight;
-    double cameraHeight = 8.6;
+// double VisionSubsystem::getDistance(double targetHeight) {
+//     double ty = getTY();
+//     double mountAngle = 5;
+//     double goalHeight = targetHeight;
+//     double cameraHeight = 8.6;
     
-    double angleSum = ty + mountAngle;
-    double angleRadians = angleSum * (3.14159 / 180.0);
+//     double angleSum = ty + mountAngle;
+//     double angleRadians = angleSum * (3.14159 / 180.0);
     
-    return (goalHeight - cameraHeight) / tan(angleRadians);
-}
+//     return (goalHeight - cameraHeight) / tan(angleRadians);
+// }
 
 
