@@ -15,7 +15,8 @@ class LEDSubsystem : public frc2::SubsystemBase {
   ElevatorSubsystem* m_Elevator;
   AlgaeSubsystem* m_algae;
   frc::AddressableLED m_led{8};
-  std::array<frc::AddressableLED::LEDData, 121> m_ledBuffer; 
+  std::array<frc::AddressableLED::LEDData, 121> m_ledBuffer;
+  units::meter_t kLedSpacing{1 / 120.0};
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
