@@ -16,7 +16,7 @@ class LEDSubsystem : public frc2::SubsystemBase {
   AlgaeSubsystem* m_algae;
   frc::AddressableLED m_led{8};
   std::array<frc::AddressableLED::LEDData, 121> m_ledBuffer;
-  units::meter_t kLedSpacing{1 / 120.0};
+  
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -28,6 +28,7 @@ class LEDSubsystem : public frc2::SubsystemBase {
   void sideLed(std::string sideChoose);
 
  private:
+  units::meter_t kLedSpacing{1 / 120.0};
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 };
