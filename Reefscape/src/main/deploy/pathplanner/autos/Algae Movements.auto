@@ -5,15 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Fwd to L4 AutoAlign"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "L1Shoot"
+            "name": "pathFindtoIntake"
           }
         }
       ]

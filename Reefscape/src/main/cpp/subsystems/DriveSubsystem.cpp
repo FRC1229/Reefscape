@@ -366,6 +366,23 @@ frc::Pose2d DriveSubsystem::GetEstimatedPose() {
   return m_odometry.GetEstimatedPosition();
 }
 
+frc2::CommandPtr DriveSubsystem::pathFind(frc::Pose2d target){
+
+  pathplanner::PathConstraints Constraints = pathplanner::PathConstraints(
+    units::meters_per_second_t{2}, units::meters_per_second_squared_t{2},
+    units::degrees_per_second_t{150},units::degrees_per_second_squared_t{300}
+
+  );
+
+  frc2::CommandPtr pathfindingCommand = pathplanner::AutoBuilder::pathfindToPose(
+    target,
+    Constraints,
+    0.0_mps
+  );
+
+  return pathfindingCommand;
+}
+
 frc::ChassisSpeeds DriveSubsystem::getRobotRelativeSpeeds() {
   auto fl = m_frontLeft.GetState();
   auto fr = m_frontRight.GetState();
