@@ -195,6 +195,9 @@ void RobotContainer::ConfigureButtonBindings() {
   // frc2::JoystickButton(&m_driverController, 3).OnTrue(TurnToAngle(&m_drive, &m_driverController, -90.0).ToPtr());
   frc2::JoystickButton(&m_driverController, 4).OnTrue(frc2::cmd::RunOnce([this]{m_drive.ZeroHeading();}));
   frc2::JoystickButton(&m_driverController, 6).OnTrue(frc2::cmd::RunOnce([this]{m_drive.GetCurrentCommand()->Cancel();}));
+
+  DriverleftTriggerPressed.WhileTrue(frc2::cmd::RunOnce([this]{m_Led.sideLed("right");}));
+  DriverrightTriggerPressed.WhileTrue(frc2::cmd::RunOnce([this]{m_Led.sideLed("left");}));
   // frc2::JoystickButton(&m_driverController,2).OnTrue(RotateTo(&m_drive,&m_driverController,45).ToPtr());
 
 
@@ -276,7 +279,7 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_copilotController, 5).WhileTrue( // Figure out triggers
     frc2::cmd::Sequence(
       frc2::cmd::Parallel(
-        shootCommand(&m_roller, 0.4).ToPtr(),
+        shootCommand(&m_roller, 0.6).ToPtr(),
         SetAlgaePosition(&m_algae,20).ToPtr()
       )
     )

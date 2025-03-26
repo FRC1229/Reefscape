@@ -14,7 +14,7 @@ VisionSubsystem::VisionSubsystem() {
     targetPoses[3] = frc::Pose2d(11.56_m, 7.62_m, frc::Rotation2d(90_deg));
     targetPoses[6] = frc::Pose2d(13.69_m, 2.93_m, frc::Rotation2d(120_deg));
     targetPoses[7] = frc::Pose2d(14.33_m, 4.03_m, frc::Rotation2d(180_deg));
-    targetPoses[8] = frc::Pose2d(13.69_m, 5.13_m, frc::Rotation2d(270_deg));
+    targetPoses[8] = frc::Pose2d(13.69_m, 5.13_m, frc::Rotation2d(240_deg));
     targetPoses[9] = frc::Pose2d(12.42_m, 5.13_m, frc::Rotation2d(300_deg));
     targetPoses[10] = frc::Pose2d(11.79_m, 4.03_m, frc::Rotation2d(0_deg));
     targetPoses[11] = frc::Pose2d(12.42_m, 2.93_m, frc::Rotation2d(60_deg));
@@ -53,7 +53,9 @@ frc::Pose2d VisionSubsystem::GetUpdatePose(){
     // }
 }
 photon::PhotonPipelineResult VisionSubsystem::getResult(){
-    return camera.GetLatestResult();
+    if(camera.GetLatestResult().HasTargets()){
+     return camera.GetLatestResult();
+    }
 }
 
 photon::PhotonTrackedTarget VisionSubsystem::ClosestTarget(){
