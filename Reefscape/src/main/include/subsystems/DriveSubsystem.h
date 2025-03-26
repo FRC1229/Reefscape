@@ -88,6 +88,8 @@ class DriveSubsystem : public frc2::SubsystemBase {
    */
   void SetModuleStates(wpi::array<frc::SwerveModuleState, 4> desiredStates);
 
+  frc2::CommandPtr pathFind(frc::Pose2d target);
+
   /**
    * Returns the heading of the robot.
    *

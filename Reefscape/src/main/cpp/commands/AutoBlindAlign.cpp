@@ -1,15 +1,15 @@
-#include "commands/AutoAlign.h"
+#include "commands/AutoBlindAlign.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <Constants.h>
 
-AutoAlign::AutoAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick)
-    :m_drive(drive), m_vision(vision), m_joystick(joystick){
+AutoBlindAlign::AutoBlindAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick,int t)
+    :m_drive(drive), m_vision(vision), m_joystick(joystick),tag(t){
   AddRequirements(drive);
   AddRequirements(vision);
   rotationPid.EnableContinuousInput(0,360);
 }
 
-void AutoAlign::Initialize() {
+void AutoBlindAlign::Initialize() {
  
   // double distance = m_vision->getDistance(12);
   // double xPose = m_drive->GetEstimatedPose().X().value();
@@ -17,7 +17,7 @@ void AutoAlign::Initialize() {
 }
 
 
-double MYABS(double value){
+double MYABS2(double value){
   if(value < 0){
     return value * -1;
   }
@@ -26,15 +26,15 @@ double MYABS(double value){
   }   
 }
 
-void AutoAlign::Execute() {
+void AutoBlindAlign::Execute() {
   if(m_vision->seeTarget()){
   
-    frc::Pose2d targetPose = m_vision->targetPoses[m_vision->ClosestTarget().GetFiducialId()];
-    m_vision->lastTag = m_vision->ClosestTarget().GetFiducialId();
+    frc::Pose2d targetPose = m_vision->targetPoses[tag];
+    
     
 
 
-    if(!(MYABS(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error)){
+    if(!(MYABS2(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS2(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error)){
 
       
       double Xspeed = centerPid.Calculate(m_drive->m_odometry.GetEstimatedPosition().X().value(), targetPose.X().value());
@@ -86,9 +86,9 @@ void AutoAlign::Execute() {
 
    
 
-    frc::Pose2d targetPose = m_vision->targetPoses[m_vision->lastTag];
+    frc::Pose2d targetPose = m_vision->targetPoses[tag];
 
-    if(!(MYABS(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error)){
+    if(!(MYABS2(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS2(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error)){
 
       double Xspeed = centerPid.Calculate(m_drive->m_odometry.GetEstimatedPosition().X().value(), targetPose.X().value());
       double Yspeed = alignPid.Calculate(m_drive->m_odometry.GetEstimatedPosition().Y().value(), targetPose.Y().value());
@@ -143,12 +143,12 @@ void AutoAlign::Execute() {
 }
 
 
-void AutoAlign::End(bool interrupted) {}
+void AutoBlindAlign::End(bool interrupted) {}
 
 
 
 
-bool AutoAlign::IsFinished() {
+bool AutoBlindAlign::IsFinished() {
   frc::Pose2d targetPose = m_vision->targetPoses[m_vision->lastTag];
   ///CANCEL LOGIC
   double x = m_drive->m_odometry.GetEstimatedPosition().X().value();
@@ -164,7 +164,7 @@ bool AutoAlign::IsFinished() {
   }
   
 
-  return MYABS(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error;
+  return MYABS2(targetPose.X().value()-m_drive->m_odometry.GetEstimatedPosition().X().value()) < error && MYABS2(targetPose.Y().value()-m_drive->m_odometry.GetEstimatedPosition().Y().value()) < error;
 
 
 

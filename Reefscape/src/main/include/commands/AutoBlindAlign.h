@@ -28,13 +28,13 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class AutoAlign
-    : public frc2::CommandHelper<frc2::Command, AutoAlign> {
+class AutoBlindAlign
+    : public frc2::CommandHelper<frc2::Command, AutoBlindAlign> {
  public:
   /* You should consider using the more terse Command factories API instead
    * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
    */
-  AutoAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick);
+  AutoBlindAlign(DriveSubsystem* drive, VisionSubsystem* vision, frc::Joystick* joystick,int t);
 
   void Initialize() override;
 
@@ -52,6 +52,7 @@ class AutoAlign
   DriveSubsystem* m_drive;
   VisionSubsystem* m_vision;
   frc::Joystick* m_joystick;
+  int tag;
 
   
 

@@ -117,6 +117,14 @@ RobotContainer::RobotContainer(){
   NamedCommands::registerCommand("L1Travel",std::move(AutoL1Command(&m_l1,0.25).ToPtr()));
   NamedCommands::registerCommand("Coral Intake", std::move(SetCoralPosition(&m_coral,22).ToPtr()));
   NamedCommands::registerCommand("Autoalign", std::move(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr()));
+  NamedCommands::registerCommand("pathFindtoIntakeInter", frc2::RunCommand(
+    [this]{
+    m_drive.pathFind(frc::Pose2d(16.44_m,1.02_m,126_deg));
+
+  },
+  {&m_drive}).ToPtr());
+
+  NamedCommands::registerCommand("pathFindtoIntake", m_drive.pathFind(frc::Pose2d(16.44_m,1.02_m,126_deg)));
 
   NamedCommands::registerCommand("AlgaeGrab", 
   frc2::cmd::Parallel(
@@ -234,11 +242,18 @@ void RobotContainer::ConfigureButtonBindings() {
   
   frc2::JoystickButton(&m_driverController,1).WhileTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
 
-  frc2::JoystickButton(&m_driverController,3).WhileTrue(AutoLastAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
+  // frc2::JoystickButton(&m_driverController,3).WhileTrue(AutoLastAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
+
+  // frc2::JoystickButton(&m_driverController,3).WhileTrue(m_drive.pathFind(frc::Pose2d(14.80_m,5.31_m,54_deg)));
+
+  // frc2::JoystickButton(&m_driverController,2).WhileTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
+  // frc2::JoystickButton(&m_driverController,3).WhileTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
 
 
-  frc2::POVButton(&m_driverController,90).WhileTrue(std::move(pathfindingCommand).AndThen(std::move(pathfindingCommand2)).AndThen(std::move(pathfindingCommand3)));
+  // frc2::POVButton(&m_driverController,90).WhileTrue(std::move(pathfindingCommand).AndThen(std::move(pathfindingCommand2)).AndThen(std::move(pathfindingCommand3)));
   // frc2::POVButton(&m_driverController,270).WhileTrue(std::move(pathfindingCommand2));
+
+  
 
   //DriverleftTriggerPressed.WhileTrue(UpdateLEDCommand(m_Led).ToPtr());
 
