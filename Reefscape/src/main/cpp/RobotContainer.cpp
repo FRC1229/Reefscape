@@ -168,7 +168,7 @@ RobotContainer::RobotContainer(){
   m_algae.SetDefaultCommand(ManualAlgae(&m_algae,&m_driverController).ToPtr());
   m_coral.SetDefaultCommand(ManualCoral(&m_coral,&m_copilotController).ToPtr());
   m_l1.SetDefaultCommand(SetServoPosition(&m_l1,&m_driverController).ToPtr());
-  m_Led.SetDefaultCommand(UpdateLEDCommand(&m_Led,&m_driverController,&m_elevator).ToPtr());
+  //m_Led.SetDefaultCommand(UpdateLEDCommand(&m_Led,&m_driverController,&m_elevator).ToPtr());
   m_roller.SetDefaultCommand(shootCommand(&m_roller, 0).ToPtr());
   
 
