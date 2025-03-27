@@ -4,10 +4,10 @@
 
 #include "subsystems/RollerSubsystem.h"
 
-RollerSubsystem::RollerSubsystem():
-m_RollerMotor(22, rev::spark::SparkMax::MotorType::kBrushless)
+RollerSubsystem::RollerSubsystem()
+: m_RollerMotor(22, rev::spark::SparkMax::MotorType::kBrushless)
 {
-    };
+    }
 
 // This method will be called once per scheduler run
 void RollerSubsystem::Periodic() {
@@ -17,3 +17,8 @@ void RollerSubsystem::Periodic() {
 void RollerSubsystem::run(double speed){
     m_RollerMotor.Set(speed);
 }   
+
+// Stops the roller
+void RollerSubsystem::Stop() {
+    m_RollerMotor.Set(0);
+}
