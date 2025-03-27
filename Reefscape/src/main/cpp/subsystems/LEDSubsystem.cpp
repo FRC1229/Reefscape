@@ -38,9 +38,9 @@ void LEDSubsystem::Rainbow(int sat, int val){
 }
 
 void LEDSubsystem::Scroll(frc::Color col) {
-    std::array<std::pair<double, frc::Color>, 2> maskSteps{std::pair{0.0, col},
+    std::array<std::pair<double, frc::Color>, 2> maskSteps{std::pair{0.0, frc::Color::kWhite},
                                                   std::pair{0.1, frc::Color::kBlack}};
-  frc::LEDPattern base = frc::LEDPattern::Rainbow(255, 255);
+  frc::LEDPattern base = frc::LEDPattern::Solid(col);
   frc::LEDPattern mask = frc::LEDPattern::Steps(maskSteps).ScrollAtRelativeSpeed(units::hertz_t{0.25});
 
   frc::LEDPattern pattern =  base.Mask(mask);
