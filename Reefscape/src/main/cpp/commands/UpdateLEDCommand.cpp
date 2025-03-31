@@ -39,7 +39,9 @@ void UpdateLEDCommand::Execute() {
 
   frc::SmartDashboard::PutNumber("LED ELEVATOR",m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025);
 
-  if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.365 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.397){
+  
+
+if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.365 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.397){
      m_Led->SetLedColor(51,201,199,121);
   }
   else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.06){
@@ -54,8 +56,6 @@ void UpdateLEDCommand::Execute() {
   else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.765 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.775){
      m_Led->SetLedColor(51,0,0,121);
   }
-
-
 
   //   else if(m_Elevator->readEncoder()>0.903 && m_Elevator->readEncoder()<0.907){
 

@@ -32,7 +32,6 @@ class VisionSubsystem : public frc2::SubsystemBase {
         photon::PhotonPipelineResult getResult();
         photon::PhotonTrackedTarget BestResult();
         photon::PhotonTrackedTarget ClosestTarget();
-
         frc::AprilTagFieldLayout layout = frc::LoadAprilTagLayoutField(frc::AprilTagField::k2025ReefscapeAndyMark);
 
         frc::Transform2d cameraToRobot = frc::Transform2d{
