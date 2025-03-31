@@ -2,8 +2,12 @@
   "robotWidth": 0.864,
   "robotLength": 0.864,
   "holonomicMode": true,
-  "pathFolders": [],
-  "autoFolders": [],
+  "pathFolders": [
+    "MedgarFolder"
+  ],
+  "autoFolders": [
+    "MedgarFolder"
+  ],
   "defaultMaxVel": 2.0,
   "defaultMaxAccel": 2.0,
   "defaultMaxAngVel": 540.0,

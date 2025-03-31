@@ -117,21 +117,46 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
-  m_container.m_drive.ZeroHeading();
-  m_container.m_drive.ResetEncoders();
-  m_container.m_drive.ResetOdometry(frc::Pose2d{0_m,0_m,frc::Rotation2d{0_deg}});
+    // Get the final heading from autonomous
+    double finalHeading = m_container.m_drive.getRotation2D().Degrees().value();
 
-  // This makes sure that the autonomous stops running when
-  // teleop starts running. If you want the autonomous to
-  // continue until interrupted by another command, remove
-  // this line or comment it out.
-  //m_container.m_arm.CalibrateEncoderValue();
+    // Determine correction needed to align "forward" away from driver
+    double correction = 0.0;
 
-  
-  if (m_autonomousCommand) {
-    m_autonomousCommand->Cancel();
-  }
-  m_container.m_drive.ZeroHeading();
+    // Use MYABS instead of std::abs
+    if (MYABS(finalHeading - 180.0) < 10.0) { 
+        // If final heading is around 180°, shift by 180° to face away
+        correction = 180.0;
+    } 
+    else if (MYABS(finalHeading - 120.0) < 10.0) {  
+        // If final heading is around +120°, shift by 120°
+        correction = 120.0;
+    } 
+    else if (MYABS(finalHeading + 120.0) < 10.0) {  
+        // If final heading is around -120°, shift by -120° (or +240°)
+        correction = 240.0;
+    }
+
+    // Apply correction
+    double newHeading = finalHeading + correction;
+
+    // Normalize within 0-360 degrees
+    if (newHeading >= 360.0) newHeading -= 360.0;
+    if (newHeading < 0.0) newHeading += 360.0;
+
+    // Reset gyro and odometry
+    m_container.m_drive.ZeroHeading();
+    m_container.m_drive.ResetEncoders();
+    m_container.m_drive.ResetOdometry(frc::Pose2d{
+        m_container.m_drive.getCurrentPose().X(),
+        m_container.m_drive.getCurrentPose().Y(),
+        frc::Rotation2d{units::degree_t(newHeading)}
+    });
+
+    // Cancel any leftover autonomous commands
+    if (m_autonomousCommand) {
+        m_autonomousCommand->Cancel();
+    }
 }
 
 /**
