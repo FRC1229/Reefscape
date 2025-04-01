@@ -7,6 +7,7 @@
 #include <frc/TimedRobot.h>
 #include <frc2/command/Command.h>
 #include <frc/DigitalInput.h>
+#include <subsystems/DriveSubsystem.h>
 #include "RobotContainer.h"
 
 class Robot : public frc::TimedRobot {
