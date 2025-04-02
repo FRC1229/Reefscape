@@ -84,6 +84,7 @@ RobotContainer::RobotContainer(){
 
   m_chooser.AddOption("CenterAlgaeAuto", "CenterAlgaeAuto");
   m_chooser.AddOption("CenterL1ScorerAuto", "CenterL1ScorerAuto");
+  m_chooser.AddOption("CenterL1", "CenterL1");
 
 
 
@@ -124,7 +125,7 @@ RobotContainer::RobotContainer(){
   NamedCommands::registerCommand("pathFind", std::move(pathfindingCommand));
  //NamedCommands::registerCommand("coralTravel",std::move(SetCoralPosition(&m_coral,10).ToPtr())); 
   //NamedCommands::registerCommand("coralShootL4",std::move(SetCoralPosition(&m_coral,33).ToPtr()));
-  NamedCommands::registerCommand("ElevatorPosL4",std::move(SetElevatorPos(&m_elevator,0.905).ToPtr()));
+  NamedCommands::registerCommand("ElevatorPosL4",std::move(SetElevatorPos(&m_elevator,0.27).ToPtr()));
   NamedCommands::registerCommand("ElevatorPosL3",std::move(SetElevatorPos(&m_elevator,0.414).ToPtr()));
   NamedCommands::registerCommand("ElevatorPosHome",std::move(SetElevatorPos(&m_elevator,0).ToPtr()));
   NamedCommands::registerCommand("L1Shoot",std::move(AutoL1Command(&m_l1,0.5).ToPtr()));
@@ -291,44 +292,39 @@ void RobotContainer::ConfigureButtonBindings() {
   //Co
 
   //elevamator
-  frc2::JoystickButton(&m_copilotController, 2).WhileTrue(SetElevatorPos(&m_elevator,0.367).ToPtr()); //Home
+  frc2::JoystickButton(&m_copilotController, 2).WhileTrue(SetElevatorPos(&m_elevator,0.2720).ToPtr()); //Home
   frc2::JoystickButton(&m_copilotController, 1).WhileTrue(SetElevatorPos(&m_elevator,0).ToPtr()); // L3
   // frc2::JoystickButton(&m_copilotController, 3).WhileTrue(SetElevatorPos(&m_elevator,0.5).ToPtr()); // L2
-  frc2::JoystickButton(&m_copilotController, 4).WhileTrue(SetElevatorPos(&m_elevator,0.905).ToPtr()); // L4
+  frc2::JoystickButton(&m_copilotController, 4).WhileTrue(SetElevatorPos(&m_elevator,1).ToPtr()); // L4
 
   // rAlgae Posistion
-  frc2::POVButton(&m_copilotController,0).WhileTrue(SetElevatorPos(&m_elevator,0.770).ToPtr());
-  frc2::POVButton(&m_copilotController,180).WhileTrue(SetElevatorPos(&m_elevator,0.414).ToPtr());
+  // frc2::POVButton(&m_copilotController,0).WhileTrue(SetElevatorPos(&m_elevator,0.770).ToPtr());
+  // frc2::POVButton(&m_copilotController,180).WhileTrue(SetElevatorPos(&m_elevator,0.414).ToPtr());
 
   // frc2::POVButton(&m_copilotController,90).OnTrue(ToggleCommand(&m_coral).ToPtr());
 
 
   //Algae
-  frc2::JoystickButton(&m_copilotController, 7).WhileTrue(SetAlgaePosition(&m_algae,2).ToPtr()); // Home pos
-  frc2::JoystickButton(&m_copilotController, 5).WhileTrue( // Figure out triggers
-    frc2::cmd::Sequence(
-      frc2::cmd::Parallel(
-        shootCommand(&m_roller, 0.4).ToPtr(),
-        SetAlgaePosition(&m_algae,20).ToPtr()
-      )
-    )
-  );
+  // frc2::JoystickButton(&m_copilotController, 7).WhileTrue(SetAlgaePosition(&m_algae,2).ToPtr()); // Home pos
+  // frc2::JoystickButton(&m_copilotController, 5).WhileTrue( // Figure out triggers
+  //       shootCommand(&m_roller, 0.4).ToPtr()
+  // );
 
   
 
   leftTriggerPressed.WhileTrue(
-        frc2::cmd::Parallel(
-          shootCommand(&m_roller, -0.7).ToPtr(),
-          SetAlgaePosition(&m_algae,20).ToPtr()
-        )
-      
+          shootCommand(&m_roller, -0.7).ToPtr()
+  );
+
+  rightTriggerPressed.WhileTrue(
+          shootCommand(&m_roller, 0.7).ToPtr()
   );
 
 
 
   //Coral
-  // frc2::JoystickButton(&m_copilotController, 6).WhileTrue(SetCoralPosition(&m_coral,23 ).ToPtr()); // Home pos
-  // frc2::JoystickButton(&m_copilotController, 8).WhileTrue(SetCoralPosition(&m_coral,10).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
+  frc2::JoystickButton(&m_copilotController, 6).WhileTrue(SetAlgaePosition(&m_algae,64).ToPtr()); // Home pos
+  frc2::JoystickButton(&m_copilotController, 5).WhileTrue(SetAlgaePosition(&m_algae,80).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
   // // leftTriggerPressed.WhileTrue(SetCoralPosition(&m_coral,10).ToPtr()); // REMEMBER CHANGE ANGLE Shoot pos
   // frc2::JoystickButton(&m_copilotController, 3).WhileTrue(SetCoralPosition(&m_coral, 33).ToPtr());//L4 pos
   // rightTriggerPressed.WhileTrue(SetCoralPosition(&m_coral, 29.5).ToPtr());

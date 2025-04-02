@@ -60,7 +60,7 @@ DriveSubsystem::DriveSubsystem()
         [this](){ return getRobotRelativeSpeeds(); }, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         [this](frc::ChassisSpeeds speeds){ Drive(speeds.vx,speeds.vy,speeds.omega,false); }, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         std::make_shared<PPHolonomicDriveController>( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+            PIDConstants(2.5, 0.0, 0.0), // Translation PID constants
             PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
         ),
         config,

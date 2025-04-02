@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "commands/AutoL1Command.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 AutoL1Command::AutoL1Command(L1Subsystem* l1, double angle ) :  m_l1(l1), m_angle(angle)  {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -22,5 +23,8 @@ void AutoL1Command::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool AutoL1Command::IsFinished() {
-  return false;
+
+  frc::SmartDashboard::PutBoolean("servo at", m_angle == m_l1->m_servo.GetAngle());
+  
+  return m_angle == m_l1->m_servo.GetAngle();
 }

@@ -15,7 +15,7 @@ void ManualElevator::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ManualElevator::Execute() {
-  if(m_CoController->GetRawAxis(5) > 0.05){
+  if(m_CoController->GetRawAxis(5) > 0.08){
 
     // if(m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025 < 0.95){
 
@@ -34,7 +34,7 @@ void ManualElevator::Execute() {
     //   m_elevator->m_ElevatorMotorBottom.Set(0);
     // }
   }
-  else if(m_CoController->GetRawAxis(5) < -0.05){
+  else if(m_CoController->GetRawAxis(5) < -0.08){
    
     m_elevator->m_ElevatorMotorTop.Set(-m_CoController->GetRawAxis(5)*0.20);
     m_elevator->m_ElevatorMotorBottom.Set(-m_CoController->GetRawAxis(5)*0.20);
@@ -59,8 +59,10 @@ void ManualElevator::Execute() {
     
    
     if(m_elevator->m_ElevatorEncoderBottom.GetPosition()*0.025 > 0.05){
-      m_elevator->m_ElevatorMotorTop.SetVoltage(units::volt_t{0.74});
-      m_elevator->m_ElevatorMotorBottom.SetVoltage(units::volt_t{0.74});
+      m_elevator->m_ElevatorMotorTop.SetVoltage(units::volt_t{0.6});
+      m_elevator->m_ElevatorMotorBottom.SetVoltage(units::volt_t{0.6});
+      // m_elevator->m_ElevatorMotorTop.SetVoltage(units::volt_t{0});
+      // m_elevator->m_ElevatorMotorBottom.SetVoltage(units::volt_t{0});
     }
 
 
