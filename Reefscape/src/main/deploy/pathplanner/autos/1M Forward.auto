@@ -9,12 +9,6 @@
           "data": {
             "pathName": "1M Forward"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "coralTravel"
-          }
         }
       ]
     }
