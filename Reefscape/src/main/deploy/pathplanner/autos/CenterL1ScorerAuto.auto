@@ -1,0 +1,74 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterL1ScorerPath"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L1Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": " CenterAlgaeRotatePath"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterAlgaeShortPath"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorPosL4"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AlgaeGrab"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ElevatorPosL4"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlgaeHome"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorPosHome"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

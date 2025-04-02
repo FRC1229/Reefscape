@@ -52,7 +52,7 @@ class RobotContainer {
   VisionSubsystem m_vision;
   ElevatorSubsystem m_elevator;
   AlgaeSubsystem m_algae;
-  CoralSubsystem m_coral;
+  //CoralSubsystem m_coral;
   L1Subsystem m_l1;
   LEDSubsystem m_Led;
   RollerSubsystem m_roller;
