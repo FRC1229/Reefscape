@@ -10,7 +10,7 @@
 
 void Robot::RobotInit() {
     //m_container.m_arm.CalibrateEncoderValue();
-    frc::CameraServer::StartAutomaticCapture();
+    // frc::CameraServer::StartAutomaticCapture();
 
 }
 

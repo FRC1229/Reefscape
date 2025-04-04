@@ -24,6 +24,7 @@ class SetAlgaePosition
   SetAlgaePosition(AlgaeSubsystem* algae, double angle);
 
   AlgaeSubsystem* m_algae;
+  double accelFactor = 0;
   double m_angle;
 
   void Initialize() override;

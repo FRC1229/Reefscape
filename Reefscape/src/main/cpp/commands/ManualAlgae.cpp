@@ -17,16 +17,19 @@ void ManualAlgae::Execute() {
 
     m_algae->m_AlgaeTiltMotor.Set(0);
     if(m_CoController->GetRawAxis(1) > 0.05){
-      m_algae->m_AlgaeTiltMotor.Set(0.1);
-      m_algae->lastPose = m_algae->GetAngle();
-    }
-    else if(m_CoController->GetRawAxis(1) < -0.05){
       m_algae->m_AlgaeTiltMotor.Set(-0.1);
       m_algae->lastPose = m_algae->GetAngle();
     }
+    else if(m_CoController->GetRawAxis(1) < -0.05){
+      m_algae->m_AlgaeTiltMotor.Set(0.1);
+      m_algae->lastPose = m_algae->GetAngle();
+    }
     else{
-      double holdVolt = m_algae->stayPid.Calculate(m_algae->GetAngle(), m_algae->lastPose);
-      m_algae->m_AlgaeTiltMotor.SetVoltage(units::volt_t{holdVolt}); 
+      // if(m_algae->GetAngle() < 80){
+      // double holdVolt = m_algae->stayPid.Calculate(m_algae->GetAngle(), m_algae->lastPose);
+      // m_algae->m_AlgaeTiltMotor.SetVoltage(units::volt_t{holdVolt}); 
+      m_algae->m_AlgaeTiltMotor.Set(0);
+      // }
     }
      
 

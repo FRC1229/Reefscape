@@ -15,16 +15,20 @@ void SetAlgaePosition::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void SetAlgaePosition::Execute() {
+  if(accelFactor < 1){
+    accelFactor+=0.05;
+  }
 
   double volt = m_algae->m_AlgaeController.Calculate(m_algae->GetAngle(), m_angle);
-  m_algae->m_AlgaeTiltMotor.SetVoltage(frc::ApplyDeadband(units::volt_t{volt},0_V,0.75_V));
-  m_algae->lastPose = m_algae->GetAngle();
+  m_algae->m_AlgaeTiltMotor.SetVoltage(frc::ApplyDeadband(units::volt_t{volt*accelFactor},0_V,0.75_V));
+  // m_algae->lastPose = m_algae->GetAngle();
   // double holdVolt = m_algae->stayPid.Calculate(m_algae->GetAngle(), m_algae->lastPose);
   // m_algae->m_AlgaeTiltMotor.SetVoltage(units::volt_t{holdVolt});  
 }
 
 // Called once the command ends or is interrupted.
 void SetAlgaePosition::End(bool interrupted) {
+  accelFactor=0;
   frc::SmartDashboard::PutNumber("Hey IM CANCELED",12);
 
 }
