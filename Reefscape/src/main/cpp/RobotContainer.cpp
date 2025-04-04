@@ -67,24 +67,27 @@ RobotContainer::RobotContainer(){
   // frc2::CommandPtr sideNote = pathplanner::PathPlannerAuto("OneNoteSide").ToPtr();
 
   // m_chooser.AddOption("L4", "L4");
-  // m_chooser.AddOption("processor L1", "Left Side L1");
-  // m_chooser.AddOption("not processor L1", "Right Side to L1");
+  m_chooser.AddOption("processor L1", "Left Side L1");
+  m_chooser.AddOption("not processr L1", "Right Side to L1");
   // m_chooser.AddOption("not double L1", "double L1");
   // m_chooser.AddOption("L1", "L1");
   m_chooser.AddOption("AutoAlign Test", "AutoAlign Test");
   // m_chooser.AddOption("Algae MovemSents", "Algae Movements");
 
-  m_chooser.AddOption("auto9", "Auto9");
-  m_chooser.AddOption("auto10", "Auto10");
-  m_chooser.AddOption("auto11", "Auto11");
+  // m_chooser.AddOption("auto9", "Auto9");
+  // m_chooser.AddOption("auto10", "Auto10");
+  // m_chooser.AddOption("auto11", "Auto11");
 
-  m_chooser.AddOption("auto20", "Auto20");
-  m_chooser.AddOption("auto21", "Auto21");
-  m_chooser.AddOption("auto22", "Auto22");
+  // m_chooser.AddOption("auto20", "Auto20");
+  // m_chooser.AddOption("auto21", "Auto21");
+  // m_chooser.AddOption("auto22", "Auto22");
 
   m_chooser.AddOption("CenterAlgaeAuto", "CenterAlgaeAuto");
   m_chooser.AddOption("CenterL1ScorerAuto", "CenterL1ScorerAuto");
   m_chooser.AddOption("CenterL1", "CenterL1");
+  m_chooser.AddOption("Non Far L1", "Non Processor L1");
+  m_chooser.AddOption("NonProcessorTaxi","NonProcessorTaxi");
+  m_chooser.AddOption("ProcessorTaxi","ProcessorTaxi");
 
 
 
@@ -192,10 +195,10 @@ RobotContainer::RobotContainer(){
       },
       {&m_drive}));
   m_elevator.SetDefaultCommand(ManualElevator(&m_elevator,&m_copilotController).ToPtr());
-  m_algae.SetDefaultCommand(ManualAlgae(&m_algae,&m_driverController).ToPtr());
+  m_algae.SetDefaultCommand(ManualAlgae(&m_algae,&m_copilotController).ToPtr());
   //m_coral.SetDefaultCommand(ManualCoral(&m_coral,&m_copilotController).ToPtr());
   m_l1.SetDefaultCommand(SetServoPosition(&m_l1,&m_driverController).ToPtr());
-  //m_Led.SetDefaultCommand(UpdateLEDCommand(&m_Led,&m_driverController,&m_elevator).ToPtr());
+  m_Led.SetDefaultCommand(UpdateLEDCommand(&m_Led,&m_driverController,&m_elevator,&m_drive).ToPtr());
   m_roller.SetDefaultCommand(shootCommand(&m_roller, 0).ToPtr());
   
 
@@ -265,7 +268,12 @@ void RobotContainer::ConfigureButtonBindings() {
   // Use to get close but pid in after for accuracte
   
   frc2::JoystickButton(&m_driverController,1).WhileTrue(AutoAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
-
+  if(m_drive.m_odometry.GetEstimatedPosition().X().value() > 8.78){
+    frc2::JoystickButton(&m_driverController,7).WhileTrue(AutoBlindAlign(&m_drive,&m_vision,&m_driverController,101).ToPtr());
+  }
+  else{
+    frc2::JoystickButton(&m_driverController,7).WhileTrue(AutoBlindAlign(&m_drive,&m_vision,&m_driverController,100).ToPtr());
+  }
   // frc2::JoystickButton(&m_driverController,3).WhileTrue(AutoLastAlign(&m_drive,&m_vision,&m_driverController).ToPtr());
 
   // frc2::JoystickButton(&m_driverController,3).WhileTrue(m_drive.pathFind(frc::Pose2d(14.80_m,5.31_m,54_deg)));
@@ -281,8 +289,8 @@ void RobotContainer::ConfigureButtonBindings() {
 
   //DriverleftTriggerPressed.WhileTrue(UpdateLEDCommand(m_Led).ToPtr());
 
-  frc2::JoystickButton(&m_driverController,7).WhileTrue(shootCommand(&m_roller,-0.70).ToPtr());
-  frc2::JoystickButton(&m_driverController,8).WhileTrue(shootCommand(&m_roller,0.70).ToPtr());
+  // frc2::JoystickButton(&m_driverController,7).WhileTrue(shootCommand(&m_roller,-0.70).ToPtr());
+  // frc2::JoystickButton(&m_driverController,8).WhileTrue(shootCommand(&m_roller,0.70).ToPtr());
 
   
 

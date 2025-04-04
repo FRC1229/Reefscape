@@ -26,6 +26,14 @@ void Robot::RobotPeriodic() {
 
   frc::SmartDashboard::PutNumber("Algae magic number", m_container.m_algae.m_AlgaeTiltEncoder.GetPosition());
 
+
+  frc::SmartDashboard::PutNumber("Xwheel", m_container.m_drive.m_Wheelodometry.GetEstimatedPosition().X().value());
+  frc::SmartDashboard::PutNumber("Ywheel", m_container.m_drive.m_Wheelodometry.GetEstimatedPosition().Y().value());
+
+  
+  frc::SmartDashboard::PutNumber("XVision", m_container.m_drive.m_odometry.GetEstimatedPosition().X().value());
+  frc::SmartDashboard::PutNumber("YVision", m_container.m_drive.m_odometry.GetEstimatedPosition().Y().value());
+
   // frc::SmartDashboard::PutNumber("Bus Voltage", m_container.m_elevator.m_ElevatorMotorTop.GetBusVoltage());
   // frc::SmartDashboard::PutNumber("Elevator appiled output", m_container.m_elevator.m_ElevatorMotorTop.GetAppliedOutput());
   frc::SmartDashboard::PutNumber("appiled voltage", m_container.m_elevator.m_ElevatorMotorTop.GetAppliedOutput() * m_container.m_elevator.m_ElevatorMotorTop.GetBusVoltage());

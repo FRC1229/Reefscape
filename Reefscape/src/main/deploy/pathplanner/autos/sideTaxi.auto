@@ -9,18 +9,6 @@
           "data": {
             "pathName": "CenterL1ScorerPath"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L1Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L1Travel"
-          }
         }
       ]
     }

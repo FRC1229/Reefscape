@@ -49,14 +49,19 @@ DriveSubsystem::DriveSubsystem()
                  m_gyro.GetRotation2d(),
                  {m_frontLeft.GetPosition(), m_frontRight.GetPosition(),
                   m_rearLeft.GetPosition(), m_rearRight.GetPosition()},
+                  frc::Pose2d{2_m,7_m,frc::Rotation2d{0_deg}}},
+      m_Wheelodometry{kDriveKinematics,
+                 m_gyro.GetRotation2d(),
+                 {m_frontLeft.GetPosition(), m_frontRight.GetPosition(),
+                  m_rearLeft.GetPosition(), m_rearRight.GetPosition()},
                   frc::Pose2d{2_m,7_m,frc::Rotation2d{0_deg}}}
 
       {
         pathplanner::RobotConfig config = pathplanner::RobotConfig::fromGUISettings();
 
         AutoBuilder::configure(
-        [this](){ return GetEstimatedPose(); }, // Robot pose supplier
-        [this](frc::Pose2d pose){ ResetOdometry(pose); }, // Method to reset odometry (will be called if your auto has a starting pose)
+        [this](){ return GetEstimatedWheelPose(); }, // Robot pose supplier
+        [this](frc::Pose2d pose){ ResetWheelOdometry(pose); }, // Method to reset odometry (will be called if your auto has a starting pose)
         [this](){ return getRobotRelativeSpeeds(); }, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         [this](frc::ChassisSpeeds speeds){ Drive(speeds.vx,speeds.vy,speeds.omega,false); }, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         std::make_shared<PPHolonomicDriveController>( // HolonomicPathFollowerConfig, this should likely live in your Constants class
@@ -366,6 +371,10 @@ frc::Pose2d DriveSubsystem::GetEstimatedPose() {
   return m_odometry.GetEstimatedPosition();
 }
 
+frc::Pose2d DriveSubsystem::GetEstimatedWheelPose() {
+  return m_Wheelodometry.GetEstimatedPosition();
+}
+
 frc2::CommandPtr DriveSubsystem::pathFind(frc::Pose2d target){
 
   pathplanner::PathConstraints Constraints = pathplanner::PathConstraints(
@@ -397,6 +406,16 @@ void DriveSubsystem::ResetOdometry(frc::Pose2d pose) {
        m_rearLeft.GetPosition(), m_rearRight.GetPosition()},
       pose);
 }
+
+void DriveSubsystem::ResetWheelOdometry(frc::Pose2d pose) {
+  m_Wheelodometry.ResetPosition(
+        GetHeading(),
+        {m_frontLeft.GetPosition(), m_frontRight.GetPosition(),
+        m_rearLeft.GetPosition(), m_rearRight.GetPosition()},
+        pose);
+
+}
+
 // void DriveSubsystem::GyroStabilize(){
 //   gyroSetpoint = 180;
 // }

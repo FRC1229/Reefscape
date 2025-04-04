@@ -60,7 +60,7 @@ class AutoBlindAlign
   double error = 0.04;
   frc::PIDController centerPid {1,0,0}; //1.4 , 0, 0 good teleop
 
-  frc::PIDController alignPid {1,0,0};
+  frc::PIDController alignPid {0,0,0};
 
   frc::PIDController rotationPid {0.03,0.0,0.00}; //0.05
   

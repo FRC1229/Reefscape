@@ -6,6 +6,7 @@
 
 AlgaeSubsystem::AlgaeSubsystem():
 m_AlgaeTiltMotor(23,rev::spark::SparkMax::MotorType::kBrushless),
+
 m_AlgaeTiltEncoder(m_AlgaeTiltMotor.GetEncoder())
 {
     m_AlgaeTiltMotor.SetInverted(true);

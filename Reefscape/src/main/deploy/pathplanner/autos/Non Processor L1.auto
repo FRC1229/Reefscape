@@ -7,13 +7,26 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterL1ScorerPath"
+            "pathName": "Copy of Top Side to L1"
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "L1Shoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "L1Shoot"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              }
+            ]
           }
         },
         {

@@ -9,6 +9,7 @@
 #include <subsystems/LEDSubsystem.h>
 #include <subsystems/AlgaeSubsystem.h>
 #include <frc/Joystick.h>
+#include <subsystems/DriveSubsystem.h>
 
 /**
  * An example command.
@@ -23,11 +24,12 @@ class UpdateLEDCommand
   /* You should consider using the more terse Command factories API instead
    * https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands
    */
-  UpdateLEDCommand(LEDSubsystem* LED, frc::Joystick* joystick, ElevatorSubsystem* m_Elevator);
+  UpdateLEDCommand(LEDSubsystem* LED, frc::Joystick* joystick, ElevatorSubsystem* m_Elevator, DriveSubsystem* m_drive);
 
   LEDSubsystem* m_Led;
   frc::Joystick* m_DriveController;
   ElevatorSubsystem* m_Elevator;
+  DriveSubsystem* m_drive;
  
   
   void Initialize() override;

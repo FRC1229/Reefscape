@@ -11,13 +11,16 @@
 
 #include <subsystems/LEDSubsystem.h>
 
+
 #include <frc/smartdashboard/SmartDashboard.h>
 
 #include <frc/Timer.h>
 
+#include <frc/DriverStation.h>
 
 
-UpdateLEDCommand::UpdateLEDCommand(LEDSubsystem* LED, frc::Joystick* joystick, ElevatorSubsystem* m_Elevator): m_Led(LED), m_DriveController(joystick), m_Elevator(m_Elevator) {
+
+UpdateLEDCommand::UpdateLEDCommand(LEDSubsystem* LED, frc::Joystick* joystick, ElevatorSubsystem* m_Elevator, DriveSubsystem* drive): m_Led(LED), m_DriveController(joystick), m_Elevator(m_Elevator),m_drive(drive) {
 
   // Use addRequirements() here to declare subsystem dependencies.
 
@@ -38,24 +41,39 @@ void UpdateLEDCommand::Initialize() {}
 void UpdateLEDCommand::Execute() {
 
   frc::SmartDashboard::PutNumber("LED ELEVATOR",m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025);
+   double Xpose = m_drive->m_odometry.GetEstimatedPosition().X().value();
+   if(frc::DriverStation::GetAlliance() == frc::DriverStation::kBlue){
+      if(Xpose > 7.80 && Xpose < 7.90){
+         m_Led->SetLedColor(255,0,0,121);
+      }
+      else{
+         m_Led->SetLedColor(0,255,0,121);
+      }
+   }
+   else if(frc::DriverStation::GetAlliance() == frc::DriverStation::kRed){
+       if(Xpose > 9.90 && Xpose < 9.80){
+         m_Led->SetLedColor(255,0,0,121);
+      }
+      else{
+         m_Led->SetLedColor(0,255,0,121);
+      }
+   }
 
-  
-
-if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.365 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.397){
-     m_Led->SetLedColor(51,201,199,121);
-  }
-  else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.06){
-     m_Led->SetLedColor(51,0,199,121);
-  }
-  else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.904 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.906){
-     m_Led->SetLedColor(0,201,199,121);
-  }
-  else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.413 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.416){
-     m_Led->SetLedColor(51,201,0,121);
-  }
-  else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.765 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.775){
-     m_Led->SetLedColor(51,0,0,121);
-  }
+// if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.365 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.397){
+//      m_Led->SetLedColor(51,201,199,121);
+//   }
+//   else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.06){
+//      m_Led->SetLedColor(51,0,199,121);
+//   }
+//   else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.904 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.906){
+//      m_Led->SetLedColor(0,201,199,121);
+//   }
+//   else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.413 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.416){
+//      m_Led->SetLedColor(51,201,0,121);
+//   }
+//   else if(m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025>0.765 && m_Elevator->m_ElevatorEncoderBottom.GetPosition()*0.025<0.775){
+//      m_Led->SetLedColor(51,0,0,121);
+//   }
 
   //   else if(m_Elevator->readEncoder()>0.903 && m_Elevator->readEncoder()<0.907){
 

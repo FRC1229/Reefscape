@@ -7,6 +7,7 @@
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandHelper.h>
 #include <frc/Joystick.h>
+#include <frc/controller/PIDController.h>
 #include "subsystems/AlgaeSubsystem.h"
 
 

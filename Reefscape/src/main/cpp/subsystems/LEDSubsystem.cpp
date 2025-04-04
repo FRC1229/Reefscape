@@ -21,7 +21,7 @@ void LEDSubsystem::Periodic() {
 
 void LEDSubsystem::SetLedColor(int r, int g, int b, int length){
    for(int i = 0; i<length;i++){
-        m_ledBuffer[i].SetRGB(r,g,b);
+        m_ledBuffer[i].SetRGB(g,r,b);
     }
 
     m_led.SetData(m_ledBuffer);
@@ -51,17 +51,17 @@ void LEDSubsystem::Scroll(frc::Color col) {
 void LEDSubsystem::sideLed(std::string sideChoose){
     std::array<frc::AddressableLED::LEDData, 120> m_buffer;
     frc::LEDPattern color = frc::LEDPattern::Solid(frc::Color::kRed);
-    color.ApplyTo(m_ledBuffer);
-    if (sideChoose == "left") {
-       for(int i = 0; i < 60; i++){
-        m_buffer[i] = m_ledBuffer[i];
-        } 
-    } else if (sideChoose == "right"){
-        for(int i = 0; i < 60; i++){
-        m_buffer[i+60] = m_ledBuffer[i];
-        }
+    // color.ApplyTo(m_ledBuffer);
+    // if (sideChoose == "left") {
+    //    for(int i = 0; i < 60; i++){
+    //     m_buffer[i] = m_ledBuffer[i];
+    //     } 
+    // } else if (sideChoose == "right"){
+    //     for(int i = 0; i < 60; i++){
+    //     m_buffer[i+60] = m_ledBuffer[i];
+    //     }
 
-    }
+    // }
     m_led.SetData(m_buffer);
     
 }

@@ -115,6 +115,7 @@ class DriveSubsystem : public frc2::SubsystemBase {
    * @return The pose.
    */
   frc::Pose2d GetEstimatedPose();
+  frc::Pose2d GetEstimatedWheelPose();
 
   /**
    * Resets the odometry to the specified pose.
@@ -122,6 +123,7 @@ class DriveSubsystem : public frc2::SubsystemBase {
    * @param pose The pose to which to set the odometry.
    */
   void ResetOdometry(frc::Pose2d pose);
+  void ResetWheelOdometry(frc::Pose2d pose);
   double increment = 0.00001;
   double ppp = 0.05;
   void GyroStabilize();
@@ -158,6 +160,7 @@ class DriveSubsystem : public frc2::SubsystemBase {
 
   frc::Rotation2d getRotation2D();
   frc::SwerveDrivePoseEstimator<4> m_odometry;
+  frc::SwerveDrivePoseEstimator<4> m_Wheelodometry;
   frc::SendableChooser<bool> m_fieldflip;
 
 

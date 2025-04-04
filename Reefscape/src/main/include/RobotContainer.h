@@ -29,6 +29,7 @@
 #include <subsystems/L1Subsystem.h>
 #include <subsystems/LEDSubsystem.h>
 #include <subsystems/RollerSubsystem.h>
+#include <subsystems/GroundAlgaeSubsystem.h>
 
 
 
@@ -56,6 +57,7 @@ class RobotContainer {
   L1Subsystem m_l1;
   LEDSubsystem m_Led;
   RollerSubsystem m_roller;
+  // GroundAlgaeSubsystem m_groundAlgae;
 
 
   frc::DigitalInput sensor{0};

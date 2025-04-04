@@ -17,6 +17,10 @@ void SetServoPosition::Initialize() {}
 // Called repeatedly when this Command is scheduled to run
 void SetServoPosition::Execute() {
 
+  if(m_joystick->GetRawButton(3)){
+    CurrentState=a90;
+  }
+
   if(m_joystick->GetRawButtonPressed(2)){
 
     switch (CurrentState)
@@ -26,11 +30,11 @@ void SetServoPosition::Execute() {
       break;
     
     case a0:
-      CurrentState=a90;
+      CurrentState=a45;
       break;
 
     case a90:
-      CurrentState=a45;
+      CurrentState=a0;
       break;
     }
 

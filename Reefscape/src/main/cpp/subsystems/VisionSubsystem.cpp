@@ -18,6 +18,9 @@ VisionSubsystem::VisionSubsystem() {
     targetPoses[9] = frc::Pose2d(12.42_m, 5.13_m, frc::Rotation2d(300_deg));
     targetPoses[10] = frc::Pose2d(11.79_m, 3.97_m, frc::Rotation2d(0_deg));
     targetPoses[11] = frc::Pose2d(12.46_m, 2.89_m, frc::Rotation2d(60_deg));
+    targetPoses[100] = frc::Pose2d(9.81_m,0_m,frc::Rotation2d(0_deg));
+    targetPoses[101] = frc::Pose2d(9.61_m,0_m,frc::Rotation2d(0_deg));
+
 
     //Blue Side
     targetPoses[12] = frc::Pose2d(1.11_m, 1.02_m, frc::Rotation2d(234_deg));
